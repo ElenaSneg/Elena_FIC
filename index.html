@@ -54,8 +54,10 @@
   .instruction { font-size: 0.95em; color: #6a1b3a; font-weight: 600; line-height: 1.6; background: #fce4ec; border-radius: 12px; padding: 12px 16px; margin-bottom: 15px; border-left: 4px solid #f06292; }
   .fallback-msg { display: none; color: #ad1457; font-weight: bold; font-size: 0.85em; padding: 10px; background: #fce4ec; border-radius: 10px; margin-bottom: 8px; }
 
-  .quiz-word-container { text-align: center; margin-bottom: 5px; min-height: 60px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-  .quiz-word { font-size: 2.8em; font-weight: 800; color: #6a1b3a; font-family: 'Courier New', monospace; letter-spacing: 2px; }
+  .quiz-word-container { text-align: center; margin-bottom: 5px; min-height: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+  .quiz-word { font-size: 2.8em; font-weight: 800; color: #6a1b3a; font-family: 'Courier New', monospace; letter-spacing: 2px; transition: 0.3s; }
+  .quiz-hint-text { font-size: 1em; color: #f06292; margin-top: 5px; opacity: 0; transition: 0.3s; }
+  
   .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; max-width: 340px; margin: 0 auto; }
   .quiz-opt { background: #fff; border: 2px solid #f8bbd0; border-radius: 16px; padding: 14px; font-size: 1em; font-weight: 700; color: #ad1457; cursor: pointer; transition: 0.2s; text-align: center; font-family: inherit; }
   .quiz-opt:hover { background: #fce4ec; }
@@ -185,19 +187,26 @@
   <div class="card">
     <h2>🎯 Какой тон?</h2>
     <p style="font-size:0.9em; color:#6a1b3a; text-align:center; margin-bottom:15px;">Послушай слог и выбери правильный тон.</p>
+    
     <div class="quiz-word-container">
       <div class="quiz-word" id="quizWord">ma</div>
+      <div class="quiz-hint-text" id="quizHint">(mā)</div>
     </div>
+    
     <div style="display:flex; gap:10px; justify-content:center; margin-bottom:20px;">
       <button class="action-btn" style="padding:8px 18px; font-size:0.9em;" onclick="playCurrentWord()">🔊 Слушать</button>
+      <button class="action-btn" style="padding:8px 18px; font-size:0.9em; background: #fff; color: #ad1457; border: 2px solid #ad1457;" onclick="toggleHint()">💡 Подсказка</button>
     </div>
+    
     <div class="quiz-options" id="quizOptions">
       <button class="quiz-opt" onclick="checkTone(1)">1-й тон</button>
       <button class="quiz-opt" onclick="checkTone(2)">2-й тон</button>
       <button class="quiz-opt" onclick="checkTone(3)">3-й тон</button>
       <button class="quiz-opt" onclick="checkTone(4)">4-й тон</button>
     </div>
+    
     <div class="quiz-feedback" id="quizFeedback"></div>
+    
     <div style="text-align:center; margin-top:20px;">
       <button class="action-btn" onclick="nextQuiz()">➡️ Следующий слог</button>
     </div>
@@ -361,35 +370,45 @@
 
 <script>
 /* ============================================
-   НАДЕЖНАЯ ОЗВУЧКА ЧЕРЕЗ YOUTUBE (YOUDAO)
+   УЛУЧШЕННАЯ ОЗВУЧКА (МЕДЛЕННАЯ И ЧЕТКАЯ)
    ============================================ */
 var audioPlayer = new Audio();
 var lastPlayed = 0;
 
 function playSound(zh) {
   var now = Date.now();
-  if (now - lastPlayed < 300) return; // Защита от двойного клика
+  if (now - lastPlayed < 300) return; 
   lastPlayed = now;
 
-  // Сервис Youdao отлично работает по HTTPS и не блокируется на GitHub Pages
+  // 1. Пытаемся использовать встроенный синтезатор (самый четкий для тонов, если есть голос)
+  if (window.speechSynthesis) {
+    var voices = window.speechSynthesis.getVoices();
+    var zhVoice = voices.find(v => v.lang.includes('zh') || v.lang.includes('cmn'));
+    
+    if (zhVoice) {
+      window.speechSynthesis.cancel();
+      var utterance = new SpeechSynthesisUtterance(zh);
+      utterance.lang = 'zh-CN';
+      utterance.voice = zhVoice;
+      utterance.rate = 0.4; // Очень медленно!
+      utterance.pitch = 1.0;
+      window.speechSynthesis.speak(utterance);
+      return; 
+    }
+  }
+
+  // 2. Если системного голоса нет, используем Youdao (но замедляем его!)
   var url = 'https://dict.youdao.com/dictvoice?audio=' + encodeURIComponent(zh) + '&type=1';
-  
   audioPlayer.pause();
   audioPlayer.src = url;
   
-  var playPromise = audioPlayer.play();
+  // ВОТ ГЛАВНЫЙ СЕКРЕТ: замедляем аудио-файл без изменения тональности
+  audioPlayer.playbackRate = 0.6; 
   
+  var playPromise = audioPlayer.play();
   if (playPromise !== undefined) {
     playPromise.catch(function(error) {
-      console.warn("Озвучка Youdao недоступна, используем системный синтезатор", error);
-      // Резервный вариант (если Youdao заблокирован)
-      if (window.speechSynthesis) {
-        window.speechSynthesis.cancel();
-        var utterance = new SpeechSynthesisUtterance(zh);
-        utterance.lang = 'zh-CN';
-        utterance.rate = 0.7;
-        window.speechSynthesis.speak(utterance);
-      }
+      console.warn("Озвучка недоступна", error);
     });
   }
 }
@@ -405,7 +424,74 @@ function showTab(tabId, btn) {
 }
 
 /* ============================================
-   DRAG AND DROP МЕХАНИКА
+   ИГРА "КАКОЙ ТОН?" (С ПОДСКАЗКОЙ)
+   ============================================ */
+const baseQuizWords = [
+  { pinyin: 'mā', display: 'ma', hint: 'mā (1)', tone: 1, char: '妈' }, 
+  { pinyin: 'má', display: 'ma', hint: 'má (2)', tone: 2, char: '麻' }, 
+  { pinyin: 'mǎ', display: 'ma', hint: 'mǎ (3)', tone: 3, char: '马' }, 
+  { pinyin: 'mà', display: 'ma', hint: 'mà (4)', tone: 4, char: '骂' },
+  { pinyin: 'bā', display: 'ba', hint: 'bā (1)', tone: 1, char: '八' }, 
+  { pinyin: 'bá', display: 'ba', hint: 'bá (2)', tone: 2, char: '拔' }, 
+  { pinyin: 'bǎ', display: 'ba', hint: 'bǎ (3)', tone: 3, char: '把' }, 
+  { pinyin: 'bà', display: 'ba', hint: 'bà (4)', tone: 4, char: '爸' },
+  { pinyin: 'dī', display: 'di', hint: 'dī (1)', tone: 1, char: '低' }, 
+  { pinyin: 'dí', display: 'di', hint: 'dí (2)', tone: 2, char: '敌' }, 
+  { pinyin: 'dǐ', display: 'di', hint: 'dǐ (3)', tone: 3, char: '底' }, 
+  { pinyin: 'dì', display: 'di', hint: 'dì (4)', tone: 4, char: '弟' },
+  { pinyin: 'shī', display: 'shi', hint: 'shī (1)', tone: 1, char: '诗' }, 
+  { pinyin: 'shí', display: 'shi', hint: 'shí (2)', tone: 2, char: '十' }, 
+  { pinyin: 'shǐ', display: 'shi', hint: 'shǐ (3)', tone: 3, char: '史' }, 
+  { pinyin: 'shì', display: 'shi', hint: 'shì (4)', tone: 4, char: '是' }
+];
+let quizWords = [...baseQuizWords].sort(() => Math.random() - 0.5);
+let currentQuizIndex = 0;
+let currentQuizTone = 1;
+let hintVisible = false;
+
+function loadQuiz() {
+  const word = quizWords[currentQuizIndex % quizWords.length];
+  document.getElementById('quizWord').textContent = word.display;
+  document.getElementById('quizHint').textContent = word.hint;
+  document.getElementById('quizHint').style.opacity = '0'; // Скрываем подсказку
+  hintVisible = false;
+  currentQuizTone = word.tone;
+  document.getElementById('quizFeedback').textContent = '';
+  
+  document.querySelectorAll('#quizOptions .quiz-opt').forEach(btn => { 
+    btn.classList.remove('correct', 'wrong'); 
+    btn.disabled = false; 
+  });
+}
+
+function toggleHint() {
+  const hint = document.getElementById('quizHint');
+  hintVisible = !hintVisible;
+  hint.style.opacity = hintVisible ? '1' : '0';
+}
+
+function checkTone(selected) {
+  const feedback = document.getElementById('quizFeedback');
+  const correct = currentQuizTone;
+  document.querySelectorAll('#quizOptions .quiz-opt').forEach(btn => btn.disabled = true);
+  
+  if (selected === correct) {
+    feedback.textContent = '✅ Правильно! Молодец!'; 
+    feedback.style.color = '#2e7d32';
+    document.querySelectorAll('#quizOptions .quiz-opt')[selected - 1].classList.add('correct');
+  } else {
+    feedback.textContent = `❌ Не угадала. Это ${correct}-й тон.`; 
+    feedback.style.color = '#b71c1c';
+    document.querySelectorAll('#quizOptions .quiz-opt')[selected - 1].classList.add('wrong');
+    document.querySelectorAll('#quizOptions .quiz-opt')[correct - 1].classList.add('correct');
+  }
+}
+
+function nextQuiz() { currentQuizIndex++; loadQuiz(); }
+function playCurrentWord() { playSound(quizWords[currentQuizIndex % quizWords.length].char); }
+
+/* ============================================
+   ОСТАЛЬНОЙ КОД БЕЗ ИЗМЕНЕНИЙ
    ============================================ */
 var draggedItem = null;
 function allowDrop(ev) { ev.preventDefault(); ev.currentTarget.classList.add('dragover'); }
@@ -413,7 +499,6 @@ function dragLeave(ev) { ev.currentTarget.classList.remove('dragover'); }
 function dragStart(ev, type, id) { draggedItem = { el: ev.target, type: type, id: id }; ev.target.classList.add('dragging'); ev.dataTransfer.setData("text", ev.target.id); }
 function dragEnd(ev) { ev.target.classList.remove('dragging'); document.querySelectorAll('.sort-bucket').forEach(b => b.classList.remove('dragover')); }
 
-// --- Вкладка 6 (Носовые) ---
 let nasalSortCount = 0;
 function initNasalSort() {
   nasalSortCount = 0; draggedItem = null;
@@ -458,7 +543,6 @@ function finalizeNasalItem(el, type) {
   if (nasalSortCount === 6) setTimeout(() => { feedback.textContent = '🎉 Молодец! Все слоги распределены!'; }, 500);
 }
 
-// --- Вкладка 8 (i = ы) ---
 const iRuleWords = [ { syllable: 'zi', type: 'y' }, { syllable: 'ni', type: 'i' }, { syllable: 'si', type: 'y' }, { syllable: 'li', type: 'i' }, { syllable: 'zhi', type: 'y' }, { syllable: 'qi', type: 'i' }, { syllable: 'chi', type: 'y' }, { syllable: 'shi', type: 'y' }, { syllable: 'ri', type: 'y' }, { syllable: 'bi', type: 'i' } ];
 let sortedCount = 0;
 function initSortGame() {
@@ -502,28 +586,6 @@ function finalizeIRuleItem(el, type) {
   sortedCount++;
   if (sortedCount === 6) setTimeout(() => { feedback.textContent = '🎉 Молодец! Все слоги распределены!'; }, 500);
 }
-
-/* ============================================
-   ОСТАЛЬНЫЕ ИГРЫ
-   ============================================ */
-const baseQuizWords = [ { pinyin: 'mā', display: 'ma', tone: 1, char: '妈' }, { pinyin: 'má', display: 'ma', tone: 2, char: '麻' }, { pinyin: 'mǎ', display: 'ma', tone: 3, char: '马' }, { pinyin: 'mà', display: 'ma', tone: 4, char: '骂' }, { pinyin: 'bā', display: 'ba', tone: 1, char: '八' }, { pinyin: 'bá', display: 'ba', tone: 2, char: '拔' }, { pinyin: 'bǎ', display: 'ba', tone: 3, char: '把' }, { pinyin: 'bà', display: 'ba', tone: 4, char: '爸' }, { pinyin: 'dī', display: 'di', tone: 1, char: '低' }, { pinyin: 'dí', display: 'di', tone: 2, char: '敌' }, { pinyin: 'dǐ', display: 'di', tone: 3, char: '底' }, { pinyin: 'dì', display: 'di', tone: 4, char: '弟' }, { pinyin: 'shī', display: 'shi', tone: 1, char: '诗' }, { pinyin: 'shí', display: 'shi', tone: 2, char: '十' }, { pinyin: 'shǐ', display: 'shi', tone: 3, char: '史' }, { pinyin: 'shì', display: 'shi', tone: 4, char: '是' } ];
-let quizWords = [...baseQuizWords].sort(() => Math.random() - 0.5);
-let currentQuizIndex = 0; let currentQuizTone = 1;
-function loadQuiz() {
-  const word = quizWords[currentQuizIndex % quizWords.length];
-  document.getElementById('quizWord').textContent = word.display;
-  currentQuizTone = word.tone;
-  document.getElementById('quizFeedback').textContent = '';
-  document.querySelectorAll('#quizOptions .quiz-opt').forEach(btn => { btn.classList.remove('correct', 'wrong'); btn.disabled = false; });
-}
-function checkTone(selected) {
-  const feedback = document.getElementById('quizFeedback'); const correct = currentQuizTone;
-  document.querySelectorAll('#quizOptions .quiz-opt').forEach(btn => btn.disabled = true);
-  if (selected === correct) { feedback.textContent = '✅ Правильно! Молодец!'; feedback.style.color = '#2e7d32'; document.querySelectorAll('#quizOptions .quiz-opt')[selected - 1].classList.add('correct'); }
-  else { feedback.textContent = `❌ Не угадала. Это ${correct}-й тон.`; feedback.style.color = '#b71c1c'; document.querySelectorAll('#quizOptions .quiz-opt')[selected - 1].classList.add('wrong'); document.querySelectorAll('#quizOptions .quiz-opt')[correct - 1].classList.add('correct'); }
-}
-function nextQuiz() { currentQuizIndex++; loadQuiz(); }
-function playCurrentWord() { playSound(quizWords[currentQuizIndex % quizWords.length].char); }
 
 const baseNasalWords = [ { pinyin: 'bān', char: '班', type: 'front' }, { pinyin: 'bāng', char: '帮', type: 'back' }, { pinyin: 'pán', char: '盘', type: 'front' }, { pinyin: 'páng', char: '旁', type: 'back' }, { pinyin: 'shān', char: '山', type: 'front' }, { pinyin: 'shāng', char: '伤', type: 'back' }, { pinyin: 'bēn', char: '奔', type: 'front' }, { pinyin: 'bēng', char: '崩', type: 'back' }, { pinyin: 'fēn', char: '分', type: 'front' }, { pinyin: 'fēng', char: '风', type: 'back' }, { pinyin: 'zhēn', char: '真', type: 'front' }, { pinyin: 'zhēng', char: '争', type: 'back' }, { pinyin: 'gēn', char: '根', type: 'front' }, { pinyin: 'gēng', char: '耕', type: 'back' }, { pinyin: 'bīn', char: '宾', type: 'front' }, { pinyin: 'bīng', char: '冰', type: 'back' }, { pinyin: 'xīn', char: '新', type: 'front' }, { pinyin: 'xīng', char: '星', type: 'back' }, { pinyin: 'qīn', char: '亲', type: 'front' }, { pinyin: 'qīng', char: '轻', type: 'back' }, { pinyin: 'lín', char: '林', type: 'front' }, { pinyin: 'líng', char: '零', type: 'back' }, { pinyin: 'wān', char: '弯', type: 'front' }, { pinyin: 'wāng', char: '汪', type: 'back' }, { pinyin: 'chuán', char: '船', type: 'front' }, { pinyin: 'chuáng', char: '床', type: 'back' }, { pinyin: 'guān', char: '关', type: 'front' }, { pinyin: 'guāng', char: '光', type: 'back' }, { pinyin: 'qiān', char: '千', type: 'front' }, { pinyin: 'qiāng', char: '枪', type: 'back' }, { pinyin: 'xiān', char: '先', type: 'front' }, { pinyin: 'xiāng', char: '香', type: 'back' } ];
 const shuffledNasalWords = [...baseNasalWords].sort(() => Math.random() - 0.5);
@@ -636,9 +698,6 @@ function selectIRuleRight(el) {
   else { el.classList.add('wrong'); setTimeout(() => el.classList.remove('wrong'), 500); }
 }
 
-/* ============================================
-   ЗАПУСК
-   ============================================ */
 window.onload = function() {
   loadQuiz();
   loadNasal();
