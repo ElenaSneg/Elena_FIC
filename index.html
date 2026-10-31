@@ -224,7 +224,7 @@
     <div class="instruction">✏️ <strong>Инструкция:</strong> Нужно логически продолжить ряд. Посмотри на картинку и допиши следующий слог.</div>
     <div class="image-task">
       <img src="img1.jpg" alt="Task 1" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-      <span class="fallback-msg">⚠️ Файл img1.jpg не найден. Положите картинку в папку с сайтом.</span>
+      <span class="fallback-msg">⚠️ Файл img1.jpg не найден. Положите картинку в папку с сайтом или измените имя в коде.</span>
     </div>
   </div>
 </div>
@@ -233,10 +233,10 @@
 <div id="task2" class="tab-content">
   <div class="card">
     <h2>Задание 2: Лабиринт 1</h2>
-    <div class="instruction">✏️ <strong>Инструкция:</strong> Читаем вместе слоги.</div>
+    <div class="instruction">✏️ <strong>Инструкция:</strong> Проведи панду по лабиринту, произнося вслух слоги „一二三四声“ (первый, второй, третий, четвёртый тон) — и помоги ей добраться до домика.</div>
     <div class="image-task">
       <img src="img2.jpg" alt="Task 2" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-      <span class="fallback-msg">⚠️ Файл img2.jpg не найден. Положите картинку в папку с сайтом.</span>
+      <span class="fallback-msg">⚠️ Файл img2.jpg не найден. Положите картинку в папку с сайтом или измените имя в коде.</span>
     </div>
   </div>
 </div>
@@ -248,7 +248,7 @@
     <div class="instruction">✏️ <strong>Инструкция:</strong> Проведи панду по лабиринту, произнося вслух слоги „一二三四声“ (первый, второй, третий, четвёртый тон) — и помоги ей добраться до домика.</div>
     <div class="image-task">
       <img src="img3.jpg" alt="Task 3" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-      <span class="fallback-msg">⚠️ Файл img3.jpg не найден. Положите картинку в папку с сайтом.</span>
+      <span class="fallback-msg">⚠️ Файл img3.jpg не найден. Положите картинку в папку с сайтом или измените имя в коде.</span>
     </div>
   </div>
 </div>
@@ -260,7 +260,7 @@
     <div class="instruction">✏️ <strong>Инструкция:</strong> Проведи панду по лабиринту, произнося вслух слоги „四三二一声“ (четвёртый, третий, второй, первый тон) — и помоги ей выбраться наружу.</div>
     <div class="image-task">
       <img src="img4.jpg" alt="Task 4" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-      <span class="fallback-msg">⚠️ Файл img4.jpg не найден. Положите картинку в папку с сайтом.</span>
+      <span class="fallback-msg">⚠️ Файл img4.jpg не найден. Положите картинку в папку с сайтом или измените имя в коде.</span>
     </div>
   </div>
 </div>
@@ -308,13 +308,12 @@
     </div>
   </div>
 
-  <!-- ВОТ ТА САМАЯ КАРТОЧКА С КАРТИНКОЙ, КОТОРУЮ ВЫ ИСКАЛИ -->
   <div class="card">
     <h2>📝 Задание к теме (Парные слова)</h2>
     <div class="instruction">✏️ <strong>Инструкция:</strong> Прочитай вслух пары слов. Обрати внимание на разницу между переднеязычным <b>-n</b> и заднеязычным <b>-ng</b> в конце слога.</div>
     <div class="image-task">
       <img src="img_eng.jpg" alt="Task en/eng" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-      <span class="fallback-msg">⚠️ Файл img_eng.jpg не найден. Положите картинку в папку с сайтом.</span>
+      <span class="fallback-msg">⚠️ Файл img_eng.jpg не найден. Положите картинку в папку с сайтом или измените имя в коде.</span>
     </div>
   </div>
 
@@ -340,7 +339,6 @@
     </div>
   </div>
 
-  <!-- Игра 2 для вкладки 6 -->
   <div class="card">
     <h2>🎯 Игра 2: Сортировка -n и -ng</h2>
     <p style="text-align:center; font-size:0.9em; color:#6a1b3a; margin-bottom:15px;">Перетащи слог в нужную корзинку (или нажми на него, а потом на корзинку).</p>
@@ -383,7 +381,6 @@
     </div>
   </div>
 
-  <!-- Игра 1: Викторина -->
   <div class="card">
     <h2>🎯 Игра 1: Выбери правильное сокращение</h2>
     <div class="quiz-word-container" style="min-height: 80px;">
@@ -396,13 +393,10 @@
     </div>
   </div>
 
-  <!-- Игра 2: Соедини пары -->
   <div class="card">
     <h2>🔗 Игра 2: Соедини полную и сокращенную форму</h2>
     <p style="text-align:center; font-size:0.9em; color:#6a1b3a; margin-bottom:15px;">Нажми на левую часть, затем на правую.</p>
-    <div class="match-grid" id="abbrev-match-grid">
-      <!-- Генерируется в JS -->
-    </div>
+    <div class="match-grid" id="abbrev-match-grid"></div>
     <div style="text-align:center; margin-top:20px;">
       <button class="action-btn" onclick="initAbbrevMatch()">🔄 Новое задание</button>
     </div>
@@ -432,7 +426,6 @@
     </table>
   </div>
 
-  <!-- Игра 1: Сортировка -->
   <div class="card">
     <h2>🎯 Игра 1: Распредели слоги</h2>
     <p style="text-align:center; font-size:0.9em; color:#6a1b3a; margin-bottom:15px;">Перетащи слог в нужную корзинку (или нажми на него, а потом на корзинку).</p>
@@ -455,7 +448,6 @@
     </div>
   </div>
 
-  <!-- Игра 2: Викторина -->
   <div class="card">
     <h2>🎯 Игра 2: В каком слоге i = ы?</h2>
     <p style="text-align:center; font-size:0.9em; color:#6a1b3a; margin-bottom:15px;">Выбери правильный вариант.</p>
@@ -469,13 +461,10 @@
     </div>
   </div>
 
-  <!-- Новая Игра 3: Соедини пары -->
   <div class="card">
     <h2>🔗 Игра 3: Соедини слог и чтение</h2>
     <p style="text-align:center; font-size:0.9em; color:#6a1b3a; margin-bottom:15px;">Нажми на пиньинь слева, затем на его русское чтение справа.</p>
-    <div class="match-grid" id="irule-match-grid">
-      <!-- Генерируется в JS -->
-    </div>
+    <div class="match-grid" id="irule-match-grid"></div>
     <div style="text-align:center; margin-top:20px;">
       <button class="action-btn" onclick="initIRuleMatch()">🔄 Новое задание</button>
     </div>
@@ -485,45 +474,52 @@
 <!-- 水印 -->
 <div class="watermark">Smirnova Elena Alekseevna</div>
 
-<!-- Плеер для API-озвучки -->
+<!-- Плеер для API-озвучки (больше не нужен, но оставим на всякий случай) -->
 <audio id="player" preload="auto"></audio>
 
 <script>
 /* ============================================
-   ОЗВУЧКА
+   ОЗВУЧКА (WEB SPEECH API — РАБОТАЕТ НА GITHUB PAGES)
    ============================================ */
-var audioPlayer = document.getElementById('player');
 var lastPlayed = 0;
 
 function playSound(zh) {
   var now = Date.now();
-  if (now - lastPlayed < 250) return;
+  if (now - lastPlayed < 300) return; // Защита от двойного клика
   lastPlayed = now;
+
+  if (!window.speechSynthesis) {
+    console.warn("Ваш браузер не поддерживает синтез речи.");
+    return;
+  }
+
+  // Останавливаем предыдущую речь, если она еще звучит
+  window.speechSynthesis.cancel();
+
+  var utterance = new SpeechSynthesisUtterance(zh);
+  utterance.lang = 'zh-CN'; // Китайский язык
+  utterance.rate = 0.6;     // Медленная скорость для четкости
+  utterance.pitch = 1.0;
+
+  // Пытаемся найти китайский голос
+  var voices = window.speechSynthesis.getVoices();
+  var zhVoice = voices.find(function(v) { 
+    return v.lang.includes('zh') || v.lang.includes('cmn'); 
+  });
   
-  try {
-    audioPlayer.pause();
-    audioPlayer.src = 'https://fanyi.baidu.com/gettts?lan=zh&text=' +
-      encodeURIComponent(zh) + '&spd=2&source=web';
-    audioPlayer.load();
-    
-    var pr = audioPlayer.play();
-    if (pr && pr.catch) {
-      pr.catch(function() {
-        audioPlayer.src = 'https://translate.google.com/translate_tts?ie=UTF-8&q=' +
-          encodeURIComponent(zh) + '&tl=zh-CN&client=tw-ob&ttsspeed=0.5';
-        audioPlayer.load();
-        audioPlayer.play().catch(function() {
-          if (window.speechSynthesis) {
-            window.speechSynthesis.cancel();
-            var u = new SpeechSynthesisUtterance(zh);
-            u.lang = 'zh-CN';
-            u.rate = 0.6;
-            window.speechSynthesis.speak(u);
-          }
-        });
-      });
-    }
-  } catch (e) { console.log(e); }
+  if (zhVoice) {
+    utterance.voice = zhVoice;
+  }
+
+  window.speechSynthesis.speak(utterance);
+}
+
+// Предзагрузка голосов (некоторые браузеры загружают их асинхронно)
+if (window.speechSynthesis) {
+  window.speechSynthesis.onvoiceschanged = function() {
+    // Просто вызываем, чтобы голоса загрузились в память
+    window.speechSynthesis.getVoices();
+  };
 }
 
 /* ============================================
@@ -885,7 +881,6 @@ function loadIRuleQuiz() {
 }
 function nextIRuleQuiz() { currentIRuleQuizIndex++; loadIRuleQuiz(); }
 
-// Новая Игра 3 (Соедини пары для 8 вкладки) - БЕЗ ОЗВУЧКИ
 const iruleMatchPairs = [
   { p: 'zi', r: 'цзы' }, { p: 'ni', r: 'ни' }, { p: 'shi', r: 'шы' }, { p: 'qi', r: 'ци' }, { p: 'chi', r: 'чшы' }, { p: 'li', r: 'ли' }
 ];
