@@ -208,7 +208,7 @@
 <!-- ========== ВКЛАДКИ ========== -->
 <div class="tabs">
   <button class="tab-btn active" onclick="showTab('task1', this)">1. Ряд</button>
-  <button class="tab-btn" onclick="showTab('task2', this)">2. Лабиринт 1</button>
+  <button class="tab-btn" onclick="showTab('task2', this)">2. Чтение</button>
   <button class="tab-btn" onclick="showTab('task3', this)">3. Лабиринт 2</button>
   <button class="tab-btn" onclick="showTab('task4', this)">4. Лабиринт 3</button>
   <button class="tab-btn" onclick="showTab('tone-game', this)">5. Какой тон?</button>
@@ -232,8 +232,8 @@
 <!-- ========== ВКЛАДКА 2 ========== -->
 <div id="task2" class="tab-content">
   <div class="card">
-    <h2>Задание 2: Лабиринт 1</h2>
-    <div class="instruction">✏️ <strong>Инструкция:</strong> Проведи панду по лабиринту, произнося вслух слоги „一二三四声“ (первый, второй, третий, четвёртый тон) — и помоги ей добраться до домика.</div>
+    <h2>Задание 2: Чтение</h2>
+    <div class="instruction">✏️ <strong>Инструкция:</strong> Читаем вместе.</div>
     <div class="image-task">
       <img src="img2.jpg" alt="Task 2" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
       <span class="fallback-msg">⚠️ Файл img2.jpg не найден. Положите картинку в папку с сайтом или измените имя в коде.</span>
@@ -474,52 +474,49 @@
 <!-- 水印 -->
 <div class="watermark">Smirnova Elena Alekseevna</div>
 
-<!-- Плеер для API-озвучки (больше не нужен, но оставим на всякий случай) -->
-<audio id="player" preload="auto"></audio>
-
 <script>
 /* ============================================
-   ОЗВУЧКА (WEB SPEECH API — РАБОТАЕТ НА GITHUB PAGES)
+   ОЗВУЧКА (GOOGLE TTS + FALLBACK)
    ============================================ */
+var audioPlayer = new Audio();
 var lastPlayed = 0;
 
 function playSound(zh) {
   var now = Date.now();
-  if (now - lastPlayed < 300) return; // Защита от двойного клика
+  if (now - lastPlayed < 300) return;
   lastPlayed = now;
 
-  if (!window.speechSynthesis) {
-    console.warn("Ваш браузер не поддерживает синтез речи.");
-    return;
-  }
-
-  // Останавливаем предыдущую речь, если она еще звучит
-  window.speechSynthesis.cancel();
-
-  var utterance = new SpeechSynthesisUtterance(zh);
-  utterance.lang = 'zh-CN'; // Китайский язык
-  utterance.rate = 0.6;     // Медленная скорость для четкости
-  utterance.pitch = 1.0;
-
-  // Пытаемся найти китайский голос
-  var voices = window.speechSynthesis.getVoices();
-  var zhVoice = voices.find(function(v) { 
-    return v.lang.includes('zh') || v.lang.includes('cmn'); 
-  });
+  // 1. Пытаемся использовать Google Translate TTS (Работает на HTTPS/GitHub Pages)
+  var url = 'https://translate.google.com/translate_tts?ie=UTF-8&q=' + encodeURIComponent(zh) + '&tl=zh-CN&client=tw-ob';
   
-  if (zhVoice) {
-    utterance.voice = zhVoice;
+  audioPlayer.pause();
+  audioPlayer.src = url;
+  
+  var playPromise = audioPlayer.play();
+  
+  if (playPromise !== undefined) {
+    playPromise.catch(function(error) {
+      console.warn("Google TTS failed, switching to Web Speech API", error);
+      // 2. Если Google заблокирован, используем встроенный синтезатор
+      fallbackSpeech(zh);
+    });
   }
-
-  window.speechSynthesis.speak(utterance);
 }
 
-// Предзагрузка голосов (некоторые браузеры загружают их асинхронно)
-if (window.speechSynthesis) {
-  window.speechSynthesis.onvoiceschanged = function() {
-    // Просто вызываем, чтобы голоса загрузились в память
-    window.speechSynthesis.getVoices();
-  };
+function fallbackSpeech(zh) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  
+  var utterance = new SpeechSynthesisUtterance(zh);
+  utterance.lang = 'zh-CN';
+  utterance.rate = 0.6;
+  
+  // Пытаемся найти китайский голос
+  var voices = window.speechSynthesis.getVoices();
+  var zhVoice = voices.find(function(v) { return v.lang.includes('zh') || v.lang.includes('cmn'); });
+  if (zhVoice) utterance.voice = zhVoice;
+
+  window.speechSynthesis.speak(utterance);
 }
 
 /* ============================================
