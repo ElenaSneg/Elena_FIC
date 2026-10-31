@@ -52,11 +52,17 @@
   .image-task { background: #fff5f8; border: 2px dashed #f8bbd0; border-radius: 16px; padding: 15px; text-align: center; }
   .image-task img { max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-top: 10px; display: block; margin-left: auto; margin-right: auto; }
   .instruction { font-size: 0.95em; color: #6a1b3a; font-weight: 600; line-height: 1.6; background: #fce4ec; border-radius: 12px; padding: 12px 16px; margin-bottom: 15px; border-left: 4px solid #f06292; }
-  .fallback-msg { display: none; color: #ad1457; font-weight: bold; font-size: 0.85em; padding: 10px; background: #fce4ec; border-radius: 10px; margin-bottom: 8px; }
+  
+  /* Кнопки подсказок */
+  .hint-btn { background: #fff; color: #ad1457; border: 2px solid #f8bbd0; border-radius: 20px; padding: 8px 16px; font-size: 0.9em; font-weight: bold; cursor: pointer; margin: 5px; transition: 0.2s; }
+  .hint-btn:hover { background: #fce4ec; }
+  .hint-text { display: none; background: #fff3b0; color: #6a5a1a; padding: 10px 15px; border-radius: 12px; margin-top: 10px; border-left: 4px solid #e6c87c; font-size: 0.9em; font-weight: 600; }
+  .hint-text.show { display: block; animation: fadeIn 0.3s ease; }
 
+  /* Игра Какой тон? */
   .quiz-word-container { text-align: center; margin-bottom: 5px; min-height: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
   .quiz-word { font-size: 2.8em; font-weight: 800; color: #6a1b3a; font-family: 'Courier New', monospace; letter-spacing: 2px; transition: 0.3s; }
-  .quiz-hint-text { font-size: 1em; color: #f06292; margin-top: 5px; opacity: 0; transition: 0.3s; }
+  .quiz-hint-text { font-size: 1.2em; color: #f06292; margin-top: 5px; opacity: 0; transition: 0.3s; font-weight: bold; }
   
   .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; max-width: 340px; margin: 0 auto; }
   .quiz-opt { background: #fff; border: 2px solid #f8bbd0; border-radius: 16px; padding: 14px; font-size: 1em; font-weight: 700; color: #ad1457; cursor: pointer; transition: 0.2s; text-align: center; font-family: inherit; }
@@ -67,8 +73,6 @@
 
   .theory-box { background: #fff5f8; border-radius: 16px; padding: 16px 18px; border-left: 6px solid #f06292; line-height: 1.7; font-size: 0.95em; margin-bottom: 15px; }
   .theory-box strong { color: #c2185b; }
-  .theory-box .tip { display: block; margin-top: 10px; padding: 10px 14px; background: #fce4ec; border-radius: 12px; font-size: 0.9em; border: 1px dashed #f8bbd0; }
-  .theory-box .tip::before { content: '💡 '; }
 
   .rule-table { width: 100%; border-collapse: collapse; margin: 15px 0; background: #fff; border-radius: 12px; overflow: hidden; border: 2px solid #f8bbd0; }
   .rule-table th { background: #f8bbd0; color: #ad1457; padding: 10px; text-align: center; font-weight: 800; }
@@ -143,6 +147,10 @@
       <img src="img1.jpg" alt="Task 1" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
       <span class="fallback-msg">⚠️ Файл img1.jpg не найден.</span>
     </div>
+    <div style="text-align:center; margin-top:10px;">
+      <button class="hint-btn" onclick="toggleHint('hint1')">💡 Подсказка</button>
+      <div class="hint-text" id="hint1">Посмотри на волны: первый слог ровный, второй идет вверх, третий — вниз-вверх, четвертый — резко вниз.</div>
+    </div>
   </div>
 </div>
 
@@ -154,6 +162,10 @@
     <div class="image-task">
       <img src="img2.jpg" alt="Task 2" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
       <span class="fallback-msg">⚠️ Файл img2.jpg не найден.</span>
+    </div>
+    <div style="text-align:center; margin-top:10px;">
+      <button class="hint-btn" onclick="toggleHint('hint2')">💡 Подсказка</button>
+      <div class="hint-text" id="hint2">Читай медленно, выделяя каждый тон. Если сложно, нажми на слог в других играх, чтобы послушать.</div>
     </div>
   </div>
 </div>
@@ -167,6 +179,10 @@
       <img src="img3.jpg" alt="Task 3" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
       <span class="fallback-msg">⚠️ Файл img3.jpg не найден.</span>
     </div>
+    <div style="text-align:center; margin-top:10px;">
+      <button class="hint-btn" onclick="toggleHint('hint3')">💡 Подсказка</button>
+      <div class="hint-text" id="hint3">Ищи дорожку, где тоны идут по порядку: 1-й, 2-й, 3-й, 4-й.</div>
+    </div>
   </div>
 </div>
 
@@ -178,6 +194,10 @@
     <div class="image-task">
       <img src="img4.jpg" alt="Task 4" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
       <span class="fallback-msg">⚠️ Файл img4.jpg не найден.</span>
+    </div>
+    <div style="text-align:center; margin-top:10px;">
+      <button class="hint-btn" onclick="toggleHint('hint4')">💡 Подсказка</button>
+      <div class="hint-text" id="hint4">А здесь порядок обратный: 4-й, 3-й, 2-й, 1-й.</div>
     </div>
   </div>
 </div>
@@ -193,9 +213,9 @@
       <div class="quiz-hint-text" id="quizHint">(mā)</div>
     </div>
     
-    <div style="display:flex; gap:10px; justify-content:center; margin-bottom:20px;">
+    <div style="display:flex; gap:10px; justify-content:center; margin-bottom:20px; flex-wrap:wrap;">
       <button class="action-btn" style="padding:8px 18px; font-size:0.9em;" onclick="playCurrentWord()">🔊 Слушать</button>
-      <button class="action-btn" style="padding:8px 18px; font-size:0.9em; background: #fff; color: #ad1457; border: 2px solid #ad1457;" onclick="toggleHint()">💡 Подсказка</button>
+      <button class="hint-btn" onclick="toggleQuizHint()">💡 Подсказка</button>
     </div>
     
     <div class="quiz-options" id="quizOptions">
@@ -229,14 +249,20 @@
       <img src="img_eng.jpg" alt="Task en/eng" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
       <span class="fallback-msg">⚠️ Файл img_eng.jpg не найден.</span>
     </div>
+    <div style="text-align:center; margin-top:10px;">
+      <button class="hint-btn" onclick="toggleHint('hint_eng')">💡 Подсказка</button>
+      <div class="hint-text" id="hint_eng">Проверь себя: положи ладонь на горло. При -ng вибрация ощущается глубже, ближе к горлу.</div>
+    </div>
   </div>
   <div class="card">
     <h2>🎧 Игра 1: Аудио-практика</h2>
     <p style="font-size:0.9em; color:#6a1b3a; text-align:center; margin-bottom:15px;">Послушай слог и выбери правильное окончание.</p>
     <div class="nasal-quiz" style="text-align:center;">
-      <div style="margin-bottom:15px;">
+      <div style="margin-bottom:15px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
         <button class="action-btn" onclick="playNasalWord()">🔊 Слушать слог</button>
+        <button class="hint-btn" onclick="toggleHint('hint_nasal_quiz')">💡 Подсказка</button>
       </div>
+      <div class="hint-text" id="hint_nasal_quiz" style="margin-bottom:10px;"></div>
       <div class="nasal-options" style="display:flex; gap:15px; justify-content:center;" id="nasalOptions">
         <button class="quiz-opt" style="font-size:1.4em; padding:15px 30px; font-family:'Courier New', monospace;" onclick="checkNasal('front')" id="optFront">-n</button>
         <button class="quiz-opt" style="font-size:1.4em; padding:15px 30px; font-family:'Courier New', monospace;" onclick="checkNasal('back')" id="optBack">-ng</button>
@@ -262,9 +288,11 @@
       </div>
     </div>
     <div class="quiz-feedback" id="nasal-sort-feedback"></div>
-    <div style="text-align:center; margin-top:20px;">
+    <div style="text-align:center; margin-top:20px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+      <button class="hint-btn" onclick="toggleHint('hint_nasal_sort')">💡 Подсказка</button>
       <button class="action-btn" onclick="initNasalSort()">🔄 Начать заново</button>
     </div>
+    <div class="hint-text" id="hint_nasal_sort">Вспомни: если язык упирается в зубы — это -n. Если язык уходит назад — это -ng.</div>
   </div>
 </div>
 
@@ -290,17 +318,21 @@
     </div>
     <div class="quiz-options" id="abbrev-options"></div>
     <div class="quiz-feedback" id="abbrev-feedback"></div>
-    <div style="text-align:center; margin-top:20px;">
+    <div style="text-align:center; margin-top:20px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+      <button class="hint-btn" onclick="toggleHint('hint_abbrev_quiz')">💡 Подсказка</button>
       <button class="action-btn" onclick="nextAbbrevQuiz()">➡️ Следующий слог</button>
     </div>
+    <div class="hint-text" id="hint_abbrev_quiz" style="margin-top:10px;">Правило: uei ➔ ui, iou ➔ iu, uen ➔ un.</div>
   </div>
   <div class="card">
     <h2>🔗 Игра 2: Соедини полную и сокращенную форму</h2>
     <p style="text-align:center; font-size:0.9em; color:#6a1b3a; margin-bottom:15px;">Нажми на левую часть, затем на правую.</p>
     <div class="match-grid" id="abbrev-match-grid"></div>
-    <div style="text-align:center; margin-top:20px;">
+    <div style="text-align:center; margin-top:20px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+      <button class="hint-btn" onclick="toggleHint('hint_abbrev_match')">💡 Подсказка</button>
       <button class="action-btn" onclick="initAbbrevMatch()">🔄 Новое задание</button>
     </div>
+    <div class="hint-text" id="hint_abbrev_match" style="margin-top:10px;">Ищи пары: d+uei = dui, j+iou = jiu, l+uen = lun, wei = без инициали.</div>
   </div>
 </div>
 
@@ -340,9 +372,11 @@
       </div>
     </div>
     <div class="quiz-feedback" id="sort-feedback"></div>
-    <div style="text-align:center; margin-top:20px;">
+    <div style="text-align:center; margin-top:20px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+      <button class="hint-btn" onclick="toggleHint('hint_sort')">💡 Подсказка</button>
       <button class="action-btn" onclick="initSortGame()">🔄 Начать заново</button>
     </div>
+    <div class="hint-text" id="hint_sort" style="margin-top:10px;">Если слог начинается на z, c, s, zh, ch, sh, r — это «ы». Остальные — «и».</div>
   </div>
   <div class="card">
     <h2>🎯 Игра 2: В каком слоге i = ы?</h2>
@@ -352,17 +386,21 @@
     </div>
     <div class="quiz-options" id="irule-quiz-options"></div>
     <div class="quiz-feedback" id="irule-quiz-feedback"></div>
-    <div style="text-align:center; margin-top:20px;">
+    <div style="text-align:center; margin-top:20px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+      <button class="hint-btn" onclick="toggleHint('hint_irule_quiz')">💡 Подсказка</button>
       <button class="action-btn" onclick="nextIRuleQuiz()">➡️ Следующий</button>
     </div>
+    <div class="hint-text" id="hint_irule_quiz" style="margin-top:10px;">Ищи слоги, которые начинаются на z, c, s, zh, ch, sh, r.</div>
   </div>
   <div class="card">
     <h2>🔗 Игра 3: Соедини слог и чтение</h2>
     <p style="text-align:center; font-size:0.9em; color:#6a1b3a; margin-bottom:15px;">Нажми на пиньинь слева, затем на чтение справа.</p>
     <div class="match-grid" id="irule-match-grid"></div>
-    <div style="text-align:center; margin-top:20px;">
+    <div style="text-align:center; margin-top:20px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+      <button class="hint-btn" onclick="toggleHint('hint_irule_match')">💡 Подсказка</button>
       <button class="action-btn" onclick="initIRuleMatch()">🔄 Новое задание</button>
     </div>
+    <div class="hint-text" id="hint_irule_match" style="margin-top:10px;">zi = цзы, ni = ни, shi = шы, qi = ци, chi = чшы, li = ли.</div>
   </div>
 </div>
 
@@ -370,51 +408,54 @@
 
 <script>
 /* ============================================
-   УЛУЧШЕННАЯ ОЗВУЧКА (МЕДЛЕННАЯ И ЧЕТКАЯ)
+   УМНАЯ И БЕЗОПАСНАЯ ОЗВУЧКА
    ============================================ */
 var audioPlayer = new Audio();
 var lastPlayed = 0;
 
+// Включаем сохранение высоты тона при замедлении (чтобы голос не был "монстром")
+audioPlayer.preservesPitch = true;
+audioPlayer.mozPreservesPitch = true;
+audioPlayer.webkitPreservesPitch = true;
+
 function playSound(zh) {
   var now = Date.now();
-  if (now - lastPlayed < 300) return; 
+  if (now - lastPlayed < 300) return;
   lastPlayed = now;
 
-  // 1. Пытаемся использовать встроенный синтезатор (самый четкий для тонов, если есть голос)
-  if (window.speechSynthesis) {
-    var voices = window.speechSynthesis.getVoices();
-    var zhVoice = voices.find(v => v.lang.includes('zh') || v.lang.includes('cmn'));
-    
-    if (zhVoice) {
-      window.speechSynthesis.cancel();
-      var utterance = new SpeechSynthesisUtterance(zh);
-      utterance.lang = 'zh-CN';
-      utterance.voice = zhVoice;
-      utterance.rate = 0.4; // Очень медленно!
-      utterance.pitch = 1.0;
-      window.speechSynthesis.speak(utterance);
-      return; 
-    }
-  }
-
-  // 2. Если системного голоса нет, используем Youdao (но замедляем его!)
-  var url = 'https://dict.youdao.com/dictvoice?audio=' + encodeURIComponent(zh) + '&type=1';
+  // Используем Google Translate (работает стабильно)
+  var url = 'https://translate.google.com/translate_tts?ie=UTF-8&q=' + encodeURIComponent(zh) + '&tl=zh-CN&client=tw-ob';
+  
   audioPlayer.pause();
   audioPlayer.src = url;
   
-  // ВОТ ГЛАВНЫЙ СЕКРЕТ: замедляем аудио-файл без изменения тональности
-  audioPlayer.playbackRate = 0.6; 
+  // Безопасное замедление (срабатывает только после загрузки)
+  audioPlayer.onloadedmetadata = function() {
+    audioPlayer.playbackRate = 0.65; // Медленный и четкий темп
+  };
   
   var playPromise = audioPlayer.play();
+  
   if (playPromise !== undefined) {
     playPromise.catch(function(error) {
-      console.warn("Озвучка недоступна", error);
+      console.warn("Google TTS недоступен, включаем системный синтезатор", error);
+      
+      if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+        var utterance = new SpeechSynthesisUtterance(zh);
+        utterance.lang = 'zh-CN';
+        utterance.rate = 0.4; // Очень медленно!
+        var voices = window.speechSynthesis.getVoices();
+        var zhVoice = voices.find(v => v.lang.includes('zh') || v.lang.includes('cmn'));
+        if (zhVoice) utterance.voice = zhVoice;
+        window.speechSynthesis.speak(utterance);
+      }
     });
   }
 }
 
 /* ============================================
-   НАВИГАЦИЯ
+   НАВИГАЦИЯ И ПОДСКАЗКИ
    ============================================ */
 function showTab(tabId, btn) {
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -423,8 +464,15 @@ function showTab(tabId, btn) {
   btn.classList.add('active');
 }
 
+function toggleHint(id) {
+  var el = document.getElementById(id);
+  if (el) {
+    el.classList.toggle('show');
+  }
+}
+
 /* ============================================
-   ИГРА "КАКОЙ ТОН?" (С ПОДСКАЗКОЙ)
+   ИГРА "КАКОЙ ТОН?"
    ============================================ */
 const baseQuizWords = [
   { pinyin: 'mā', display: 'ma', hint: 'mā (1)', tone: 1, char: '妈' }, 
@@ -453,7 +501,7 @@ function loadQuiz() {
   const word = quizWords[currentQuizIndex % quizWords.length];
   document.getElementById('quizWord').textContent = word.display;
   document.getElementById('quizHint').textContent = word.hint;
-  document.getElementById('quizHint').style.opacity = '0'; // Скрываем подсказку
+  document.getElementById('quizHint').style.opacity = '0';
   hintVisible = false;
   currentQuizTone = word.tone;
   document.getElementById('quizFeedback').textContent = '';
@@ -464,7 +512,7 @@ function loadQuiz() {
   });
 }
 
-function toggleHint() {
+function toggleQuizHint() {
   const hint = document.getElementById('quizHint');
   hintVisible = !hintVisible;
   hint.style.opacity = hintVisible ? '1' : '0';
@@ -598,6 +646,8 @@ function loadNasal() {
   document.getElementById('optBack').classList.remove('correct', 'wrong');
   document.getElementById('optFront').disabled = false;
   document.getElementById('optBack').disabled = false;
+  document.getElementById('hint_nasal_quiz').textContent = word.pinyin + ' (' + word.char + ')';
+  document.getElementById('hint_nasal_quiz').classList.remove('show');
 }
 function checkNasal(selected) {
   const feedback = document.getElementById('nasalFeedback'); const correct = currentNasalType;
@@ -621,6 +671,7 @@ function loadAbbrevQuiz() {
   const q = abbrevQuestions[currentAbbrevIndex % abbrevQuestions.length];
   document.getElementById('abbrev-word').textContent = q.prompt;
   document.getElementById('abbrev-feedback').textContent = '';
+  document.getElementById('hint_abbrev_quiz').classList.remove('show');
   const cont = document.getElementById('abbrev-options'); cont.innerHTML = '';
   const shuffledOpts = [...q.options].sort(() => Math.random() - 0.5);
   shuffledOpts.forEach(opt => {
@@ -640,6 +691,7 @@ const abbrevPairs = [{ full: 'd + uei', short: 'dui' }, { full: 'j + iou', short
 let abbrevSelectedLeft = null; let abbrevMatchCount = 0;
 function initAbbrevMatch() {
   abbrevMatchCount = 0; abbrevSelectedLeft = null;
+  document.getElementById('hint_abbrev_match').classList.remove('show');
   const subset = [...abbrevPairs].sort(() => Math.random() - 0.5).slice(0, 4);
   const leftItems = [...subset].sort(() => Math.random() - 0.5); const rightItems = [...subset].sort(() => Math.random() - 0.5);
   const container = document.getElementById('abbrev-match-grid'); container.innerHTML = '';
@@ -662,6 +714,7 @@ let currentIRuleQuizIndex = 0;
 function loadIRuleQuiz() {
   const q = iruleQuizData[currentIRuleQuizIndex % iruleQuizData.length];
   document.getElementById('irule-quiz-feedback').textContent = '';
+  document.getElementById('hint_irule_quiz').classList.remove('show');
   const cont = document.getElementById('irule-quiz-options'); cont.innerHTML = '';
   const shuffledOpts = [...q.options].sort(() => Math.random() - 0.5);
   shuffledOpts.forEach(opt => {
@@ -681,6 +734,7 @@ const iruleMatchPairs = [ { p: 'zi', r: 'цзы' }, { p: 'ni', r: 'ни' }, { p:
 let iruleSelectedLeft = null; let iruleMatchCount = 0;
 function initIRuleMatch() {
   iruleMatchCount = 0; iruleSelectedLeft = null;
+  document.getElementById('hint_irule_match').classList.remove('show');
   const subset = [...iruleMatchPairs].sort(() => Math.random() - 0.5).slice(0, 4);
   const leftItems = [...subset].sort(() => Math.random() - 0.5); const rightItems = [...subset].sort(() => Math.random() - 0.5);
   const container = document.getElementById('irule-match-grid'); container.innerHTML = '';
