@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>汉语: Главные правила</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Montserrat:wght@500;700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --text-main: #333333;
+    --accent-red: #6b1111; 
+    --accent-light: #9e3b3b;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    color: var(--text-main);
+    line-height: 1.6;
+    padding: 40px 15px 80px;
+    min-height: 100vh;
+    position: relative;
+    
+    /* ЗАДНИЙ ФОН: Сакура с котом */
+    background-image: url('https://i.pinimg.com/736x/8e/3c/5d/8e3c5dd786260f24bf8cfc47ffc5cc6d.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+
+  .container {
+    max-width: 750px;
+    margin: 0 auto;
+    position: relative;
+    padding: 50px 40px;
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    
+    /* ПОЛУПРОЗРАЧНАЯ БУМАГА В КЛЕТОЧКУ */
+    background-color: rgba(255, 255, 255, 0.75);
+    background-image: 
+      linear-gradient(rgba(107, 17, 17, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(107, 17, 17, 0.08) 1px, transparent 1px);
+    background-size: 25px 25px;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+
+  /* Декоративный скотч сверху */
+  .tape {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-1.5deg);
+    width: 150px;
+    height: 35px;
+    background-color: rgba(230, 215, 190, 0.9);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-left: 2px dashed rgba(255,255,255,0.6);
+    border-right: 2px dashed rgba(255,255,255,0.6);
+    z-index: 10;
+  }
+
+  /* Заголовок */
+  .header-title {
+    text-align: center;
+    margin: 10px 0 50px;
+    position: relative;
+  }
+  
+  .header-title .pre-title {
+    font-family: 'KaiTi', 'STKaiti', 'Montserrat', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--accent-red);
+    position: relative;
+    display: inline-block;
+    padding: 0 30px;
+    transform: rotate(-2deg);
+    z-index: 2;
+  }
+  
+  .header-title .pre-title::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%; height: 130%;
+    border: 3px solid var(--accent-red);
+    border-radius: 50%;
+    z-index: -1;
+    opacity: 0.85;
+  }
+
+  .header-title h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 1.8rem; /* Уменьшили, чтобы влез длинный текст */
+    color: var(--accent-red);
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    margin-top: 15px;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Секции */
+  .section {
+    margin-bottom: 45px;
+  }
+
+  /* Заголовки секций */
+  .section-title {
+    font-family: 'Caveat', cursive;
+    font-size: 2.8rem;
+    color: var(--accent-red);
+    margin-bottom: 15px;
+    display: inline-block;
+    transform: rotate(-1deg);
+  }
+
+  /* Изогнутая стрелочка */
+  .list-wrapper {
+    position: relative;
+    padding-left: 35px;
+    margin-top: 5px;
+  }
+
+  .list-wrapper::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -10px;
+    bottom: 15px;
+    width: 25px;
+    border-left: 2px solid var(--accent-red);
+    border-bottom: 2px solid var(--accent-red);
+    border-bottom-left-radius: 25px;
+  }
+
+  .list-wrapper::after {
+    content: '';
+    position: absolute;
+    left: -5px;
+    bottom: 10px;
+    width: 0;
+    height: 0;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-right: 8px solid var(--accent-red);
+    transform: rotate(-20deg);
+  }
+
+  /* Списки */
+  ul {
+    list-style: none;
+  }
+
+  li {
+    position: relative;
+    margin-bottom: 12px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.5;
+  }
+
+  li::before {
+    content: '●';
+    position: absolute;
+    left: -20px;
+    color: var(--accent-red);
+    font-size: 0.8rem;
+    top: 5px;
+  }
+
+  /* Выделение текста */
+  .pinyin { 
+    font-family: 'Courier New', monospace; 
+    font-weight: 700; 
+    color: var(--accent-red); 
+    background: rgba(255, 255, 255, 0.5);
+    padding: 0 4px;
+    border-radius: 4px;
+  }
+  
+  .note {
+    display: block;
+    font-family: 'Caveat', cursive;
+    font-size: 1.6rem;
+    color: var(--accent-light);
+    margin-top: 15px;
+    margin-left: 35px;
+  }
+
+  /* Подвал */
+  .footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px dashed rgba(107, 17, 17, 0.3);
+  }
+
+  .footer .author {
+    font-family: 'Caveat', cursive; 
+    font-size: 1.8rem; 
+    color: var(--accent-red);
+    opacity: 0.7;
+  }
+
+  /* Адаптивность */
+  @media (max-width: 600px) {
+    body { padding: 20px 10px 50px; }
+    .container { padding: 30px 20px; }
+    
+    .header-title h1 { 
+      font-size: 1.3rem; 
+      margin-top: 10px;
+    }
+    .header-title .pre-title { 
+      font-size: 2.8rem; 
+    }
+    
+    .section-title { font-size: 2.2rem; }
+    li { font-size: 0.95rem; }
+    .list-wrapper { padding-left: 25px; }
+    .note { font-size: 1.4rem; margin-left: 25px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="tape"></div>
+
+  <div class="header-title">
+    <div class="pre-title">汉语</div>
+    <h1>главные правила фонетики и иероглифики</h1>
+  </div>
+
+  <!-- СЕКЦИЯ 1 -->
+  <div class="section">
+    <div class="section-title">Инициали</div>
+    <div class="list-wrapper">
+      <ul>
+        <li><strong>Всего 21 инициаль.</strong> Это согласные звуки, с которых начинается слог.</li>
+        <li><strong>Придыхательные:</strong> <span class="pinyin">p, t, k, q, ch, c</span> — произносятся с сильным выдохом.</li>
+        <li><strong>Непридыхательные:</strong> <span class="pinyin">b, d, g, j, zh, z</span> — легко, без выдоха.</li>
+        <li><strong>Спиранты (щелевые):</strong> <span class="pinyin">f, h, x, sh, s</span> — воздух проходит через щель.</li>
+        <li><strong>Носовые и боковые:</strong> <span class="pinyin">m, n, l, r</span>.</li>
+      </ul>
+      <span class="note">⚠️ Главное правило: смотрите на выдох!</span>
+    </div>
+  </div>
+
+  <!-- СЕКЦИЯ 2 -->
+  <div class="section">
+    <div class="section-title">Финали и правила</div>
+    <div class="list-wrapper">
+      <ul>
+        <li><strong>Правило «i = ы»:</strong> После <span class="pinyin">z, c, s, zh, ch, sh, r</span> буква <span class="pinyin">i</span> читается как твердое <strong>«ы»</strong>.</li>
+        <li>Примеры: <span class="pinyin">zhi</span> (джы), <span class="pinyin">chi</span> (чшы), <span class="pinyin">shi</span> (шы), <span class="pinyin">ri</span> (жы), <span class="pinyin">zi</span> (цзы), <span class="pinyin">ci</span> (цхы), <span class="pinyin">si</span> (сы).</li>
+        <li>После других инициалей (<span class="pinyin">b, p, m, d, t, n, l, j, q, x</span>) звук <span class="pinyin">i</span> читается как обычная русская <strong>«и»</strong>: <span class="pinyin">ni</span> (ни), <span class="pinyin">ji</span> (джи).</li>
+        
+        <li style="margin-top: 20px;"><strong>Различение u и ü:</strong> После <span class="pinyin">j, q, x, y</span> звук <strong>ü</strong> пишется как <strong>u</strong> (без точек): <span class="pinyin">ju</span>, <span class="pinyin">qu</span>, <span class="pinyin">xu</span>.</li>
+        <li>После <span class="pinyin">n</span> и <span class="pinyin">l</span> точки обязательны: <span class="pinyin">nu</span> (努) и <span class="pinyin">nü</span> (女), <span class="pinyin">lu</span> (路) и <span class="pinyin">lü</span> (绿).</li>
+        
+        <li style="margin-top: 20px;"><strong>Сокращенные финали:</strong> <span class="pinyin">iou ➔ iu</span> (jiu), <span class="pinyin">uei ➔ ui</span> (dui), <span class="pinyin">uen ➔ un</span> (lun).</li>
+      </ul>
+      <span class="note">💡 Твердые слоги: язык назад, губы не в улыбке!</span>
+    </div>
+  </div>
+
+  <!-- СЕКЦИЯ 3 -->
+  <div class="section">
+    <div class="section-title">Тоны</div>
+    <div class="list-wrapper">
+      <ul>
+        <li><strong>1-й тон (mā):</strong> Высокий и ровный.</li>
+        <li><strong>2-й тон (má):</strong> Восходящий (как переспрашиваете).</li>
+        <li><strong>3-й тон (mǎ):</strong> Низкий, с падением и подъемом.</li>
+        <li><strong>4-й тон (mà):</strong> Резко падающий.</li>
+        <li style="margin-top: 10px; color: var(--accent-red);">Правило: Два 3-х тона подряд. Первый переходит во 2-й (ní hǎo).</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- СЕКЦИЯ 4 -->
+  <div class="section">
+    <div class="section-title">Иероглифика</div>
+    <div class="list-wrapper">
+      <ul>
+        <li><strong>Базовые черты:</strong> 横 (héng), 竖 (shù), 撇 (piě), 点 (diǎn), 捺 (nà).</li>
+        <li><strong>Правила написания:</strong> Сверху вниз, слева направо.</li>
+        <li>Сначала горизонтальные, потом вертикальные.</li>
+        <li>Сначала 撇 (влево), потом 捺 (вправо).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="author">© Smirnova Elena Alekseevna</span>
+  </div>
+
+</div>
+
+</body>
+</html>

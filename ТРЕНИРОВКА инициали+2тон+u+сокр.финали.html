@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chinese Consonant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg-color: #fbf8f1;
+    --panel-bg: #ffffff;
+    --text-main: #5a4d47;
+    --text-muted: #8c7f76;
+    --border-color: #e3d9d0;
+    --shadow: 0 6px 16px rgba(90, 77, 71, 0.06);
+    
+    --c-asp: #f5b6b6;
+    --c-unasp: #a8d5ba;
+    --c-fric: #9bc4e2;
+    --c-nasal: #f4d19b;
+    --c-lat: #d5b9e0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    font-family: 'Nunito', sans-serif;
+    background-color: var(--bg-color);
+    background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 10 Q45 5 50 10 Q55 15 50 20 Q45 25 40 20 Q35 15 40 10 Z M20 30 Q25 25 30 30 Q35 35 30 40 Q25 45 20 40 Q15 35 20 30 Z M60 50 Q65 45 70 50 Q75 55 70 60 Q65 65 60 60 Q55 55 60 50 Z' fill='%23e8dfd3' fill-opacity='0.4'/%3E%3C/svg%3E");
+    color: var(--text-main);
+    padding: 20px; min-height: 100vh;
+  }
+
+  /* --- ВОДЯНОЙ ЗНАК --- */
+  .watermark {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-family: 'Caveat', cursive;
+    font-size: 24px;
+    font-weight: 700;
+    color: #7c6b63;
+    opacity: 0.6;
+    pointer-events: none;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 6px 20px;
+    border-radius: 25px;
+    border: 2px dashed #e8c2b0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    z-index: 9999;
+    backdrop-filter: blur(3px);
+  }
+
+  .app { max-width: 980px; margin: 0 auto; }
+
+  header { text-align: center; margin-bottom: 24px; }
+  header h1 { 
+    font-family: 'Caveat', cursive; font-size: 46px; color: #7c6b63; 
+    margin-bottom: 4px; line-height: 1;
+  }
+
+  nav { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 30px; }
+  nav button {
+    padding: 10px 20px; border: 2px solid transparent; border-radius: 30px;
+    background: var(--panel-bg); font-size: 15px; font-weight: 700; cursor: pointer; 
+    transition: all .2s; font-family: inherit; color: var(--text-muted); box-shadow: var(--shadow);
+  }
+  nav button:hover { transform: translateY(-2px); color: var(--text-main); }
+  nav button.active { 
+    background: #fdf0e7; color: #e28761; border-color: #e8c2b0; transform: translateY(0);
+  }
+
+  .panel { 
+    background: var(--panel-bg); border-radius: 20px; padding: 30px; 
+    box-shadow: var(--shadow); border: 2px dashed var(--border-color); position: relative;
+  }
+  .panel::before {
+    content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+    width: 120px; height: 25px; background: rgba(240, 220, 200, 0.6);
+    border-radius: 2px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); backdrop-filter: blur(2px);
+  }
+
+  .panel h2 { font-size: 24px; margin-bottom: 8px; color: #6b5c54; text-align: center; }
+  .panel > p.intro { color: var(--text-muted); margin-bottom: 24px; font-size: 15px; line-height: 1.5; text-align: center; }
+
+  .score { 
+    font-size: 16px; color: var(--text-muted); margin-bottom: 20px; 
+    text-align: center; font-weight: 700; background: #f0f7fa; padding: 8px; border-radius: 12px; display: inline-block; width: 100%;
+  }
+  .score span { color: #7c6b63; font-size: 18px; }
+
+  /* Справочник */
+  .section-title { font-size: 20px; font-weight: 800; color: #6b5c54; margin: 30px 0 15px; border-bottom: 2px dashed var(--border-color); padding-bottom: 8px; }
+  
+  .theory-list { display: flex; flex-direction: column; gap: 12px; }
+  .theory-item {
+    background: #fcf9f5; border-radius: 12px; padding: 16px;
+    border: 1px solid var(--border-color); display: flex; gap: 16px; align-items: flex-start;
+  }
+  .theory-initial {
+    font-size: 32px; font-weight: 800; color: #7c6b63; min-width: 60px;
+    text-align: center; background: #fff; padding: 8px; border-radius: 8px;
+    border: 2px solid #e8c2b0;
+  }
+  .theory-content { display: flex; flex-direction: column; gap: 4px; }
+  .theory-title { font-size: 16px; font-weight: 800; color: #6b5c54; }
+  .theory-desc { font-size: 14px; line-height: 1.5; color: #5a4d47; }
+
+  .contrast-box { background: #f0f7fa; border-left: 4px solid #9bc4e2; padding: 12px 16px; border-radius: 0 8px 8px 0; font-size: 15px; line-height: 1.6; margin-bottom: 12px; }
+  .contrast-box b { color: #5a4d47; }
+
+  .groups { display: flex; flex-direction: column; gap: 16px; }
+  .group-block { border: 2px solid; border-radius: 16px; overflow: hidden; background: #fff; }
+  .group-title { padding: 10px 16px; color: #fff; font-weight: 800; font-size: 15px; text-align: center; letter-spacing: 0.5px; }
+  .grid { display: flex; flex-wrap: wrap; gap: 10px; padding: 16px; background: #faf9f7; justify-content: center; }
+  
+  .initial-btn {
+    padding: 12px 24px; border: 2px solid; border-radius: 12px;
+    background: #fff; font-size: 24px; font-weight: 800;
+    cursor: pointer; transition: all .2s; font-family: inherit; color: var(--text-main); min-width: 64px;
+  }
+  .initial-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,.08); }
+  .initial-btn.sel { background: #fdf0e7; border-color: #e8c2b0; color: #e28761; }
+  
+  .detail { margin-top: 24px; min-height: 90px; }
+  .detail-card {
+    display: flex; align-items: flex-start; gap: 24px;
+    padding: 24px; border: 2px solid; border-radius: 16px; background: #faf9f7;
+  }
+  .big-initial { font-size: 72px; font-weight: 800; min-width: 100px; text-align: center; line-height: 1; }
+  .detail-info { display: flex; flex-direction: column; gap: 10px; font-size: 16px; line-height: 1.5; width: 100%; }
+  .detail-info b { color: #7c6b63; }
+  
+  .speak-btn {
+    margin-top: 8px; padding: 8px 16px; border: none; border-radius: 20px;
+    background: #f5b6b6; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer;
+    font-family: inherit; align-self: flex-start; transition: all .2s;
+    box-shadow: 0 4px 10px rgba(245, 182, 182, 0.4);
+  }
+  .speak-btn:hover { background: #f09c9c; transform: translateY(-1px); }
+
+  /* Игры */
+  .target-box, .syll-box {
+    text-align: center; padding: 30px; background: #fcf9f5;
+    border-radius: 16px; margin-bottom: 24px; border: 2px dashed var(--border-color);
+  }
+  .target-label { font-size: 13px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+  
+  .syll-pinyin { font-size: 64px; font-weight: 800; color: #7c6b63; line-height: 1.2; margin-bottom: 10px; }
+  .syll-char { font-size: 80px; font-weight: 800; line-height: 1; color: #7c6b63; margin-bottom: 16px;}
+
+  .options-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+  .options-grid.pairs { grid-template-columns: repeat(2, 1fr); }
+  .options-grid.three { grid-template-columns: repeat(3, 1fr); }
+  
+  .option-btn {
+    padding: 20px; border: 2px solid var(--border-color); border-radius: 16px; background: #fff;
+    font-size: 26px; font-weight: 800; cursor: pointer; transition: all .2s;
+    font-family: inherit; color: var(--text-main); box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+  }
+  .option-btn:hover { border-color: #f5b6b6; background: #fffcfc; transform: translateY(-2px); }
+  .option-btn.big { font-size: 42px; padding: 25px; }
+
+  .feedback {
+    padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 600;
+    min-height: 56px; line-height: 1.5; background: transparent; text-align: center;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  }
+  .feedback.correct { background: #e8f4ec; color: #5a9e75; border: 1px dashed #b8d8c5; }
+  .feedback.wrong { background: #fceceb; color: #d47b7b; border: 1px dashed #f3c3c1; }
+  .feedback .hint { font-size: 14px; font-weight: 400; font-style: italic; opacity: 0.9; margin-top: 4px; }
+
+  /* Списки для чтения */
+  .reading-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px;
+  }
+  .reading-card {
+    background: #fff; border: 2px solid var(--border-color); border-radius: 16px;
+    padding: 15px; text-align: center; cursor: pointer; transition: all .2s;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+  }
+  .reading-card:hover { border-color: #e8c2b0; background: #fdf0e7; transform: translateY(-2px); }
+  .reading-card.active { border-color: #e28761; background: #fdf0e7; box-shadow: 0 0 0 3px rgba(226,135,97,0.2); }
+  .reading-pinyin { font-size: 26px; font-weight: 800; color: #7c6b63; margin-bottom: 4px; }
+  .reading-char { font-size: 18px; color: var(--text-muted); }
+
+  /* Правило в игре */
+  .rule-box {
+    background: #fdf0e7; border-left: 4px solid #e8c2b0; padding: 15px;
+    border-radius: 0 8px 8px 0; font-size: 15px; line-height: 1.6; color: #6b5c54;
+    margin-bottom: 20px;
+  }
+  .rule-box b { color: #e28761; }
+
+  @media (max-width: 620px) {
+    .options-grid { grid-template-columns: repeat(2, 1fr); }
+    .options-grid.three { grid-template-columns: repeat(1, 1fr); }
+    .syll-char { font-size: 72px; }
+    .syll-pinyin { font-size: 48px; }
+    .detail-card { flex-direction: column; text-align: center; }
+    .detail-info { align-items: center; }
+    .theory-item { flex-direction: column; align-items: center; text-align: center; }
+    .panel { padding: 20px; }
+    .reading-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
+    .watermark { font-size: 18px; bottom: 10px; right: 10px; padding: 4px 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1>Chinese Consonant ✿</h1>
+  </header>
+  <nav>
+    <!-- Теоретические -->
+    <button data-game="ref">📖 Справочник</button>
+    <!-- Отработка инициалей -->
+    <button data-game="audio">🎧 Аудио-диктант</button>
+    <button data-game="hanzi">🀄 Иероглиф → Звук</button>
+    <button data-game="pairs">⚖️ Различи пары</button>
+    <!-- Слоги -->
+    <button data-game="read_tone2">📈 2-й тон (Список)</button>
+    <button data-game="read_u">🔤 Слоги с u (Список)</button>
+    <button data-game="u_ü">🆚 u vs ü</button>
+    <button data-game="abbrev">✂️ Сокращения</button>
+  </nav>
+  <main id="game"></main>
+</div>
+
+<!-- ВОДЯНОЙ ЗНАК -->
+<div class="watermark">© Smirnova Elena Alekseevna</div>
+
+<!-- ЭЛЕМЕНТ ДЛЯ ОЗВУЧКИ -->
+<audio id="player" preload="auto"></audio>
+
+<script>
+/* ==================== ДАННЫЕ ==================== */
+const INITIALS = {
+  b:  { group: 'unasp', ex: 'bō 波 (волна)', char: '波', reading: '«б» (без выдоха)', articulation: 'Полностью сомкните губы, затем резко разомкните их, выпуская сжатый воздух. Непридыхательный глухой звук.' },
+  p:  { group: 'asp',   ex: 'pō 坡 (склон)', char: '坡', reading: '«п» (с выдохом)', articulation: 'Начните произносить так же, как и при произнесении звука «b», но сжатый воздух нужно резко выпустить с сильным придыханием.' },
+  m:  { group: 'nasal', ex: 'mò 墨 (тушь)', char: '墨', reading: '«м»', articulation: 'Плотно сомкните губы, затем выдохните через нос, используя вибрацию голосовых связок.' },
+  f:  { group: 'fric',  ex: 'fó 佛 (Будда)', char: '佛', reading: '«ф»', articulation: 'Задействованы верхние передние зубы и нижняя губа. Слегка прикоснитесь верхними зубами к нижней губе и пропустите воздух через щель.' },
+  d:  { group: 'unasp', ex: 'dé 德 (добродетель)', char: '德', reading: '«д» (без выдоха)', articulation: 'Глубоко вдохните, прижав кончик языка к задней части верхних десен, затем резко выдохните. Непридыхательный звук.' },
+  t:  { group: 'asp',   ex: 'tù 兔 (заяц)', char: '兔', reading: '«т» (с выдохом)', articulation: 'Образуется аналогично «d», но с придыханием. Резко выдохните, чтобы получился звук, похожий на «т» с легким выдохом «х».' },
+  n:  { group: 'nasal', ex: 'nà 那 (тот)', char: '那', reading: '«н»', articulation: 'Прижмите кончик языка к задней части верхних десен, полностью перекрывая поток воздуха через рот. Воздух выходит через нос.' },
+  l:  { group: 'lat',   ex: 'lái 来 (приходить)', char: '来', reading: '«л»', articulation: 'Кончик языка прижат к верхним деснам, но боковые части языка опущены (расслаблены), создавая щели. Воздух выходит по бокам.' },
+  g:  { group: 'unasp', ex: 'gē 鸽 (голубь)', char: '鸽', reading: '«г» (без выдоха)', articulation: 'Корень языка прижмите к мягкому нёбу, блокируя воздух. Затем резко опустите язык, выпуская воздух без придыхания.' },
+  k:  { group: 'asp',   ex: 'kē 科 (наука)', char: '科', reading: '«к» (с выдохом)', articulation: 'Корень языка прижмите к мягкому нёбу, затем резко отпустите, выпуская воздух с сильным придыханием (как легкое «х»).' },
+  h:  { group: 'fric',  ex: 'hē 喝 (пить)', char: '喝', reading: '«х»', articulation: 'Приподнимите корень языка к мягкому нёбу, но не касайтесь его. Воздух проходит через узкую щель, образуя легкий хрип.' },
+  j:  { group: 'unasp', ex: 'jī 鸡 (курица)', char: '鸡', reading: '«джь» (без выдоха)', articulation: 'Переднюю часть спинки языка прижмите к твердому нёбу, кончик языка опущен к нижним зубам. Язык плавно отрывается, создавая узкую щель.' },
+  q:  { group: 'asp',   ex: 'qī 七 (семь)', char: '七', reading: '«чь» (с выдохом)', articulation: 'Положение как у «j», но при произнесении нужно сильно и резко опустить язык, чтобы вышла струя воздуха (будто сдуваете пылинку).' },
+  x:  { group: 'fric',  ex: 'xī 西 (запад)', char: '西', reading: '«сь» (мягкая)', articulation: 'Кончик языка упирается в нижний ряд зубов, спинка поднимается к твердому нёбу. Остается очень узкая щель, воздух проходит с силой.' },
+  zh: { group: 'unasp', ex: 'zhī 知 (знать)', char: '知', reading: '«дж» (твердая)', articulation: 'Поднимите кончик языка, загните назад к альвеолам и плотно прижмите. Резко опустите кончик языка, создавая узкую щель. Звук короткий и твердый.' },
+  ch: { group: 'asp',   ex: 'chī 吃 (есть)', char: '吃', reading: '«ч» (твердая, с выдохом)', articulation: 'Плотно прижмите загнутый кончик языка к нёбу, затем сделайте очень сильный и резкий выдох. Воздух с силой вырывается через щель.' },
+  sh: { group: 'fric',  ex: 'shī 诗 (стих)', char: '诗', reading: '«ш» (твердая)', articulation: 'Кончик языка поднят и загнут назад к альвеолам (чашеобразная форма). Воздух с сильным трением выходит через канал, создавая шипящий звук.' },
+  r:  { group: 'lat',   ex: 'rì 日 (солнце)', char: '日', reading: '«ж» (мягкая)', articulation: 'Положение языка как при «sh», но задействуйте голосовые связки (гудение). Струя воздуха значительно слабее, чем для «sh».' },
+  z:  { group: 'unasp', ex: 'zī 资 (ресурс)', char: '资', reading: '«ц» (без выдоха)', articulation: 'Кончик языка соприкасается с задней поверхностью верхних зубов, затем опускается вниз, образуя щель. Непридыхательный.' },
+  c:  { group: 'asp',   ex: 'cī 疵 (изъян)', char: '疵', reading: '«ц» (с выдохом)', articulation: 'Образуется аналогично «z», но является придыхательным. Требуется значительно более сильный выдох.' },
+  s:  { group: 'fric',  ex: 'sī 思 (думать)', char: '思', reading: '«с»', articulation: 'Кончик языка очень близко к задней поверхности верхних зубов. Оставляем узкую щель, через которую выходит сильная непрерывная струя воздуха.' }
+};
+
+const GROUPS = {
+  asp:   { name: 'Придыхательные',            letters: ['p','t','k','q','ch','c'],       color: 'var(--c-asp)' },
+  unasp: { name: 'Непридыхательные',          letters: ['b','d','g','j','zh','z'],       color: 'var(--c-unasp)' },
+  fric:  { name: 'Спиранты (щелевые)',        letters: ['f','h','x','sh','s'],           color: 'var(--c-fric)' },
+  nasal: { name: 'Звонкие (носовые)',         letters: ['m','n'],                        color: 'var(--c-nasal)' },
+  lat:   { name: 'Звонкие (неносовые)',       letters: ['l','r'],                        color: 'var(--c-lat)' }
+};
+
+const HARD_PAIRS = [
+  { syll: 'zhī', init: 'zh', char: '知', partner: 'zī', partnerInit: 'z' },
+  { syll: 'chī', init: 'ch', char: '吃', partner: 'cī', partnerInit: 'c' },
+  { syll: 'shī', init: 'sh', char: '诗', partner: 'sī', partnerInit: 's' },
+  { syll: 'zhǐ', init: 'zh', char: '纸', partner: 'zǐ', partnerInit: 'z' },
+  { syll: 'chǐ', init: 'ch', char: '尺', partner: 'cǐ', partnerInit: 'c' },
+  { syll: 'shǐ', init: 'sh', char: '史', partner: 'sǐ', partnerInit: 's' },
+  { syll: 'jī',  init: 'j',  char: '鸡', partner: 'qī', partnerInit: 'q' },
+  { syll: 'qī',  init: 'q',  char: '七', partner: 'xī', partnerInit: 'x' },
+  { syll: 'xī',  init: 'x',  char: '西', partner: 'jī', partnerInit: 'j' },
+  { syll: 'jǐ',  init: 'j',  char: '几', partner: 'qǐ', partnerInit: 'q' },
+  { syll: 'qǐ',  init: 'q',  char: '起', partner: 'xǐ', partnerInit: 'x' },
+  { syll: 'xǐ',  init: 'x',  char: '喜', partner: 'jǐ', partnerInit: 'j' }
+];
+
+const U_U_DATA = [
+  { syll: 'jū', char: '居', correct: 'ü', options: ['u', 'ü'], hint: 'После j, q, x буква u всегда читается как ü.' },
+  { syll: 'qù', char: '去', correct: 'ü', options: ['u', 'ü'], hint: 'После j, q, x буква u всегда читается как ü.' },
+  { syll: 'xué', char: '学', correct: 'üe', options: ['ue', 'üe'], hint: 'Пишется ue, но читается üe (так как стоит после x).' },
+  { syll: 'gū', char: '姑', correct: 'u', options: ['u', 'ü'] },
+  { syll: 'lǜ', char: '绿', correct: 'ü', options: ['u', 'ü'] },
+  { syll: 'nǔ', char: '努', correct: 'u', options: ['u', 'ü'] },
+  { syll: 'quán', char: '全', correct: 'üan', options: ['uan', 'üan'], hint: 'После j, q, x пишется uan, читается üan.' },
+  { syll: 'chuán', char: '船', correct: 'uan', options: ['uan', 'üan'] },
+  { syll: 'jūn', char: '军', correct: 'ün', options: ['un', 'ün'], hint: 'После j, q, x пишется un, читается ün.' },
+  { syll: 'zhǔn', char: '准', correct: 'un', options: ['un', 'ün'] },
+  { syll: 'yǔ', char: '雨', correct: 'ü', options: ['u', 'ü'] },
+  { syll: 'wǔ', char: '五', correct: 'u', options: ['u', 'ü'] }
+];
+
+const ABBREV_DATA = [
+  { syll: 'liù', char: '六', full: 'iou', options: ['iou', 'uei', 'uen'] },
+  { syll: 'guī', char: '归', full: 'uei', options: ['iou', 'uei', 'uen'] },
+  { syll: 'lùn', char: '论', full: 'uen', options: ['iou', 'uei', 'uen'] },
+  { syll: 'qiú', char: '球', full: 'iou', options: ['iou', 'uei', 'uen'] },
+  { syll: 'shuǐ', char: '水', full: 'uei', options: ['iou', 'uei', 'uen'] },
+  { syll: 'cūn', char: '村', full: 'uen', options: ['iou', 'uei', 'uen'] },
+  { syll: 'jiǔ', char: '九', full: 'iou', options: ['iou', 'uei', 'uen'] },
+  { syll: 'tuǐ', char: '腿', full: 'uei', options: ['iou', 'uei', 'uen'] },
+  { syll: 'zūn', char: '尊', full: 'uen', options: ['iou', 'uei', 'uen'] }
+];
+
+const READING_TONE2 = [
+  { pinyin: 'má', char: '麻' }, { pinyin: 'bá', char: '拔' }, { pinyin: 'pá', char: '爬' },
+  { pinyin: 'dá', char: '达' }, { pinyin: 'tí', char: '提' }, { pinyin: 'ní', char: '泥' },
+  { pinyin: 'lí', char: '梨' }, { pinyin: 'hé', char: '河' }, { pinyin: 'hú', char: '湖' },
+  { pinyin: 'jí', char: '急' }, { pinyin: 'qí', char: '骑' }, { pinyin: 'xí', char: '习' },
+  { pinyin: 'zhí', char: '直' }, { pinyin: 'chí', char: '迟' }, { pinyin: 'shí', char: '十' },
+  { pinyin: 'cí', char: '词' }, { pinyin: 'bái', char: '白' }, { pinyin: 'méi', char: '没' },
+  { pinyin: 'lái', char: '来' }, { pinyin: 'tóu', char: '头' }, { pinyin: 'niú', char: '牛' },
+  { pinyin: 'nián', char: '年' }, { pinyin: 'míng', char: '明' }, { pinyin: 'chéng', char: '城' }
+];
+
+const READING_U = [
+  { pinyin: 'bù', char: '不' }, { pinyin: 'pū', char: '扑' }, { pinyin: 'mǔ', char: '母' },
+  { pinyin: 'fū', char: '夫' }, { pinyin: 'dú', char: '读' }, { pinyin: 'tǔ', char: '土' },
+  { pinyin: 'nǔ', char: '努' }, { pinyin: 'lù', char: '路' }, { pinyin: 'gǔ', char: '古' },
+  { pinyin: 'kū', char: '哭' }, { pinyin: 'hú', char: '湖' }, { pinyin: 'zhū', char: '猪' },
+  { pinyin: 'chū', char: '出' }, { pinyin: 'shū', char: '书' }, { pinyin: 'rú', char: '如' },
+  { pinyin: 'zū', char: '租' }, { pinyin: 'cū', char: '粗' }, { pinyin: 'sū', char: '苏' },
+  { pinyin: 'mù', char: '木' }, { pinyin: 'fú', char: '福' }, { pinyin: 'tú', char: '图' },
+  { pinyin: 'lú', char: '炉' }, { pinyin: 'gū', char: '姑' }, { pinyin: 'kǔ', char: '苦' },
+  { pinyin: 'hǔ', char: '虎' }, { pinyin: 'zhǔ', char: '主' }, { pinyin: 'chú', char: '厨' },
+  { pinyin: 'shǔ', char: '鼠' }, { pinyin: 'rǔ', char: '乳' }, { pinyin: 'zǔ', char: '组' }
+];
+
+/* ==================== ОЗВУЧКА (ИЗ ИГРЫ С ПАНДОЙ) ==================== */
+var audioPlayer = document.getElementById('player');
+var lastPlayed = 0;
+
+function playAudio(zh) {
+  var now = Date.now();
+  if (now - lastPlayed < 250) return; // Защита от двойного клика
+  lastPlayed = now;
+  try {
+    audioPlayer.pause();
+    // 1. Пытаемся загрузить с Baidu (лучшее качество)
+    audioPlayer.src = 'https://fanyi.baidu.com/gettts?lan=zh&text=' +
+      encodeURIComponent(zh) + '&spd=2&source=web';
+    audioPlayer.load();
+    var pr = audioPlayer.play();
+    
+    if (pr && pr.catch) {
+      pr.catch(function() {
+        // 2. Если Baidu недоступен, пробуем Google Translate
+        audioPlayer.src = 'https://translate.google.com/translate_tts?ie=UTF-8&q=' +
+          encodeURIComponent(zh) + '&tl=zh-CN&client=tw-ob&ttsspeed=0.5';
+        audioPlayer.load();
+        audioPlayer.play().catch(function() {
+          // 3. Если и это не сработало, используем встроенный синтезатор
+          if (window.speechSynthesis) {
+            window.speechSynthesis.cancel();
+            var u = new SpeechSynthesisUtterance(zh);
+            u.lang = 'zh-CN';
+            u.rate = 0.7;
+            window.speechSynthesis.speak(u);
+          }
+        });
+      });
+    }
+  } catch (e) { console.log(e); }
+}
+
+/* ==================== ВСПОМОГАТЕЛЬНЫЕ ==================== */
+function shuffle(array) {
+  let currentIndex = array.length, randomIndex;
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+  }
+  return array;
+}
+
+function createBag(items) {
+  let pool = shuffle([...items]);
+  return function getNext() {
+    if (pool.length === 0) pool = shuffle([...items]);
+    return pool.pop();
+  };
+}
+
+/* ==================== НАВИГАЦИЯ ==================== */
+let currentGame = 'ref';
+function render() {
+  document.querySelectorAll('nav button').forEach(b =>
+    b.classList.toggle('active', b.dataset.game === currentGame)
+  );
+  const main = document.getElementById('game');
+  main.innerHTML = '';
+  switch (currentGame) {
+    case 'ref':        renderRef(main);        break;
+    case 'audio':      renderAudio(main);      break;
+    case 'hanzi':      renderHanzi(main);      break;
+    case 'pairs':      renderPairs(main);      break;
+    case 'read_tone2': renderReadTone2(main);  break;
+    case 'read_u':     renderReadU(main);      break;
+    case 'u_ü':        renderUU(main);         break;
+    case 'abbrev':     renderAbbrev(main);     break;
+  }
+}
+document.querySelectorAll('nav button').forEach(b =>
+  b.addEventListener('click', () => { currentGame = b.dataset.game; render(); })
+);
+
+/* ==================== 1. СПРАВОЧНИК ==================== */
+function renderRef(main) {
+  main.innerHTML = `
+    <div class="panel">
+      <h2>Справочник инициалей</h2>
+      <p class="intro">Полный разбор артикуляции и классификация по учебнику.</p>
+      
+      <div class="section-title">👄 Артикуляция: как создается звук</div>
+      <div class="theory-list" style="margin-bottom: 30px;">
+        ${Object.entries(INITIALS).map(([init, d]) => {
+          const g = GROUPS[d.group];
+          return `
+            <div class="theory-item">
+              <div class="theory-initial" style="color:${g.color}; border-color:${g.color}">${init}</div>
+              <div class="theory-content">
+                <div class="theory-title">${g.name} · <span style="font-weight:normal; color:#8c7f76;">${d.ex}</span></div>
+                <div class="theory-desc">${d.articulation}</div>
+                <button class="speak-btn" data-char="${d.char}" style="margin-top: 8px;">🔊 Послушать</button>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+
+      <div class="section-title">⚖️ Различия похожих звуков</div>
+      <div class="contrast-box">
+        <b>Придыхание (выдох):</b> b / p, d / t, g / k, j / q, zh / ch, z / c.<br>
+        Первая буква — <i>без выдоха</i>, вторая — <i>с сильным выдохом</i>.
+      </div>
+      <div class="contrast-box">
+        <b>Мягкие j, q, x:</b> кончик языка у нижних зубов. j — без выдоха, q — с выдохом, x — щелевой (как «сь»).
+      </div>
+      <div class="contrast-box">
+        <b>Загнутые zh, ch, sh, r:</b> кончик языка загнут назад к нёбу. zh — без выдоха, ch — с выдохом, sh — щелевой (как «ш»), r — звонкий (вибрирует горло).
+      </div>
+      <div class="contrast-box">
+        <b>Свистящие z, c, s:</b> язык у нижних зубов. z — без выдоха, c — с выдохом, s — щелевой (как «с»).
+      </div>
+
+      <div class="section-title">🔍 Нажмите на звук для подробностей</div>
+      <div class="groups">
+        ${Object.entries(GROUPS).map(([key, g]) => `
+          <div class="group-block" style="border-color:${g.color}">
+            <div class="group-title" style="background:${g.color}">${g.name}</div>
+            <div class="grid">
+              ${g.letters.map(l => `
+                <button class="initial-btn" data-init="${l}" style="border-color:${g.color}">
+                  ${l}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      <div id="detail" class="detail"></div>
+    </div>
+  `;
+  
+  main.querySelectorAll('.speak-btn').forEach(btn => {
+    btn.addEventListener('click', e => playAudio(e.currentTarget.dataset.char));
+  });
+
+  main.querySelectorAll('.initial-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      main.querySelectorAll('.initial-btn').forEach(b => b.classList.remove('sel'));
+      btn.classList.add('sel');
+      const init = btn.dataset.init;
+      const d = INITIALS[init];
+      const g = GROUPS[d.group];
+      const detail = main.querySelector('#detail');
+      detail.innerHTML = `
+        <div class="detail-card" style="border-color:${g.color}">
+          <div class="big-initial" style="color:${g.color}">${init}</div>
+          <div class="detail-info">
+            <div><b>Группа:</b> ${g.name}</div>
+            <div class="articulation-box">
+              <b>Как создается звук</b>
+              ${d.articulation}
+            </div>
+            <div><b>Пример из учебника:</b> ${d.ex}</div>
+            <button class="speak-btn" data-char="${d.char}">🔊 Послушать</button>
+          </div>
+        </div>
+      `;
+      detail.querySelector('.speak-btn').addEventListener('click', e =>
+        playAudio(e.currentTarget.dataset.char)
+      );
+    });
+  });
+}
+
+/* ==================== 2. АУДИО-ДИКТАНТ ==================== */
+function renderAudio(main) {
+  const allSylls = Object.values(INITIALS).map(d => ({ 
+    init: d.ex.split(' ')[0].replace(/[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ]/g, ''), 
+    char: d.char, 
+    syll: d.ex.split(' ')[0] 
+  }));
+  const bag = createBag(allSylls);
+  const state = { score: 0, total: 0, current: null, locked: false };
+
+  main.innerHTML = `
+    <div class="panel">
+      <h2>Аудио-диктант</h2>
+      <p class="intro">Послушайте звук и выберите правильную инициаль.</p>
+      <div class="score">Счёт: <span id="score">0</span> / <span id="total">0</span></div>
+      <div class="target-box">
+        <div class="target-label">Послушайте звук</div>
+        <button id="play-audio" class="speak-btn" style="font-size:24px; padding: 15px 30px; margin-top: 10px;">🔊 Воспроизвести</button>
+      </div>
+      <div id="options" class="options-grid"></div>
+      <div id="feedback" class="feedback"></div>
+    </div>
+  `;
+
+  function next() {
+    state.locked = false;
+    state.current = bag();
+    setTimeout(() => playAudio(state.current.char), 100);
+    main.querySelector('#play-audio').onclick = () => playAudio(state.current.char);
+
+    const correctInit = state.current.init;
+    const group = INITIALS[correctInit].group;
+    const sameGroup = GROUPS[group].letters.filter(l => l !== correctInit);
+    
+    let pool = [...sameGroup];
+    const others = Object.keys(INITIALS).filter(l => l !== correctInit && !sameGroup.includes(l));
+    while (pool.length < 3) {
+      const cand = others[Math.floor(Math.random() * others.length)];
+      if (!pool.includes(cand)) pool.push(cand);
+    }
+    const options = shuffle([correctInit, ...pool.slice(0, 3)]);
+
+    const opts = main.querySelector('#options');
+    opts.innerHTML = options.map(o => `<button class="option-btn" data-init="${o}">${o}</button>`).join('');
+    
+    opts.querySelectorAll('.option-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (state.locked) return; state.locked = true;
+        const chosen = btn.dataset.init;
+        state.total++; main.querySelector('#total').textContent = state.total;
+        const fb = main.querySelector('#feedback');
+        if (chosen === correctInit) {
+          state.score++; main.querySelector('#score').textContent = state.score;
+          fb.textContent = `✅ Верно! Инициаль «${correctInit}»`;
+          fb.className = 'feedback correct';
+          setTimeout(next, 1200);
+        } else {
+          fb.textContent = `❌ Это инициаль «${correctInit}», а не «${chosen}»`;
+          fb.className = 'feedback wrong';
+          setTimeout(next, 1800);
+        }
+      });
+    });
+    const fb = main.querySelector('#feedback');
+    fb.textContent = ''; fb.className = 'feedback';
+  }
+  next();
+}
+
+/* ==================== 3. ИЕРОГЛИФ → ЗВУК ==================== */
+function renderHanzi(main) {
+  const allSylls = Object.values(INITIALS).map(d => ({ 
+    init: d.ex.split(' ')[0].replace(/[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ]/g, ''), 
+    char: d.char, 
+    syll: d.ex.split(' ')[0] 
+  }));
+  const bag = createBag(allSylls);
+  const state = { score: 0, total: 0, current: null, locked: false };
+
+  main.innerHTML = `
+    <div class="panel">
+      <h2>Иероглиф → Звук</h2>
+      <p class="intro">Посмотрите на иероглиф, послушайте его и выберите начальный звук.</p>
+      <div class="score">Счёт: <span id="score">0</span> / <span id="total">0</span></div>
+      <div class="syll-box" style="padding: 20px;">
+        <div id="syll-char" class="syll-char">?</div>
+        <button id="play-hanzi" class="speak-btn">🔊 Послушать</button>
+      </div>
+      <div id="options" class="options-grid"></div>
+      <div id="feedback" class="feedback"></div>
+    </div>
+  `;
+
+  function next() {
+    state.locked = false;
+    state.current = bag();
+
+    main.querySelector('#syll-char').textContent = state.current.char;
+    const playBtn = main.querySelector('#play-hanzi');
+    playBtn.onclick = () => playAudio(state.current.char);
+
+    const correctInit = state.current.init;
+    const group = INITIALS[correctInit].group;
+    const sameGroup = GROUPS[group].letters.filter(l => l !== correctInit);
+    
+    let pool = [...sameGroup];
+    const others = Object.keys(INITIALS).filter(l => l !== correctInit && !sameGroup.includes(l));
+    while (pool.length < 3) {
+      const cand = others[Math.floor(Math.random() * others.length)];
+      if (!pool.includes(cand)) pool.push(cand);
+    }
+    const options = shuffle([correctInit, ...pool.slice(0, 3)]);
+
+    const opts = main.querySelector('#options');
+    opts.innerHTML = options.map(o => `<button class="option-btn" data-init="${o}">${o}</button>`).join('');
+    
+    opts.querySelectorAll('.option-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (state.locked) return; state.locked = true;
+        const chosen = btn.dataset.init;
+        state.total++; main.querySelector('#total').textContent = state.total;
+        const fb = main.querySelector('#feedback');
+        if (chosen === correctInit) {
+          state.score++; main.querySelector('#score').textContent = state.score;
+          fb.textContent = `✅ Верно! «${state.current.char}» начинается на «${correctInit}»`;
+          fb.className = 'feedback correct';
+          playAudio(state.current.char);
+          setTimeout(next, 1500);
+        } else {
+          fb.textContent = `❌ «${state.current.char}» начинается на «${correctInit}», а не на «${chosen}»`;
+          fb.className = 'feedback wrong';
+          setTimeout(next, 1800);
+        }
+      });
+    });
+    const fb = main.querySelector('#feedback');
+    fb.textContent = ''; fb.className = 'feedback';
+  }
+  next();
+}
+
+/* ==================== 4. РАЗЛИЧИ ПАРЫ ==================== */
+function renderPairs(main) {
+  const bag = createBag(HARD_PAIRS);
+  const state = { score: 0, total: 0, current: null, locked: false };
+
+  main.innerHTML = `
+    <div class="panel">
+      <h2>Различи пары</h2>
+      <p class="intro">Выберите правильную инициаль для этого иероглифа.</p>
+      <div class="score">Счёт: <span id="score">0</span> / <span id="total">0</span></div>
+      <div class="syll-box">
+        <div id="pair-word" class="syll-char">?</div>
+      </div>
+      <div id="pair-options" class="options-grid pairs"></div>
+      <div id="pair-feedback" class="feedback"></div>
+    </div>
+  `;
+
+  function next() {
+    state.locked = false;
+    state.current = bag();
+    const cur = state.current;
+    
+    main.querySelector('#pair-word').textContent = cur.char;
+
+    const options = shuffle([cur.init, cur.partnerInit]);
+    const opts = main.querySelector('#pair-options');
+    opts.innerHTML = options.map(o => `<button class="option-btn big" data-init="${o}">${o}</button>`).join('');
+    
+    const fb = main.querySelector('#pair-feedback');
+    fb.textContent = ''; fb.className = 'feedback';
+
+    opts.querySelectorAll('.option-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (state.locked) return; state.locked = true;
+        const chosen = btn.dataset.init;
+        state.total++; main.querySelector('#total').textContent = state.total;
+        
+        if (chosen === cur.init) {
+          state.score++; main.querySelector('#score').textContent = state.score;
+          fb.innerHTML = `✅ Верно! <b>${cur.char}</b> начинается на <b>${cur.init}</b>.`;
+          fb.className = 'feedback correct';
+          playAudio(cur.char);
+          setTimeout(next, 2000);
+        } else {
+          fb.innerHTML = `❌ <b>${cur.char}</b> начинается на <b>${cur.init}</b>, а не на «${chosen}».`;
+          fb.className = 'feedback wrong';
+          setTimeout(next, 2000);
+        }
+      });
+    });
+  }
+  next();
+}
+
+/* ==================== 5. ЧТЕНИЕ 2-ГО ТОНА ==================== */
+function renderReadTone2(main) {
+  main.innerHTML = `
+    <div class="panel">
+      <h2>Чтение 2-го тона</h2>
+      <p class="intro">Нажимайте на карточки, слушайте и повторяйте. Все слоги здесь со 2-м (восходящим) тоном.</p>
+      <div class="reading-grid">
+        ${READING_TONE2.map(item => `
+          <div class="reading-card" data-char="${item.char}">
+            <div class="reading-pinyin">${item.pinyin}</div>
+            <div class="reading-char">${item.char}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+
+  main.querySelectorAll('.reading-card').forEach(card => {
+    card.addEventListener('click', () => {
+      main.querySelectorAll('.reading-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      playAudio(card.dataset.char);
+    });
+  });
+}
+
+/* ==================== 6. ЧТЕНИЕ СЛОГОВ С U ==================== */
+function renderReadU(main) {
+  main.innerHTML = `
+    <div class="panel">
+      <h2>Чтение слогов с u</h2>
+      <p class="intro">Тренируем финаль u (как «у» в слове «зуб») с разными начальными звуками и тонами.</p>
+      <div class="reading-grid">
+        ${READING_U.map(item => `
+          <div class="reading-card" data-char="${item.char}">
+            <div class="reading-pinyin">${item.pinyin}</div>
+            <div class="reading-char">${item.char}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+
+  main.querySelectorAll('.reading-card').forEach(card => {
+    card.addEventListener('click', () => {
+      main.querySelectorAll('.reading-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      playAudio(card.dataset.char);
+    });
+  });
+}
+
+/* ==================== 7. ИГРА u vs ü ==================== */
+function renderUU(main) {
+  const bag = createBag(U_U_DATA);
+  const state = { score: 0, total: 0, current: null, locked: false };
+
+  main.innerHTML = `
+    <div class="panel">
+      <h2>u vs ü</h2>
+      <div class="rule-box">
+        <b>Правило 1:</b> после звуков <b>j, q, x</b> (а также после <b>y</b>) звук <b>ü</b> всегда пишется как <b>u</b> (без точек). Например: <b>ju = jü, qu = qü, xu = xü, yu = yü</b>. Составные финали: <b>jue = jüe, juan = jüan, jun = jün</b>.<br><br>
+        <b>Правило 2:</b> после <b>n</b> и <b>l</b> могут быть как <b>u</b>, так и <b>ü</b> (точки обязательны!). Сравните: <b>nu (努)</b> и <b>nü (女)</b>, <b>lu (路)</b> и <b>lü (绿)</b>.<br><br>
+        <b>Правило 3:</b> после всех остальных инициалей бывает <b>только u</b> (bu, pu, mu, fu, du, tu, gu, ku, hu, zhu, chu, shu, ru, zu, cu, su).
+      </div>
+      
+      <div class="score">Счёт: <span id="score">0</span> / <span id="total">0</span></div>
+      
+      <div class="syll-box">
+        <div id="uu-pinyin" class="syll-pinyin">?</div>
+        <div id="uu-char" class="syll-char"></div>
+        <button id="play-uu" class="speak-btn" style="margin: 0 auto; margin-top: 10px;">🔊 Послушать</button>
+      </div>
+      
+      <div id="options" class="options-grid pairs"></div>
+      <div id="feedback" class="feedback"></div>
+    </div>
+  `;
+
+  function next() {
+    state.locked = false;
+    state.current = bag();
+    
+    main.querySelector('#uu-pinyin').textContent = state.current.syll;
+    main.querySelector('#uu-char').textContent = state.current.char;
+    
+    // Кнопка прослушивания
+    main.querySelector('#play-uu').onclick = () => playAudio(state.current.char);
+    
+    const opts = main.querySelector('#options');
+    opts.innerHTML = state.current.options.map(o => `<button class="option-btn big" data-init="${o}">${o}</button>`).join('');
+    
+    const fb = main.querySelector('#feedback');
+    fb.textContent = ''; fb.className = 'feedback';
+
+    opts.querySelectorAll('.option-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (state.locked) return; state.locked = true;
+        const chosen = btn.dataset.init;
+        state.total++; main.querySelector('#total').textContent = state.total;
+        
+        if (chosen === state.current.correct) {
+          state.score++; main.querySelector('#score').textContent = state.score;
+          fb.innerHTML = `✅ Верно! ${state.current.syll} — финаль <b>${state.current.correct}</b>.
+            ${state.current.hint ? `<div class="hint">${state.current.hint}</div>` : ''}`;
+          fb.className = 'feedback correct';
+          playAudio(state.current.char);
+          setTimeout(next, 2500);
+        } else {
+          fb.innerHTML = `❌ Ошибка. ${state.current.syll} — финаль <b>${state.current.correct}</b>, а не ${chosen}.
+            ${state.current.hint ? `<div class="hint">${state.current.hint}</div>` : ''}`;
+          fb.className = 'feedback wrong';
+          setTimeout(next, 3000);
+        }
+      });
+    });
+  }
+  next();
+}
+
+/* ==================== 8. ИГРА СОКРАЩЕНИЯ ==================== */
+function renderAbbrev(main) {
+  const bag = createBag(ABBREV_DATA);
+  const state = { score: 0, total: 0, current: null, locked: false };
+
+  main.innerHTML = `
+    <div class="panel">
+      <h2>Сокращенные финали</h2>
+      <p class="intro">В пиньине iou, uei и uen сокращаются. Какая полная финаль скрыта в этом слоге?</p>
+      <div class="score">Счёт: <span id="score">0</span> / <span id="total">0</span></div>
+      <div class="syll-box">
+        <div id="abbr-pinyin" class="syll-pinyin">?</div>
+        <div id="abbr-char" class="syll-char"></div>
+      </div>
+      <div id="options" class="options-grid three"></div>
+      <div id="feedback" class="feedback"></div>
+    </div>
+  `;
+
+  function next() {
+    state.locked = false;
+    state.current = bag();
+    
+    main.querySelector('#abbr-pinyin').textContent = state.current.syll;
+    main.querySelector('#abbr-char').textContent = state.current.char;
+    
+    const opts = main.querySelector('#options');
+    opts.innerHTML = state.current.options.map(o => `<button class="option-btn big" data-init="${o}">${o}</button>`).join('');
+    
+    const fb = main.querySelector('#feedback');
+    fb.textContent = ''; fb.className = 'feedback';
+
+    opts.querySelectorAll('.option-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (state.locked) return; state.locked = true;
+        const chosen = btn.dataset.init;
+        state.total++; main.querySelector('#total').textContent = state.total;
+        
+        if (chosen === state.current.full) {
+          state.score++; main.querySelector('#score').textContent = state.score;
+          fb.innerHTML = `✅ Верно! ${state.current.syll} = <b>${state.current.full}</b>.`;
+          fb.className = 'feedback correct';
+          playAudio(state.current.char);
+          setTimeout(next, 1500);
+        } else {
+          fb.innerHTML = `❌ Ошибка. ${state.current.syll} — это сокращение от <b>${state.current.full}</b>.`;
+          fb.className = 'feedback wrong';
+          setTimeout(next, 2500);
+        }
+      });
+    });
+  }
+  next();
+}
+
+render();
+</script>
+</body>
+</html>
