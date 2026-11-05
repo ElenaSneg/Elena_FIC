@@ -1,0 +1,2154 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>汉语 · 拼音 · 中国风</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&family=Playfair+Display:wght@500;700;900&family=Ma+Shan+Zheng&display=swap');
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --red: #D91E36;
+    --red-deep: #A01020;
+    --gold: #E0A82E;
+    --gold-deep: #B8860B;
+    --jade: #0E8A73;
+    --jade-deep: #0A6B58;
+    --paper: #FDF6E8;
+    --ink: #2A2018;
+  }
+
+  body {
+    font-family: 'Nunito', 'Segoe UI', Arial, sans-serif;
+    background:
+      radial-gradient(circle at 15% 15%, rgba(217, 30, 54, 0.05) 0%, transparent 40%),
+      radial-gradient(circle at 85% 85%, rgba(224, 168, 46, 0.05) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(14, 138, 115, 0.04) 0%, transparent 60%),
+      var(--paper);
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(160, 16, 32, 0.04) 1px, transparent 0);
+    background-size: 20px 20px;
+    opacity: 0.6;
+  }
+
+  /* ============ ПЛАВАЮЩАЯ КНОПКА ДОМОЙ ============ */
+  .floating-home {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    z-index: 250;
+    background: linear-gradient(135deg, var(--red) 0%, var(--red-deep) 100%);
+    color: #FFE8B0;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(217, 30, 54, 0.45);
+    transition: 0.25s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+  .floating-home:active { transform: scale(0.9); }
+  .floating-home:hover { transform: scale(1.08); }
+
+  /* ============ ВЕРХНИЙ ОРНАМЕНТ ============ */
+  .top-ornament {
+    width: 100%;
+    height: 55px;
+    background:
+      repeating-linear-gradient(90deg,
+        transparent 0px, transparent 15px,
+        rgba(217, 30, 54, 0.1) 15px, rgba(217, 30, 54, 0.1) 17px),
+      linear-gradient(180deg, rgba(217, 30, 54, 0.06) 0%, transparent 100%);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+  .top-ornament::after {
+    content: '🐉';
+    position: absolute;
+    right: 75px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2.2em;
+    opacity: 0.5;
+  }
+
+  /* ============ ТИТУЛЬНЫЙ ЭКРАН ============ */
+  .title-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 40px 25px;
+    text-align: center;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(217, 30, 54, 0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 100%, rgba(224, 168, 46, 0.1) 0%, transparent 50%),
+      var(--paper);
+    position: relative;
+    z-index: 1;
+  }
+  .title-screen .big-hanzi {
+    font-family: 'Ma Shan Zheng', 'KaiTi', serif;
+    font-size: 8.5em;
+    font-weight: 400;
+    color: var(--red);
+    letter-spacing: 0.08em;
+    line-height: 1;
+    margin-bottom: 5px;
+    text-shadow: 4px 4px 0 rgba(224, 168, 46, 0.4), 0 6px 20px rgba(217, 30, 54, 0.2);
+    position: relative;
+  }
+  .title-screen .big-hanzi::before {
+    content: '🐉';
+    position: absolute;
+    left: -130px;
+    top: 50%;
+    transform: translateY(-50%) scaleX(-1);
+    font-size: 0.4em;
+    opacity: 0.55;
+  }
+  .title-screen .big-hanzi::after {
+    content: '🐉';
+    position: absolute;
+    right: -130px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.4em;
+    opacity: 0.55;
+  }
+  .title-screen .subtitle {
+    font-family: 'Ma Shan Zheng', 'KaiTi', serif;
+    font-size: 1.7em;
+    letter-spacing: 0.7em;
+    color: var(--gold-deep);
+    margin-bottom: 12px;
+    text-shadow: 1px 1px 2px rgba(224, 168, 46, 0.3);
+  }
+  .title-screen .tagline {
+    font-size: 1em;
+    color: #5A4030;
+    margin-bottom: 30px;
+    max-width: 460px;
+    line-height: 1.7;
+    font-weight: 500;
+  }
+
+  .title-nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+    max-width: 720px;
+    width: 100%;
+    margin-top: 15px;
+  }
+  .title-nav-card {
+    background: linear-gradient(145deg, rgba(255,255,255,0.98) 0%, rgba(253,246,232,0.95) 100%);
+    border: 2px solid rgba(224, 168, 46, 0.55);
+    border-radius: 14px;
+    padding: 14px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(160, 16, 32, 0.08);
+  }
+  .title-nav-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(217, 30, 54, 0.22);
+    border-color: var(--red);
+  }
+  .title-nav-card .card-icon {
+    font-size: 1.7em;
+    margin-bottom: 6px;
+    display: block;
+  }
+  .title-nav-card .card-title {
+    font-family: 'Ma Shan Zheng', 'Playfair Display', serif;
+    font-size: 1.05em;
+    color: var(--red-deep);
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .title-nav-card .card-sub {
+    font-size: 0.76em;
+    color: #6A5040;
+    font-weight: 600;
+  }
+
+  .lantern {
+    position: absolute;
+    font-size: 2em;
+    opacity: 0.55;
+    animation: float 6s ease-in-out infinite;
+  }
+  .lantern:nth-child(1) { top: 6%; left: 6%; animation-delay: 0s; }
+  .lantern:nth-child(2) { top: 12%; right: 8%; animation-delay: 1.5s; }
+  .lantern:nth-child(3) { bottom: 10%; left: 9%; animation-delay: 3s; }
+  .lantern:nth-child(4) { bottom: 18%; right: 6%; animation-delay: 4.5s; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50% { transform: translateY(-18px) rotate(3deg); }
+  }
+
+  /* ============ ОСНОВНОЙ КОНТЕЙНЕР ============ */
+  .app { display: none; min-height: 100vh; padding-bottom: 40px; position: relative; z-index: 1; }
+  .app.active { display: block; }
+
+  .tabs-bar {
+    background: rgba(253, 246, 232, 0.97);
+    backdrop-filter: blur(8px);
+    padding: 14px 15px;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(217, 30, 54, 0.1);
+    border-bottom: 2px solid rgba(224, 168, 46, 0.4);
+    scrollbar-width: none;
+  }
+  .tabs-bar::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    flex-shrink: 0;
+    background: transparent;
+    border: 1.5px solid transparent;
+    padding: 9px 15px;
+    border-radius: 20px;
+    font-family: inherit;
+    font-size: 0.88em;
+    color: #6A5040;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { background: rgba(224, 168, 46, 0.18); }
+  .tab-btn.active {
+    background: linear-gradient(135deg, var(--red) 0%, var(--red-deep) 100%);
+    color: #FFE8B0;
+    font-weight: 700;
+    border-color: var(--gold);
+    box-shadow: 0 3px 10px rgba(217, 30, 54, 0.35);
+  }
+
+  .content {
+    max-width: 840px;
+    margin: 0 auto;
+    padding: 25px 20px;
+  }
+
+  .page { display: none; }
+  .page.active { display: block; animation: fadeIn 0.35s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section {
+    background: rgba(255, 255, 255, 0.88);
+    border-radius: 16px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+    border: 1.5px solid rgba(224, 168, 46, 0.4);
+    box-shadow: 0 3px 14px rgba(160, 16, 32, 0.07);
+    position: relative;
+  }
+  .section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 20px; right: 20px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0.6;
+  }
+
+  .section h2 {
+    font-family: 'Playfair Display', 'Ma Shan Zheng', 'Georgia', serif;
+    color: var(--red-deep);
+    font-size: 1.35em;
+    font-weight: 700;
+    margin: 0 0 14px 0;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .section h2 .cn {
+    font-family: 'Ma Shan Zheng', 'KaiTi', serif;
+    font-weight: 400;
+  }
+
+  .section h3 {
+    font-family: 'Playfair Display', 'Ma Shan Zheng', 'Georgia', serif;
+    color: var(--jade-deep);
+    font-size: 1.1em;
+    font-weight: 700;
+    margin: 20px 0 10px 0;
+    padding-bottom: 6px;
+    border-bottom: 2px dashed rgba(14, 138, 115, 0.35);
+  }
+
+  .section p { margin: 8px 0; color: #3A2A1E; font-weight: 500; }
+
+  .nav-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+    gap: 12px;
+    margin: 18px 0;
+  }
+  .nav-card {
+    background: linear-gradient(145deg, rgba(255,255,255,0.98) 0%, rgba(253,246,232,0.92) 100%);
+    border: 2px solid rgba(224, 168, 46, 0.45);
+    border-radius: 16px;
+    padding: 18px 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(160, 16, 32, 0.06);
+  }
+  .nav-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 26px rgba(217, 30, 54, 0.2);
+    border-color: var(--red);
+  }
+  .nav-card .card-icon { font-size: 2em; margin-bottom: 6px; display: block; }
+  .nav-card .card-title {
+    font-family: 'Playfair Display', 'Ma Shan Zheng', serif;
+    font-size: 1.1em;
+    color: var(--red-deep);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .nav-card .card-sub { font-size: 0.8em; color: #6A5040; font-weight: 600; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  th {
+    background: linear-gradient(135deg, rgba(217, 30, 54, 0.15) 0%, rgba(224, 168, 46, 0.15) 100%);
+    color: var(--red-deep);
+    padding: 11px 10px;
+    font-size: 0.9em;
+    font-weight: 800;
+    text-align: left;
+    border-bottom: 2px solid rgba(224, 168, 46, 0.4);
+  }
+  td {
+    padding: 10px 10px;
+    border-bottom: 1px solid rgba(224, 168, 46, 0.18);
+    font-size: 0.95em;
+    color: #2A2018;
+    font-weight: 500;
+  }
+  tr:last-child td { border-bottom: none; }
+
+  .py { font-family: 'Arial', 'Helvetica', sans-serif; font-weight: 700; color: var(--jade-deep); font-size: 1.05em; }
+  .hz { font-family: 'Ma Shan Zheng', 'KaiTi', serif; color: var(--red-deep); font-size: 1.25em; font-weight: 400; }
+  .ru { color: #5A4030; font-size: 0.92em; font-weight: 600; }
+  .muted { color: #8A7060; font-style: italic; font-weight: 500; }
+
+  .example {
+    display: block;
+    margin: 8px 0;
+    padding: 10px 14px;
+    background: rgba(253, 246, 232, 0.75);
+    border-radius: 10px;
+    border-left: 4px solid var(--gold);
+  }
+  .example .ex-hz {
+    font-family: 'Ma Shan Zheng', 'KaiTi', serif;
+    font-size: 1.4em;
+    color: var(--red-deep);
+    display: block;
+    line-height: 1.4;
+  }
+  .example .ex-py {
+    display: block;
+    font-family: 'Arial', sans-serif;
+    font-weight: 700;
+    color: var(--jade-deep);
+    font-size: 0.95em;
+    letter-spacing: 0.03em;
+    margin: 2px 0;
+  }
+  .example .ex-ru {
+    display: block;
+    font-size: 0.9em;
+    color: #4A3528;
+    font-weight: 600;
+  }
+
+  .audio-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-left: 6px;
+    vertical-align: middle;
+    padding: 0;
+    transition: 0.2s;
+    box-shadow: 0 2px 6px rgba(184, 134, 11, 0.4);
+  }
+  .audio-btn:active { transform: scale(0.9); }
+
+  .tone-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin: 12px 0;
+  }
+  .tone-box {
+    background: linear-gradient(145deg, #FFFDF8 0%, #FDF6E8 100%);
+    border: 2px solid rgba(224, 168, 46, 0.55);
+    border-radius: 14px;
+    padding: 14px;
+    text-align: center;
+    transition: 0.3s;
+    box-shadow: 0 2px 8px rgba(160, 16, 32, 0.05);
+  }
+  .tone-box:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(217, 30, 54, 0.15); }
+  .tone-box .label { font-size: 0.85em; color: #6A5040; font-weight: 700; letter-spacing: 0.05em; }
+  .tone-box .py { display: block; font-size: 1.5em; margin: 6px 0; }
+  .tone-box .ru { display: block; font-size: 0.88em; color: #5A4030; font-weight: 600; }
+
+  /* Схема тона */
+  .tone-scheme {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 4px;
+    height: 60px;
+    margin: 8px 0;
+    position: relative;
+  }
+  .tone-scheme .dot {
+    width: 6px; height: 6px;
+    background: var(--jade-deep);
+    border-radius: 50%;
+  }
+
+  .rule {
+    background: linear-gradient(135deg, rgba(253, 246, 232, 0.95) 0%, rgba(255, 253, 248, 0.95) 100%);
+    border-left: 5px solid var(--gold);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    font-size: 0.95em;
+    box-shadow: 0 2px 6px rgba(224, 168, 46, 0.12);
+    color: #2A2018;
+    font-weight: 500;
+  }
+  .rule strong { color: var(--red-deep); font-weight: 800; }
+  .rule em { color: var(--jade-deep); font-style: normal; font-weight: 700; }
+
+  /* ✅/❌ блоки */
+  .cmp-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 14px 0;
+  }
+  .cmp-wrong, .cmp-right {
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-weight: 700;
+    text-align: center;
+  }
+  .cmp-wrong {
+    background: linear-gradient(145deg, #FBE4E0 0%, #F5CCC4 100%);
+    border: 2px solid #C0392B;
+    color: #7A1010;
+  }
+  .cmp-right {
+    background: linear-gradient(145deg, #E1F1D8 0%, #C8E4B8 100%);
+    border: 2px solid #4A8A30;
+    color: #1E4A10;
+  }
+  .cmp-label {
+    font-size: 0.8em;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+    opacity: 0.85;
+  }
+  .cmp-py {
+    font-family: 'Arial', sans-serif;
+    font-size: 1.35em;
+    font-weight: 700;
+    margin: 4px 0;
+  }
+  .cmp-note {
+    font-size: 0.82em;
+    font-weight: 600;
+    opacity: 0.8;
+  }
+
+  .sticker { display: inline-block; font-size: 1.3em; vertical-align: middle; margin: 0 4px; }
+  .sticker-big { display: block; font-size: 2.2em; text-align: center; margin: 8px 0; }
+  .divider-sticker { text-align: center; font-size: 1.5em; margin: 15px 0; opacity: 0.75; letter-spacing: 15px; }
+
+  .game-tabs { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+  .game-tab {
+    background: rgba(253, 246, 232, 0.9);
+    border: 1.5px solid rgba(224, 168, 46, 0.5);
+    padding: 9px 16px;
+    border-radius: 20px;
+    font-family: inherit;
+    font-size: 0.85em;
+    color: #6A5040;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s;
+  }
+  .game-tab.active {
+    background: linear-gradient(135deg, var(--red) 0%, var(--red-deep) 100%);
+    color: #FFE8B0;
+    font-weight: 700;
+    border-color: var(--gold);
+    box-shadow: 0 3px 10px rgba(217, 30, 54, 0.3);
+  }
+
+  .game-area {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 16px;
+    padding: 22px;
+    border: 2px solid rgba(224, 168, 46, 0.45);
+    min-height: 320px;
+    position: relative;
+  }
+  .game-area::before {
+    content: '🐉';
+    position: absolute;
+    bottom: 10px; right: 15px;
+    font-size: 1.8em;
+    opacity: 0.2;
+  }
+
+  .score-line {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 15px;
+    font-size: 0.95em;
+    color: #6A5040;
+    font-weight: 700;
+  }
+
+  .big-py {
+    font-family: 'Arial', sans-serif;
+    font-size: 3.2em;
+    font-weight: 700;
+    color: var(--jade-deep);
+    text-align: center;
+    margin: 25px 0;
+    letter-spacing: 0.05em;
+    text-shadow: 0 2px 8px rgba(14, 138, 115, 0.2);
+  }
+
+  .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+
+  .choice {
+    background: linear-gradient(145deg, #FFFDF8 0%, #FDF6E8 100%);
+    border: 2px solid rgba(224, 168, 46, 0.55);
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    font-size: 1.15em;
+    font-weight: 700;
+    color: var(--jade-deep);
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .choice:active { background: #F0EDE8; transform: scale(0.98); }
+  .choice.correct {
+    background: linear-gradient(145deg, #D8E8D0 0%, #C0D8B8 100%);
+    border-color: #4A8A30;
+    color: #1E4A10;
+  }
+  .choice.wrong {
+    background: linear-gradient(145deg, #F8DED8 0%, #F0C8C0 100%);
+    border-color: #C0392B;
+    color: #7A1010;
+  }
+
+  .listen-big {
+    display: block;
+    margin: 15px auto;
+    background: linear-gradient(135deg, var(--red) 0%, var(--red-deep) 100%);
+    color: #FFE8B0;
+    border: 2px solid var(--gold);
+    border-radius: 30px;
+    padding: 13px 38px;
+    font-size: 1em;
+    font-family: inherit;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: 0 4px 14px rgba(217, 30, 54, 0.3);
+  }
+  .listen-big:active { transform: scale(0.97); }
+
+  .result-msg {
+    text-align: center;
+    font-size: 1.25em;
+    color: var(--red-deep);
+    margin: 15px 0;
+    font-weight: 800;
+    font-family: 'Playfair Display', 'Ma Shan Zheng', serif;
+  }
+
+  .next-btn {
+    display: block;
+    margin: 20px auto 0 auto;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+    color: #FFFFFF;
+    border: 2px solid var(--red);
+    border-radius: 22px;
+    padding: 11px 32px;
+    font-size: 0.95em;
+    font-family: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 3px 12px rgba(184, 134, 11, 0.4);
+  }
+  .next-btn:active { transform: scale(0.97); }
+
+  .note {
+    background: rgba(224, 168, 46, 0.15);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    font-size: 0.93em;
+    color: #4A3528;
+    font-weight: 500;
+    border: 1.5px dashed rgba(224, 168, 46, 0.65);
+  }
+  .note strong { color: var(--red-deep); font-weight: 800; }
+
+  .footer {
+    text-align: center;
+    padding: 30px 15px;
+    color: #7A6050;
+    font-size: 0.9em;
+    letter-spacing: 0.15em;
+    font-weight: 600;
+  }
+  .footer .dragon-line { font-size: 1.4em; opacity: 0.7; margin-bottom: 8px; letter-spacing: 20px; }
+
+  /* Мини-таблица правил чтения */
+  .rules-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .rules-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(253, 246, 232, 0.7);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-weight: 600;
+    flex-wrap: wrap;
+  }
+  .rules-row .arrow { color: var(--gold-deep); font-size: 1.3em; font-weight: 800; }
+  .rules-row .from { font-family: 'Arial', sans-serif; color: #8A7060; font-size: 1.1em; font-weight: 700; }
+  .rules-row .to { font-family: 'Arial', sans-serif; color: var(--red-deep); font-size: 1.15em; font-weight: 800; }
+  .rules-row .ex { color: #4A3528; font-size: 0.9em; font-weight: 600; margin-left: auto; }
+
+  @media (max-width: 600px) {
+    .title-screen .big-hanzi { font-size: 5.5em; }
+    .title-screen .big-hanzi::before, .title-screen .big-hanzi::after { display: none; }
+    .title-screen .subtitle { font-size: 1.2em; letter-spacing: 0.5em; }
+    .title-nav { grid-template-columns: repeat(2, 1fr); }
+    .section { padding: 18px; }
+    .content { padding: 18px 14px; }
+    .big-py { font-size: 2.6em; }
+    th, td { font-size: 0.85em; padding: 8px 6px; }
+    .choices { grid-template-columns: 1fr; }
+    .nav-cards { grid-template-columns: repeat(2, 1fr); }
+    .cmp-block { grid-template-columns: 1fr; }
+    .floating-home { width: 42px; height: 42px; font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================
+     ТИТУЛЬНЫЙ ЭКРАН С НАВИГАЦИЕЙ
+     ============================================ -->
+<div class="title-screen" id="titleScreen">
+  <span class="lantern">🏮</span>
+  <span class="lantern">🏮</span>
+  <span class="lantern">🏮</span>
+  <span class="lantern">🏮</span>
+
+  <div class="big-hanzi">汉语</div>
+  <div class="subtitle">拼音</div>
+  <div class="tagline">🐉 Путь к правильному произношению<br>Инициали · Фина́ли · Тоны · Иероглифы 🀄</div>
+
+  <div class="title-nav">
+    <div class="title-nav-card" onclick="enterAppTo('basics')">
+      <span class="card-icon">📖</span>
+      <div class="card-title">基础</div>
+      <div class="card-sub">Основы</div>
+    </div>
+    <div class="title-nav-card" onclick="enterAppTo('initials')">
+      <span class="card-icon">🔤</span>
+      <div class="card-title">声母</div>
+      <div class="card-sub">Инициали</div>
+    </div>
+    <div class="title-nav-card" onclick="enterAppTo('finals')">
+      <span class="card-icon">🎵</span>
+      <div class="card-title">韵母</div>
+      <div class="card-sub">Фина́ли</div>
+    </div>
+    <div class="title-nav-card" onclick="enterAppTo('rules')">
+      <span class="card-icon">📝</span>
+      <div class="card-title">规则</div>
+      <div class="card-sub">Правила чтения</div>
+    </div>
+    <div class="title-nav-card" onclick="enterAppTo('tones')">
+      <span class="card-icon">🎶</span>
+      <div class="card-title">声调</div>
+      <div class="card-sub">Тоны</div>
+    </div>
+    <div class="title-nav-card" onclick="enterAppTo('changes')">
+      <span class="card-icon">🔄</span>
+      <div class="card-title">变调</div>
+      <div class="card-sub">Изменение тонов</div>
+    </div>
+    <div class="title-nav-card" onclick="enterAppTo('hieroglyphs')">
+      <span class="card-icon">🀄</span>
+      <div class="card-title">汉字</div>
+      <div class="card-sub">Иероглифика</div>
+    </div>
+    <div class="title-nav-card" onclick="enterAppTo('grammar')">
+      <span class="card-icon">📐</span>
+      <div class="card-title">语法</div>
+      <div class="card-sub">Грамматика</div>
+    </div>
+    <div class="title-nav-card" onclick="enterAppTo('games')">
+      <span class="card-icon">🎮</span>
+      <div class="card-title">游戏</div>
+      <div class="card-sub">Игры</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================
+     ОСНОВНОЕ ПРИЛОЖЕНИЕ
+     ============================================ -->
+<div class="app" id="app">
+  <button class="floating-home" onclick="goHome()" title="На главный экран">🏮</button>
+
+  <div class="top-ornament"></div>
+
+  <div class="tabs-bar">
+    <button class="tab-btn active" onclick="showTab('home')">🏠 主页</button>
+    <button class="tab-btn" onclick="showTab('basics')">📖 基础</button>
+    <button class="tab-btn" onclick="showTab('initials')">🔤 声母</button>
+    <button class="tab-btn" onclick="showTab('finals')">🎵 韵母</button>
+    <button class="tab-btn" onclick="showTab('rules')">📝 规则</button>
+    <button class="tab-btn" onclick="showTab('tones')">🎶 声调</button>
+    <button class="tab-btn" onclick="showTab('changes')">🔄 变调</button>
+    <button class="tab-btn" onclick="showTab('hieroglyphs')">🀄 汉字</button>
+    <button class="tab-btn" onclick="showTab('grammar')">📐 语法</button>
+    <button class="tab-btn" onclick="showTab('all')">📚 全部</button>
+    <button class="tab-btn" onclick="showTab('games')">🎮 游戏</button>
+  </div>
+
+  <div class="content">
+
+    <!-- ============ ГЛАВНАЯ ============ -->
+    <div class="page active" id="page-home">
+      <div class="section">
+        <h2>🐉 <span class="cn">汉语 · 拼音</span></h2>
+        <p>Учебный справочник по фонетике китайского языка с озвучкой, теорией и играми.</p>
+        <p>Здесь ты найдёшь всё для правильного произношения: инициали, фина́ли, правила чтения, тоны, иероглифы и основы грамматики.</p>
+      </div>
+
+      <div class="section">
+        <h2>📚 Разделы</h2>
+        <div class="nav-cards">
+          <div class="nav-card" onclick="showTab('basics')">
+            <span class="card-icon">📖</span>
+            <div class="card-title">基础</div>
+            <div class="card-sub">Основы</div>
+          </div>
+          <div class="nav-card" onclick="showTab('initials')">
+            <span class="card-icon">🔤</span>
+            <div class="card-title">声母</div>
+            <div class="card-sub">Инициали</div>
+          </div>
+          <div class="nav-card" onclick="showTab('finals')">
+            <span class="card-icon">🎵</span>
+            <div class="card-title">韵母</div>
+            <div class="card-sub">Фина́ли</div>
+          </div>
+          <div class="nav-card" onclick="showTab('rules')">
+            <span class="card-icon">📝</span>
+            <div class="card-title">规则</div>
+            <div class="card-sub">Правила чтения</div>
+          </div>
+          <div class="nav-card" onclick="showTab('tones')">
+            <span class="card-icon">🎶</span>
+            <div class="card-title">声调</div>
+            <div class="card-sub">Тоны</div>
+          </div>
+          <div class="nav-card" onclick="showTab('changes')">
+            <span class="card-icon">🔄</span>
+            <div class="card-title">变调</div>
+            <div class="card-sub">Изменение тонов</div>
+          </div>
+          <div class="nav-card" onclick="showTab('hieroglyphs')">
+            <span class="card-icon">🀄</span>
+            <div class="card-title">汉字</div>
+            <div class="card-sub">Иероглифика</div>
+          </div>
+          <div class="nav-card" onclick="showTab('grammar')">
+            <span class="card-icon">📐</span>
+            <div class="card-title">语法</div>
+            <div class="card-sub">Грамматика</div>
+          </div>
+          <div class="nav-card" onclick="showTab('games')">
+            <span class="card-icon">🎮</span>
+            <div class="card-title">游戏</div>
+            <div class="card-sub">Игры</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🎯 Как заниматься</h2>
+        <p><span class="sticker">1️⃣</span> Нажми 🔊 рядом с любым слогом — услышишь произношение.</p>
+        <p><span class="sticker">2️⃣</span> Повтори вслух несколько раз, следя за тоном.</p>
+        <p><span class="sticker">3️⃣</span> Изучи теорию по порядку: 基础 → 声母 → 韵母 → 规则 → 声调 → 变调.</p>
+        <p><span class="sticker">4️⃣</span> Затем переходи в «游戏» и проверь себя!</p>
+        <div class="divider-sticker">🐉 🀄 🏮</div>
+      </div>
+    </div>
+
+    <!-- ============ ОСНОВЫ ============ -->
+    <div class="page" id="page-basics">
+      <div class="section">
+        <h2>📖 <span class="cn">基础</span> · Основы китайского языка</h2>
+        <p>Самое важное о фонетике — кратко и понятно.</p>
+      </div>
+
+      <div class="section">
+        <h2>🌏 О китайском языке</h2>
+        <p><strong>Путунхуа</strong> (普通话 <span class="py">pǔtōnghuà</span>) — «всеобщий язык», государственный язык КНР. Основан на пекинском диалекте.</p>
+        <p>В Китае более 200 диалектов, но путунхуа понимают везде. Это язык школ, телевидения и экзамена HSK.</p>
+        <div class="note">
+          <strong>💡 Интересно:</strong> в кантонском диалекте 9 тонов, а в путунхуа — всего 4 (+ нейтральный).
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🧩 Структура слога</h2>
+        <p>Китайский слог — как конструктор из трех частей:</p>
+        <div class="rule">
+          <strong>Слог = Инициаль + Финаль + Тон</strong>
+        </div>
+        <table>
+          <tr><th>Часть</th><th>Что это</th><th>Пример</th></tr>
+          <tr><td><strong>Инициаль</strong> 声母</td><td>Начальный согласный</td><td>в слоге <span class="py">mā</span> — это <span class="py">m</span></td></tr>
+          <tr><td><strong>Финаль</strong> 韵母</td><td>Гласная часть</td><td>в слоге <span class="py">mā</span> — это <span class="py">a</span></td></tr>
+          <tr><td><strong>Тон</strong> 声调</td><td>Мелодия слога</td><td><span class="py">mā</span> (ровный), <span class="py">má</span> (восходящий)</td></tr>
+        </table>
+        <div class="note">
+          <strong>🔢 Цифры:</strong> всего 21 инициаль и 35 финалей. Из них получается около 400 основных слогов.
+        </div>
+        <div class="sticker-big">🐉 🔤 🎵</div>
+      </div>
+
+      <div class="section">
+        <h2>🔤 Инициали и фина́ли — кратко</h2>
+        <h3>Инициали (21)</h3>
+        <table>
+          <tr><th>Группа</th><th>Инициали</th><th>Особенность</th></tr>
+          <tr><td>Губные</td><td class="py">b p m f</td><td>Работают губы</td></tr>
+          <tr><td>Переднеязычные</td><td class="py">d t n l</td><td>Кончик языка у зубов</td></tr>
+          <tr><td>Заднеязычные</td><td class="py">g k h</td><td>Корень языка</td></tr>
+          <tr><td>Мягкие</td><td class="py">j q x</td><td>Кончик языка внизу</td></tr>
+          <tr><td>Шипящие</td><td class="py">zh ch sh r</td><td>Язык загнут назад</td></tr>
+          <tr><td>Свистящие</td><td class="py">z c s</td><td>Кончик языка у зубов</td></tr>
+        </table>
+        <div class="rule">
+          <strong>💨 Придыхание — важно!</strong> Пары <em>b-p, d-t, g-k, j-q, zh-ch, z-c</em> различаются только выдохом.
+        </div>
+
+        <h3>Фина́ли (35)</h3>
+        <table>
+          <tr><th>Тип</th><th>Примеры</th></tr>
+          <tr><td>Простые</td><td class="py">a o e i u ü</td></tr>
+          <tr><td>Сложные</td><td class="py">ai ei ao ou ia ie ua uo üe iao iou uai uei</td></tr>
+          <tr><td>Носовые</td><td class="py">an en in ün ang eng ing ong</td></tr>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>🔑 Правило: i = ы</h2>
+        <div class="rule">
+          После <strong>z, c, s, zh, ch, sh, r</strong> буква <strong>i</strong> читается как <strong>«ы»</strong>.<br>
+          После остальных согласных — обычное «и».
+        </div>
+        <table>
+          <tr><th>Слог</th><th>Читается</th><th>Пример</th></tr>
+          <tr><td class="py">zi</td><td><strong>цзы</strong></td><td>字 zì (иероглиф) <button class="audio-btn" onclick="playAudio('字')">🔊</button></td></tr>
+          <tr><td class="py">ci</td><td><strong>цхы</strong></td><td>次 cì (раз) <button class="audio-btn" onclick="playAudio('次')">🔊</button></td></tr>
+          <tr><td class="py">si</td><td><strong>сы</strong></td><td>四 sì (четыре) <button class="audio-btn" onclick="playAudio('四')">🔊</button></td></tr>
+          <tr><td class="py">zhi</td><td><strong>джы</strong></td><td>知 zhī (знать) <button class="audio-btn" onclick="playAudio('知')">🔊</button></td></tr>
+          <tr><td class="py">chi</td><td><strong>чхы</strong></td><td>吃 chī (есть) <button class="audio-btn" onclick="playAudio('吃')">🔊</button></td></tr>
+          <tr><td class="py">shi</td><td><strong>шы</strong></td><td>是 shì (быть) <button class="audio-btn" onclick="playAudio('是')">🔊</button></td></tr>
+          <tr><td class="py">ri</td><td><strong>жы</strong></td><td>日 rì (день) <button class="audio-btn" onclick="playAudio('日')">🔊</button></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============ ИНИЦИАЛИ ============ -->
+    <div class="page" id="page-initials">
+      <div class="section">
+        <h2>🔤 <span class="cn">声母</span> · Инициали</h2>
+        <p>21 согласный. Каждый стоит в начале слога.</p>
+      </div>
+
+      <div class="section">
+        <h3>1. Губные</h3>
+        <table>
+          <tr><th>Слог</th><th>Звук</th><th>Пример</th></tr>
+          <tr><td class="py">b</td><td>как «б»</td><td>bā <span class="hz">八</span> (восемь) <button class="audio-btn" onclick="playAudio('八')">🔊</button></td></tr>
+          <tr><td class="py">p</td><td>как «пх» с выдохом</td><td>pā <span class="hz">趴</span> <button class="audio-btn" onclick="playAudio('趴')">🔊</button></td></tr>
+          <tr><td class="py">m</td><td>как «м»</td><td>mā <span class="hz">妈</span> (мама) <button class="audio-btn" onclick="playAudio('妈')">🔊</button></td></tr>
+          <tr><td class="py">f</td><td>как «ф»</td><td>fàn <span class="hz">饭</span> (еда) <button class="audio-btn" onclick="playAudio('饭')">🔊</button></td></tr>
+        </table>
+
+        <h3>2. Переднеязычные</h3>
+        <table>
+          <tr><td class="py">d</td><td>как «д»</td><td>dà <span class="hz">大</span> (большой) <button class="audio-btn" onclick="playAudio('大')">🔊</button></td></tr>
+          <tr><td class="py">t</td><td>как «тх» с выдохом</td><td>tā <span class="hz">他</span> (он) <button class="audio-btn" onclick="playAudio('他')">🔊</button></td></tr>
+          <tr><td class="py">n</td><td>как «н»</td><td>nǐ <span class="hz">你</span> (ты) <button class="audio-btn" onclick="playAudio('你')">🔊</button></td></tr>
+          <tr><td class="py">l</td><td>как «л»</td><td>lǎo <span class="hz">老</span> (старый) <button class="audio-btn" onclick="playAudio('老')">🔊</button></td></tr>
+        </table>
+
+        <h3>3. Заднеязычные</h3>
+        <table>
+          <tr><td class="py">g</td><td>как «г»</td><td>gē <span class="hz">哥</span> (брат) <button class="audio-btn" onclick="playAudio('哥')">🔊</button></td></tr>
+          <tr><td class="py">k</td><td>как «кх» с выдохом</td><td>kàn <span class="hz">看</span> (смотреть) <button class="audio-btn" onclick="playAudio('看')">🔊</button></td></tr>
+          <tr><td class="py">h</td><td>как «х»</td><td>hǎo <span class="hz">好</span> (хорошо) <button class="audio-btn" onclick="playAudio('好')">🔊</button></td></tr>
+        </table>
+
+        <h3>4. Мягкие (j, q, x)</h3>
+        <table>
+          <tr><td class="py">j</td><td>мягкое «дз»</td><td>jiā <span class="hz">家</span> (дом) <button class="audio-btn" onclick="playAudio('家')">🔊</button></td></tr>
+          <tr><td class="py">q</td><td>мягкое «ц» с выдохом</td><td>qù <span class="hz">去</span> (идти) <button class="audio-btn" onclick="playAudio('去')">🔊</button></td></tr>
+          <tr><td class="py">x</td><td>мягкое «с»</td><td>xiè <span class="hz">谢</span> (спасибо) <button class="audio-btn" onclick="playAudio('谢')">🔊</button></td></tr>
+        </table>
+
+        <h3>5. Шипящие (zh, ch, sh, r)</h3>
+        <table>
+          <tr><td class="py">zh</td><td>твёрдое «дж»</td><td>zhōng <span class="hz">中</span> (середина) <button class="audio-btn" onclick="playAudio('中')">🔊</button></td></tr>
+          <tr><td class="py">ch</td><td>твёрдое «ч» с выдохом</td><td>chī <span class="hz">吃</span> (есть) <button class="audio-btn" onclick="playAudio('吃')">🔊</button></td></tr>
+          <tr><td class="py">sh</td><td>твёрдое «ш»</td><td>shū <span class="hz">书</span> (книга) <button class="audio-btn" onclick="playAudio('书')">🔊</button></td></tr>
+          <tr><td class="py">r</td><td>между «ж» и «р»</td><td>rén <span class="hz">人</span> (человек) <button class="audio-btn" onclick="playAudio('人')">🔊</button></td></tr>
+        </table>
+
+        <h3>6. Свистящие (z, c, s)</h3>
+        <table>
+          <tr><td class="py">z</td><td>как «цз»</td><td>zài <span class="hz">再</span> (снова) <button class="audio-btn" onclick="playAudio('再')">🔊</button></td></tr>
+          <tr><td class="py">c</td><td>как «цх» с выдохом</td><td>cài <span class="hz">菜</span> (блюдо) <button class="audio-btn" onclick="playAudio('菜')">🔊</button></td></tr>
+          <tr><td class="py">s</td><td>как «с»</td><td>sān <span class="hz">三</span> (три) <button class="audio-btn" onclick="playAudio('三')">🔊</button></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============ ФИНАЛИ ============ -->
+    <div class="page" id="page-finals">
+      <div class="section">
+        <h2>🎵 <span class="cn">韵母</span> · Фина́ли</h2>
+        <p>Гласная часть слога. Простые, сложные и носовые.</p>
+      </div>
+
+      <div class="section">
+        <h3>Простые фина́ли (6)</h3>
+        <table>
+          <tr><th>Финаль</th><th>Как читается</th><th>Пример</th></tr>
+          <tr><td class="py">a</td><td>как «а»</td><td>bā <span class="hz">八</span> <button class="audio-btn" onclick="playAudio('八')">🔊</button></td></tr>
+          <tr><td class="py">o</td><td>как «о»</td><td>wǒ <span class="hz">我</span> <button class="audio-btn" onclick="playAudio('我')">🔊</button></td></tr>
+          <tr><td class="py">e</td><td>между «э» и «ы»</td><td>hē <span class="hz">喝</span> <button class="audio-btn" onclick="playAudio('喝')">🔊</button></td></tr>
+          <tr><td class="py">i</td><td>как «и»</td><td>nǐ <span class="hz">你</span> <button class="audio-btn" onclick="playAudio('你')">🔊</button></td></tr>
+          <tr><td class="py">u</td><td>как «у»</td><td>bù <span class="hz">不</span> <button class="audio-btn" onclick="playAudio('不')">🔊</button></td></tr>
+          <tr><td class="py">ü</td><td>губы «у», язык «и»</td><td>nǚ <span class="hz">女</span> <button class="audio-btn" onclick="playAudio('女')">🔊</button></td></tr>
+        </table>
+      </div>
+
+      <div class="section">
+        <h3>Дифтонги и трифтонги</h3>
+        <table>
+          <tr><th>Финаль</th><th>Читается</th><th>Пример</th></tr>
+          <tr><td class="py">ai</td><td>«ай»</td><td>lái <span class="hz">来</span> <button class="audio-btn" onclick="playAudio('来')">🔊</button></td></tr>
+          <tr><td class="py">ei</td><td>«эй»</td><td>bēi <span class="hz">杯</span> <button class="audio-btn" onclick="playAudio('杯')">🔊</button></td></tr>
+          <tr><td class="py">ao</td><td>«ао»</td><td>hǎo <span class="hz">好</span> <button class="audio-btn" onclick="playAudio('好')">🔊</button></td></tr>
+          <tr><td class="py">ou</td><td>«оу»</td><td>dōu <span class="hz">都</span> <button class="audio-btn" onclick="playAudio('都')">🔊</button></td></tr>
+          <tr><td class="py">ia</td><td>«я»</td><td>jiā <span class="hz">家</span> <button class="audio-btn" onclick="playAudio('家')">🔊</button></td></tr>
+          <tr><td class="py">ie</td><td>«е»</td><td>xiè <span class="hz">谢</span> <button class="audio-btn" onclick="playAudio('谢')">🔊</button></td></tr>
+          <tr><td class="py">iao</td><td>«яо»</td><td>xiǎo <span class="hz">小</span> <button class="audio-btn" onclick="playAudio('小')">🔊</button></td></tr>
+          <tr><td class="py">iu</td><td>«йоу» (сокращ. iou)</td><td>liù <span class="hz">六</span> <button class="audio-btn" onclick="playAudio('六')">🔊</button></td></tr>
+          <tr><td class="py">ua</td><td>«уа»</td><td>huā <span class="hz">花</span> <button class="audio-btn" onclick="playAudio('花')">🔊</button></td></tr>
+          <tr><td class="py">uo</td><td>«уо»</td><td>guó <span class="hz">国</span> <button class="audio-btn" onclick="playAudio('国')">🔊</button></td></tr>
+          <tr><td class="py">uai</td><td>«уай»</td><td>kuài <span class="hz">快</span> <button class="audio-btn" onclick="playAudio('快')">🔊</button></td></tr>
+          <tr><td class="py">ui</td><td>«уэй» (сокращ. uei)</td><td>guì <span class="hz">贵</span> <button class="audio-btn" onclick="playAudio('贵')">🔊</button></td></tr>
+          <tr><td class="py">üe</td><td>«юэ»</td><td>xué <span class="hz">学</span> <button class="audio-btn" onclick="playAudio('学')">🔊</button></td></tr>
+        </table>
+      </div>
+
+      <div class="section">
+        <h3>Носовые фина́ли</h3>
+        <table>
+          <tr><th>Финаль</th><th>Читается</th><th>Пример</th></tr>
+          <tr><td class="py">an</td><td>«ань»</td><td>sān <span class="hz">三</span> <button class="audio-btn" onclick="playAudio('三')">🔊</button></td></tr>
+          <tr><td class="py">en</td><td>«энь»</td><td>rén <span class="hz">人</span> <button class="audio-btn" onclick="playAudio('人')">🔊</button></td></tr>
+          <tr><td class="py">in</td><td>«инь»</td><td>xīn <span class="hz">心</span> <button class="audio-btn" onclick="playAudio('心')">🔊</button></td></tr>
+          <tr><td class="py">un</td><td>«унь» (сокращ. uen)</td><td>lún <span class="hz">轮</span> <button class="audio-btn" onclick="playAudio('轮')">🔊</button></td></tr>
+          <tr><td class="py">ün</td><td>«юнь»</td><td>jūn <span class="hz">军</span> <button class="audio-btn" onclick="playAudio('军')">🔊</button></td></tr>
+          <tr><td class="py">ang</td><td>«ан» в нос</td><td>máng <span class="hz">忙</span> <button class="audio-btn" onclick="playAudio('忙')">🔊</button></td></tr>
+          <tr><td class="py">eng</td><td>«эн» в нос</td><td>lěng <span class="hz">冷</span> <button class="audio-btn" onclick="playAudio('冷')">🔊</button></td></tr>
+          <tr><td class="py">ing</td><td>«ин» в нос</td><td>míng <span class="hz">明</span> <button class="audio-btn" onclick="playAudio('明')">🔊</button></td></tr>
+          <tr><td class="py">ong</td><td>«ун» в нос</td><td>dōng <span class="hz">东</span> <button class="audio-btn" onclick="playAudio('东')">🔊</button></td></tr>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>👂 Различай -n и -ng</h2>
+        <table>
+          <tr><th>-n (переднеязычный)</th><th>-ng (заднеязычный)</th></tr>
+          <tr><td>an <button class="audio-btn" onclick="playAudio('安')">🔊</button></td><td>ang <button class="audio-btn" onclick="playAudio('昂')">🔊</button></td></tr>
+          <tr><td>ban <span class="ru">班</span> <button class="audio-btn" onclick="playAudio('班')">🔊</button></td><td>bang <span class="ru">帮</span> <button class="audio-btn" onclick="playAudio('帮')">🔊</button></td></tr>
+          <tr><td>ben <span class="ru">本</span> <button class="audio-btn" onclick="playAudio('本')">🔊</button></td><td>beng <span class="ru">崩</span> <button class="audio-btn" onclick="playAudio('崩')">🔊</button></td></tr>
+          <tr><td>bin <span class="ru">宾</span> <button class="audio-btn" onclick="playAudio('宾')">🔊</button></td><td>bing <span class="ru">冰</span> <button class="audio-btn" onclick="playAudio('冰')">🔊</button></td></tr>
+          <tr><td>fan <span class="ru">饭</span> <button class="audio-btn" onclick="playAudio('饭')">🔊</button></td><td>fang <span class="ru">房</span> <button class="audio-btn" onclick="playAudio('房')">🔊</button></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============ ПРАВИЛА ЧТЕНИЯ ============ -->
+    <div class="page" id="page-rules">
+      <div class="section">
+        <h2>📝 <span class="cn">拼音规则</span> · Правила чтения</h2>
+        <p>Как записываются слоги, если нет инициали, и как сокращаются некоторые финали.</p>
+      </div>
+
+      <!-- Правило 1 -->
+      <div class="section">
+        <h2>1. Нет инициали, финаль <span class="py">i</span></h2>
+        <div class="rule">
+          Если слог состоит только из <strong>i</strong> → пишется как <strong>yi</strong>.
+        </div>
+        <div class="rules-grid">
+          <div class="rules-row"><span class="from">i</span><span class="arrow">→</span><span class="to">yi</span><span class="ex">yī <span class="hz">一</span> один <button class="audio-btn" onclick="playAudio('一')">🔊</button></span></div>
+        </div>
+      </div>
+
+      <!-- Правило 2 -->
+      <div class="section">
+        <h2>2. Нет инициали, финаль начинается на <span class="py">i</span></h2>
+        <div class="rule">
+          Буква <strong>i</strong> меняется на <strong>y</strong>.
+        </div>
+        <div class="rules-grid">
+          <div class="rules-row"><span class="from">ia</span><span class="arrow">→</span><span class="to">ya</span><span class="ex">yā <span class="hz">鸭</span> утка <button class="audio-btn" onclick="playAudio('鸭')">🔊</button></span></div>
+          <div class="rules-row"><span class="from">ie</span><span class="arrow">→</span><span class="to">ye</span><span class="ex">yè <span class="hz">叶</span> лист <button class="audio-btn" onclick="playAudio('叶')">🔊</button></span></div>
+          <div class="rules-row"><span class="from">iao</span><span class="arrow">→</span><span class="to">yao</span><span class="ex">yào <span class="hz">药</span> лекарство <button class="audio-btn" onclick="playAudio('药')">🔊</button></span></div>
+          <div class="rules-row"><span class="from">iou</span><span class="arrow">→</span><span class="to">you</span><span class="ex">yǒu <span class="hz">有</span> иметь <button class="audio-btn" onclick="playAudio('有')">🔊</button></span></div>
+        </div>
+      </div>
+
+      <!-- Правило 3 -->
+      <div class="section">
+        <h2>3. Нет инициали, финаль <span class="py">u</span></h2>
+        <div class="rule">
+          Если слог состоит только из <strong>u</strong> → пишется как <strong>wu</strong>.
+        </div>
+        <div class="rules-grid">
+          <div class="rules-row"><span class="from">u</span><span class="arrow">→</span><span class="to">wu</span><span class="ex">wǔ <span class="hz">五</span> пять <button class="audio-btn" onclick="playAudio('五')">🔊</button></span></div>
+        </div>
+      </div>
+
+      <!-- Правило 4 -->
+      <div class="section">
+        <h2>4. Нет инициали, финаль начинается на <span class="py">u</span></h2>
+        <div class="rule">
+          Буква <strong>u</strong> меняется на <strong>w</strong>.
+        </div>
+        <div class="rules-grid">
+          <div class="rules-row"><span class="from">ua</span><span class="arrow">→</span><span class="to">wa</span><span class="ex">wā <span class="hz">蛙</span> лягушка <button class="audio-btn" onclick="playAudio('蛙')">🔊</button></span></div>
+          <div class="rules-row"><span class="from">uo</span><span class="arrow">→</span><span class="to">wo</span><span class="ex">wǒ <span class="hz">我</span> я <button class="audio-btn" onclick="playAudio('我')">🔊</button></span></div>
+          <div class="rules-row"><span class="from">uai</span><span class="arrow">→</span><span class="to">wai</span><span class="ex">wài <span class="hz">外</span> снаружи <button class="audio-btn" onclick="playAudio('外')">🔊</button></span></div>
+          <div class="rules-row"><span class="from">uei</span><span class="arrow">→</span><span class="to">wei</span><span class="ex">wèi <span class="hz">喂</span> алло <button class="audio-btn" onclick="playAudio('喂')">🔊</button></span></div>
+          <div class="rules-row"><span class="from">uan</span><span class="arrow">→</span><span class="to">wan</span><span class="ex">wān <span class="hz">弯</span> изгиб <button class="audio-btn" onclick="playAudio('弯')">🔊</button></span></div>
+          <div class="rules-row"><span class="from">uen</span><span class="arrow">→</span><span class="to">wen</span><span class="ex">wén <span class="hz">文</span> язык <button class="audio-btn" onclick="playAudio('文')">🔊</button></span></div>
+        </div>
+      </div>
+
+      <!-- Правило 5 -->
+      <div class="section">
+        <h2>5. Нет инициали, финаль <span class="py">ü</span></h2>
+        <div class="rule">
+          Буква <strong>ü</strong> меняется на <strong>yu</strong>.
+        </div>
+        <div class="rules-grid">
+          <div class="rules-row"><span class="from">ü</span><span class="arrow">→</span><span class="to">yu</span><span class="ex">yú <span class="hz">鱼</span> рыба <button class="audio-btn" onclick="playAudio('鱼')">🔊</button></span></div>
+          <div class="rules-row"><span class="from">üe</span><span class="arrow">→</span><span class="to">yue</span><span class="ex">yuè <span class="hz">月</span> луна <button class="audio-btn" onclick="playAudio('月')">🔊</button></span></div>
+          <div class="rules-row"><span class="from">üan</span><span class="arrow">→</span><span class="to">yuan</span><span class="ex">yuǎn <span class="hz">远</span> далёкий <button class="audio-btn" onclick="playAudio('远')">🔊</button></span></div>
+          <div class="rules-row"><span class="from">ün</span><span class="arrow">→</span><span class="to">yun</span><span class="ex">yún <span class="hz">云</span> облако <button class="audio-btn" onclick="playAudio('云')">🔊</button></span></div>
+        </div>
+      </div>
+
+      <!-- Правило 6 -->
+      <div class="section">
+        <h2>6. После j, q, x — <span class="py">ü → u</span></h2>
+        <div class="rule">
+          После инициалей <strong>j, q, x</strong> финаль <strong>ü</strong> пишется как <strong>u</strong> (но читается всё равно «ü»!).
+        </div>
+        <div class="rules-grid">
+          <div class="rules-row"><span class="from">jü</span><span class="arrow">→</span><span class="to">ju</span><span class="ex">jū <span class="hz">居</span> жить <button class="audio-btn" onclick="playAudio('居')">🔊</button></span></div>
+          <div class="rules-row"><span class="from">qü</span><span class="arrow">→</span><span class="to">qu</span><span class="ex">qù <span class="hz">去</span> идти <button class="audio-btn" onclick="playAudio('去')">🔊</button></span></div>
+          <div class="rules-row"><span class="from">xü</span><span class="arrow">→</span><span class="to">xu</span><span class="ex">xū <span class="hz">需</span> нужно <button class="audio-btn" onclick="playAudio('需')">🔊</button></span></div>
+          <div class="rules-row"><span class="from">jün</span><span class="arrow">→</span><span class="to">jun</span><span class="ex">jūn <span class="hz">军</span> армия <button class="audio-btn" onclick="playAudio('军')">🔊</button></span></div>
+          <div class="rules-row"><span class="from">jüe</span><span class="arrow">→</span><span class="to">jue</span><span class="ex">jué <span class="hz">觉</span> чувствовать <button class="audio-btn" onclick="playAudio('觉')">🔊</button></span></div>
+        </div>
+      </div>
+
+      <!-- Правило 7 -->
+      <div class="section">
+        <h2>7. ⭐ Сокращённые фина́ли</h2>
+        <div class="rule">
+          Три трифтонга <strong>сокращаются</strong>, когда стоят после инициали:
+        </div>
+        <table>
+          <tr><th>Полная форма</th><th>Сокращённая</th><th>Пример</th></tr>
+          <tr>
+            <td class="py">iou</td>
+            <td class="py" style="color:var(--red-deep);font-size:1.2em;">iu</td>
+            <td>jiū <span class="hz">九</span> девять <button class="audio-btn" onclick="playAudio('九')">🔊</button></td>
+          </tr>
+          <tr>
+            <td class="py">uei</td>
+            <td class="py" style="color:var(--red-deep);font-size:1.2em;">ui</td>
+            <td>guì <span class="hz">贵</span> дорогой <button class="audio-btn" onclick="playAudio('贵')">🔊</button></td>
+          </tr>
+          <tr>
+            <td class="py">uen</td>
+            <td class="py" style="color:var(--red-deep);font-size:1.2em;">un</td>
+            <td>lún <span class="hz">轮</span> колесо <button class="audio-btn" onclick="playAudio('轮')">🔊</button></td>
+          </tr>
+        </table>
+        <div class="note">
+          <strong>💡 Запомни:</strong> полная форма пишется только когда нет инициали (you, wei, wen), а с инициалью — сокращённая (jiu, gui, lun).
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🎯 Итоговая таблица</h2>
+        <table>
+          <tr><th>Правило</th><th>Что происходит</th></tr>
+          <tr><td>Нет инициали + i</td><td>i → <strong>yi</strong></td></tr>
+          <tr><td>Нет инициали + i-</td><td>i- → <strong>y-</strong></td></tr>
+          <tr><td>Нет инициали + u</td><td>u → <strong>wu</strong></td></tr>
+          <tr><td>Нет инициали + u-</td><td>u- → <strong>w-</strong></td></tr>
+          <tr><td>Нет инициали + ü</td><td>ü → <strong>yu</strong></td></tr>
+          <tr><td>После j/q/x + ü</td><td>ü → <strong>u</strong> (пишется)</td></tr>
+          <tr><td>iou, uei, uen после инициали</td><td>→ <strong>iu, ui, un</strong></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============ ТОНЫ ============ -->
+    <div class="page" id="page-tones">
+      <div class="section">
+        <h2>🎶 <span class="cn">声调</span> · Тоны</h2>
+        <p>Тон — это музыкальная мелодия слога. В путунхуа их 4 + нейтральный.</p>
+      </div>
+
+      <div class="section">
+        <h2>Что такое тон?</h2>
+        <p>Один и тот же слог <span class="py">ma</span>, произнесённый с разной мелодией, даёт <strong>разные слова</strong>:</p>
+        <table>
+          <tr><th>Тон</th><th>Слог</th><th>Иероглиф</th><th>Значение</th><th>🔊</th></tr>
+          <tr><td>1-й</td><td class="py">mā</td><td class="hz">妈</td><td>мама</td><td><button class="audio-btn" onclick="playAudio('妈')">🔊</button></td></tr>
+          <tr><td>2-й</td><td class="py">má</td><td class="hz">麻</td><td>лён</td><td><button class="audio-btn" onclick="playAudio('麻')">🔊</button></td></tr>
+          <tr><td>3-й</td><td class="py">mǎ</td><td class="hz">马</td><td>лошадь</td><td><button class="audio-btn" onclick="playAudio('马')">🔊</button></td></tr>
+          <tr><td>4-й</td><td class="py">mà</td><td class="hz">骂</td><td>ругать</td><td><button class="audio-btn" onclick="playAudio('骂')">🔊</button></td></tr>
+          <tr><td>нейтр.</td><td class="py">ma</td><td class="hz">吗</td><td>вопрос. частица</td><td><button class="audio-btn" onclick="playAudio('吗')">🔊</button></td></tr>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>4 тона — подробно</h2>
+
+        <h3>1-й тон ˉ (ровный, высокий)</h3>
+        <p>Голос звучит <strong>высоко и ровно</strong>, как долгий гудок. Никаких изгибов.</p>
+        <div class="tone-box" style="max-width:280px;margin:10px auto;">
+          <span class="py" style="font-size:1.6em;">mā <span class="hz">妈</span></span>
+          <div class="ru">ровный, высокий</div>
+          <button class="audio-btn" onclick="playAudio('妈')">🔊</button>
+        </div>
+
+        <h3>2-й тон ˊ (восходящий)</h3>
+        <p>Голос идёт <strong>снизу вверх</strong>, как при удивлённом «Что?».</p>
+        <div class="tone-box" style="max-width:280px;margin:10px auto;">
+          <span class="py" style="font-size:1.6em;">má <span class="hz">麻</span></span>
+          <div class="ru">восходящий</div>
+          <button class="audio-btn" onclick="playAudio('麻')">🔊</button>
+        </div>
+
+        <h3>3-й тон ˇ (нисходяще-восходящий)</h3>
+        <p>Самый сложный. Голос сначала <strong>опускается вниз</strong>, а потом <strong>поднимается</strong>. Похоже на глубокий вздох.</p>
+        <div class="tone-box" style="max-width:280px;margin:10px auto;">
+          <span class="py" style="font-size:1.6em;">mǎ <span class="hz">马</span></span>
+          <div class="ru">нисходяще-восходящий</div>
+          <button class="audio-btn" onclick="playAudio('马')">🔊</button>
+        </div>
+
+        <h3>4-й тон ˋ (нисходящий)</h3>
+        <p>Резкий <strong>удар голосом сверху вниз</strong>, как строгий приказ.</p>
+        <div class="tone-box" style="max-width:280px;margin:10px auto;">
+          <span class="py" style="font-size:1.6em;">mà <span class="hz">骂</span></span>
+          <div class="ru">нисходящий</div>
+          <button class="audio-btn" onclick="playAudio('骂')">🔊</button>
+        </div>
+
+        <h3>Нейтральный тон (без знака)</h3>
+        <p>Произносится <strong>легко, коротко</strong>, без ударения. Часто встречается во втором слоге слова.</p>
+        <div class="tone-box" style="max-width:280px;margin:10px auto;">
+          <span class="py" style="font-size:1.6em;">ma <span class="hz">吗</span></span>
+          <div class="ru">нейтральный</div>
+          <button class="audio-btn" onclick="playAudio('吗')">🔊</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Примеры на разные слоги</h2>
+        <table>
+          <tr><th>Тон</th><th>ba</th><th>shi</th><th>qing</th></tr>
+          <tr>
+            <td>1-й</td>
+            <td>bā <span class="hz">八</span> <button class="audio-btn" onclick="playAudio('八')">🔊</button></td>
+            <td>shī <span class="hz">诗</span> <button class="audio-btn" onclick="playAudio('诗')">🔊</button></td>
+            <td>qīng <span class="hz">清</span> <button class="audio-btn" onclick="playAudio('清')">🔊</button></td>
+          </tr>
+          <tr>
+            <td>2-й</td>
+            <td>bá <span class="hz">拔</span> <button class="audio-btn" onclick="playAudio('拔')">🔊</button></td>
+            <td>shí <span class="hz">十</span> <button class="audio-btn" onclick="playAudio('十')">🔊</button></td>
+            <td>qíng <span class="hz">情</span> <button class="audio-btn" onclick="playAudio('情')">🔊</button></td>
+          </tr>
+          <tr>
+            <td>3-й</td>
+            <td>bǎ <span class="hz">把</span> <button class="audio-btn" onclick="playAudio('把')">🔊</button></td>
+            <td>shǐ <span class="hz">史</span> <button class="audio-btn" onclick="playAudio('史')">🔊</button></td>
+            <td>qǐng <span class="hz">请</span> <button class="audio-btn" onclick="playAudio('请')">🔊</button></td>
+          </tr>
+          <tr>
+            <td>4-й</td>
+            <td>bà <span class="hz">爸</span> <button class="audio-btn" onclick="playAudio('爸')">🔊</button></td>
+            <td>shì <span class="hz">是</span> <button class="audio-btn" onclick="playAudio('是')">🔊</button></td>
+            <td>qìng <span class="hz">庆</span> <button class="audio-btn" onclick="playAudio('庆')">🔊</button></td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>🎼 Как обозначается тон</h2>
+        <p>Тон в пиньине обозначается <strong>диакритическим знаком</strong> над главной гласной:</p>
+        <table>
+          <tr><th>Тон</th><th>Знак</th><th>Пример</th></tr>
+          <tr><td>1-й</td><td>ˉ (черта)</td><td class="py">mā, bā, shī</td></tr>
+          <tr><td>2-й</td><td>ˊ (акут)</td><td class="py">má, bá, shí</td></tr>
+          <tr><td>3-й</td><td>ˇ (галочка)</td><td class="py">mǎ, bǎ, shǐ</td></tr>
+          <tr><td>4-й</td><td>ˋ (гравис)</td><td class="py">mà, bà, shì</td></tr>
+          <tr><td>Нейтральный</td><td>без знака</td><td class="py">ma, ba, shi</td></tr>
+        </table>
+        <div class="note">
+          <strong>💡 Если в слоге несколько гласных</strong> — знак ставится над «главной»: <br>
+          <span class="py">hǎo</span> (знак на a), <span class="py">guó</span> (знак на o), <span class="py">liù</span> (знак на u).
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ ИЗМЕНЕНИЕ ТОНОВ ============ -->
+    <div class="page" id="page-changes">
+      <div class="section">
+        <h2>🔄 <span class="cn">变调</span> · Изменение тонов</h2>
+        <p>В потоке речи тоны иногда меняются. Вот 3 главных правила.</p>
+      </div>
+
+      <div class="section">
+        <h2>Правило 1. Два 3-х тона подряд</h2>
+        <p>Когда рядом стоят два 3-х тона, первый читается <strong>2-м тоном</strong>.</p>
+        <div class="cmp-block">
+          <div class="cmp-wrong">
+            <div class="cmp-label">❌ НЕПРАВИЛЬНО</div>
+            <div class="cmp-py">nǐ hǎo</div>
+            <div class="cmp-note">как написано — звучит неестественно</div>
+          </div>
+          <div class="cmp-right">
+            <div class="cmp-label">✅ ПРАВИЛЬНО</div>
+            <div class="cmp-py">ní hǎo</div>
+            <div class="cmp-note">первый тон меняется на 2-й <button class="audio-btn" onclick="playAudio('你好')">🔊</button></div>
+          </div>
+        </div>
+        <h3>Ещё примеры</h3>
+        <div class="cmp-block">
+          <div class="cmp-wrong">
+            <div class="cmp-label">❌ НЕПРАВИЛЬНО</div>
+            <div class="cmp-py">hěn hǎo</div>
+          </div>
+          <div class="cmp-right">
+            <div class="cmp-label">✅ ПРАВИЛЬНО</div>
+            <div class="cmp-py">hén hǎo <button class="audio-btn" onclick="playAudio('很好')">🔊</button></div>
+          </div>
+        </div>
+        <div class="cmp-block">
+          <div class="cmp-wrong">
+            <div class="cmp-label">❌ НЕПРАВИЛЬНО</div>
+            <div class="cmp-py">kě yǐ</div>
+          </div>
+          <div class="cmp-right">
+            <div class="cmp-label">✅ ПРАВИЛЬНО</div>
+            <div class="cmp-py">ké yǐ <button class="audio-btn" onclick="playAudio('可以')">🔊</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Правило 2. 不 (bù) перед 4-м тоном</h2>
+        <p>Если после 不 идёт 4-й тон, то 不 читается <strong>2-м тоном (bú)</strong>. Перед 1, 2, 3 тоном — остаётся 4-м.</p>
+        <div class="cmp-block">
+          <div class="cmp-wrong">
+            <div class="cmp-label">❌ НЕПРАВИЛЬНО</div>
+            <div class="cmp-py">bù shì</div>
+            <div class="cmp-note">4-й + 4-й = тяжело произносить</div>
+          </div>
+          <div class="cmp-right">
+            <div class="cmp-label">✅ ПРАВИЛЬНО</div>
+            <div class="cmp-py">bú shì <button class="audio-btn" onclick="playAudio('不是')">🔊</button></div>
+            <div class="cmp-note">不 меняется на 2-й тон</div>
+          </div>
+        </div>
+        <h3>Ещё примеры</h3>
+        <div class="cmp-block">
+          <div class="cmp-wrong">
+            <div class="cmp-label">❌</div>
+            <div class="cmp-py">bù qù</div>
+          </div>
+          <div class="cmp-right">
+            <div class="cmp-label">✅</div>
+            <div class="cmp-py">bú qù <button class="audio-btn" onclick="playAudio('不去')">🔊</button></div>
+          </div>
+        </div>
+        <div class="cmp-block">
+          <div class="cmp-wrong">
+            <div class="cmp-label">❌</div>
+            <div class="cmp-py">bù huì</div>
+          </div>
+          <div class="cmp-right">
+            <div class="cmp-label">✅</div>
+            <div class="cmp-py">bú huì <button class="audio-btn" onclick="playAudio('不会')">🔊</button></div>
+          </div>
+        </div>
+        <div class="note">
+          <strong>💡 Но:</strong> перед 1, 2, 3 тоном 不 остаётся в 4-м: <span class="py">bù hē</span> (不喝), <span class="py">bù lái</span> (不来), <span class="py">bù hǎo</span> (不好).
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Правило 3. 一 (yī) меняет тон</h2>
+        <p>Слог 一 меняет тон в зависимости от следующего слога:</p>
+        <div class="rule">
+          • Перед 4-м тоном → <strong>2-й тон (yí)</strong><br>
+          • Перед 1, 2, 3 тоном → <strong>4-й тон (yì)</strong><br>
+          • В порядковых числительных → <strong>1-й тон (yī)</strong>
+        </div>
+
+        <h3>Перед 4-м тоном</h3>
+        <div class="cmp-block">
+          <div class="cmp-wrong">
+            <div class="cmp-label">❌</div>
+            <div class="cmp-py">yī ge</div>
+          </div>
+          <div class="cmp-right">
+            <div class="cmp-label">✅</div>
+            <div class="cmp-py">yí ge <button class="audio-btn" onclick="playAudio('一个')">🔊</button></div>
+          </div>
+        </div>
+        <div class="cmp-block">
+          <div class="cmp-wrong">
+            <div class="cmp-label">❌</div>
+            <div class="cmp-py">yī xià</div>
+          </div>
+          <div class="cmp-right">
+            <div class="cmp-label">✅</div>
+            <div class="cmp-py">yí xià <button class="audio-btn" onclick="playAudio('一下')">🔊</button></div>
+          </div>
+        </div>
+
+        <h3>Перед 1, 2, 3 тоном</h3>
+        <div class="cmp-block">
+          <div class="cmp-wrong">
+            <div class="cmp-label">❌</div>
+            <div class="cmp-py">yī tiān</div>
+          </div>
+          <div class="cmp-right">
+            <div class="cmp-label">✅</div>
+            <div class="cmp-py">yì tiān <button class="audio-btn" onclick="playAudio('一天')">🔊</button></div>
+          </div>
+        </div>
+        <div class="cmp-block">
+          <div class="cmp-wrong">
+            <div class="cmp-label">❌</div>
+            <div class="cmp-py">yī nián</div>
+          </div>
+          <div class="cmp-right">
+            <div class="cmp-label">✅</div>
+            <div class="cmp-py">yì nián <button class="audio-btn" onclick="playAudio('一年')">🔊</button></div>
+          </div>
+        </div>
+
+        <h3>Порядковое числительное — 1-й тон</h3>
+        <div class="cmp-block">
+          <div class="cmp-wrong">
+            <div class="cmp-label">❌</div>
+            <div class="cmp-py">dì yí</div>
+          </div>
+          <div class="cmp-right">
+            <div class="cmp-label">✅</div>
+            <div class="cmp-py">dì yī <button class="audio-btn" onclick="playAudio('第一')">🔊</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ ИЕРОГЛИФИКА ============ -->
+    <div class="page" id="page-hieroglyphs">
+      <div class="section">
+        <h2>🀄 <span class="cn">汉字</span> · Иероглифика</h2>
+        <p>Китайское письмо — это не буквы, а иероглифы. Каждый иероглиф обозначает слог и имеет значение.</p>
+      </div>
+
+      <div class="section">
+        <h2>📜 5 типов иероглифов</h2>
+        <table>
+          <tr><th>Тип</th><th>Как работает</th><th>Пример</th></tr>
+          <tr>
+            <td><strong>1. Пиктограммы</strong></td>
+            <td>Рисунок предмета или существа</td>
+            <td>
+              <span class="hz">日</span> <span class="py">rì</span> солнце,
+              <span class="hz">月</span> <span class="py">yuè</span> луна,
+              <span class="hz">山</span> <span class="py">shān</span> гора,
+              <span class="hz">水</span> <span class="py">shuǐ</span> вода
+            </td>
+          </tr>
+          <tr>
+            <td><strong>2. Простые идеограммы</strong></td>
+            <td>Передают абстрактную идею</td>
+            <td>
+              <span class="hz">上</span> <span class="py">shàng</span> верх,
+              <span class="hz">下</span> <span class="py">xià</span> низ,
+              <span class="hz">一</span> <span class="py">yī</span> один
+            </td>
+          </tr>
+          <tr>
+            <td><strong>3. Сложные идеограммы</strong></td>
+            <td>Сумма значений двух знаков</td>
+            <td>
+              木+木 = <span class="hz">林</span> <span class="py">lín</span> лес,
+              日+月 = <span class="hz">明</span> <span class="py">míng</span> светлый
+            </td>
+          </tr>
+          <tr>
+            <td><strong>4. Фоноидеограммы</strong></td>
+            <td>Ключ (смысл) + фонетик (звук)</td>
+            <td>
+              <span class="hz">妈</span> <span class="py">mā</span> = 女 (женщина) + 马 <span class="py">mǎ</span>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>5. Заимствованные</strong></td>
+            <td>Иероглиф одолжили для другого слова, которое звучит так же</td>
+            <td>
+              <span class="hz">北</span> <span class="py">běi</span> север — раньше «спина»
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>🖌 Правила написания</h2>
+        <div class="rule">
+          <strong>1.</strong> Сверху вниз, слева направо<br>
+          <strong>2.</strong> Сначала горизонтальные, потом вертикальные<br>
+          <strong>3.</strong> Сначала откидная влево, потом вправо<br>
+          <strong>4.</strong> Сначала внешний контур, потом внутри, замыкающая черта — последняя<br>
+          <strong>5.</strong> Точка справа — последняя
+        </div>
+        <div class="sticker-big">🀄 🖌 📜</div>
+      </div>
+
+      <div class="section">
+        <h2>✏️ Основные черты</h2>
+        <table>
+          <tr><th>Черта</th><th>Название</th></tr>
+          <tr><td style="font-size:1.4em;">一</td><td>горизонтальная</td></tr>
+          <tr><td style="font-size:1.4em;">丨</td><td>вертикальная</td></tr>
+          <tr><td style="font-size:1.4em;">丿</td><td>откидная влево</td></tr>
+          <tr><td style="font-size:1.4em;">丶</td><td>точка</td></tr>
+          <tr><td style="font-size:1.4em;">㇏</td><td>откидная вправо</td></tr>
+        </table>
+        <p>Из этих базовых черт строятся все иероглифы.</p>
+      </div>
+    </div>
+
+    <!-- ============ ГРАММАТИКА ============ -->
+    <div class="page" id="page-grammar">
+      <div class="section">
+        <h2>📐 <span class="cn">语法</span> · Грамматика — основы</h2>
+        <p>Китайская грамматика проще русской, но есть свои правила.</p>
+      </div>
+
+      <div class="section">
+        <h2>🔑 Главные особенности</h2>
+        <table>
+          <tr><th>Особенность</th><th>Что это значит</th></tr>
+          <tr><td>Нет падежей, родов, чисел</td><td>Слова не изменяются. 我 = «я», 我们 = «мы» (только 们)</td></tr>
+          <tr><td>Нет спряжения</td><td>Глагол всегда в одной форме</td></tr>
+          <tr><td>Порядок слов строгий</td><td>Подлежащее + Сказуемое + Дополнение</td></tr>
+          <tr><td>Прилагательное ≈ глагол</td><td>Может быть сказуемым без «быть»</td></tr>
+          <tr><td>Служебные слова</td><td>了 (le), 着 (zhe), 过 (guo) — время</td></tr>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>🧩 Схема простого предложения</h2>
+        <div class="rule">
+          <strong>Подлежащее + Сказуемое + Дополнение</strong>
+        </div>
+        <div class="example">
+          <span class="ex-hz">我 吃 饭。</span>
+          <span class="ex-py">Wǒ chī fàn.</span>
+          <span class="ex-ru">Я ем еду. (Я → ем → еду)</span>
+        </div>
+        <div class="example">
+          <span class="ex-hz">他 喝 茶。</span>
+          <span class="ex-py">Tā hē chá.</span>
+          <span class="ex-ru">Он пьёт чай.</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>❌ Отрицание</h2>
+        <div class="rule">
+          <strong>不 (bù)</strong> — для обычных глаголов и прилагательных<br>
+          <strong>没 (méi)</strong> — для глагола 有 (иметь) и прошедшего времени
+        </div>
+        <div class="example">
+          <span class="ex-hz">我 不 看 书。</span>
+          <span class="ex-py">Wǒ bù kàn shū.</span>
+          <span class="ex-ru">Я не читаю книгу.</span>
+        </div>
+        <div class="example">
+          <span class="ex-hz">我 没 有 书。</span>
+          <span class="ex-py">Wǒ méi yǒu shū.</span>
+          <span class="ex-ru">У меня нет книги.</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>✅ Именное сказуемое (с 是)</h2>
+        <p>Связка 是 (shì) = «быть, являться». Используется для отождествления:</p>
+        <div class="example">
+          <span class="ex-hz">我 是 学生。</span>
+          <span class="ex-py">Wǒ shì xuésheng.</span>
+          <span class="ex-ru">Я студент.</span>
+        </div>
+        <div class="example">
+          <span class="ex-hz">他 是 老师。</span>
+          <span class="ex-py">Tā shì lǎoshī.</span>
+          <span class="ex-ru">Он учитель.</span>
+        </div>
+        <div class="note">
+          <strong>💡 Запомни:</strong> отрицание для 是 — всегда <strong>不是</strong> (bú shì), не «不有».
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>💰 Глагол обладания 有</h2>
+        <p><strong>有 (yǒu)</strong> = «иметь, обладать». Отрицание — всегда <strong>没有 (méi yǒu)</strong>.</p>
+        <div class="example">
+          <span class="ex-hz">我 有 一 本 书。</span>
+          <span class="ex-py">Wǒ yǒu yī běn shū.</span>
+          <span class="ex-ru">У меня есть одна книга.</span>
+        </div>
+        <div class="example">
+          <span class="ex-hz">我 没 有 钱。</span>
+          <span class="ex-py">Wǒ méi yǒu qián.</span>
+          <span class="ex-ru">У меня нет денег.</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>❓ Вопросительные предложения</h2>
+        <p>Три способа задать вопрос:</p>
+        <table>
+          <tr><th>Способ</th><th>Пример</th></tr>
+          <tr><td>Частица 吗 (ma) в конце</td><td>你 好 吗？ <span class="py">Nǐ hǎo ma?</span> — Как дела?</td></tr>
+          <tr><td>Повтор глагола с 不</td><td>你 吃 不 吃？ <span class="py">Nǐ chī bù chī?</span> — Ты ешь (или нет)?</td></tr>
+          <tr><td>Вопросительное слово</td><td>你 叫 什么？ <span class="py">Nǐ jiào shénme?</span> — Как тебя зовут?</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============ ВСЯ ФОНЕТИКА ============ -->
+    <div class="page" id="page-all">
+      <div class="section">
+        <h2>📚 Вся фонетика в одном месте</h2>
+        <p>Инициали, фина́ли, правила чтения, тоны, изменение тонов — всё в одном списке.</p>
+      </div>
+
+      <div class="section">
+        <h2>🎯 Слог</h2>
+        <div class="rule">
+          <strong>Слог = Инициаль + Финаль + Тон</strong>
+        </div>
+        <p>21 инициаль, 35 финалей, ~400 слогов.</p>
+      </div>
+
+      <div class="section">
+        <h2>🔤 Инициали (21)</h2>
+        <table>
+          <tr><th>Инициаль</th><th>Чтение</th><th>Пример</th></tr>
+          <tr><td class="py">b</td><td>«б»</td><td>bàba <span class="hz">爸爸</span> папа <button class="audio-btn" onclick="playAudio('爸爸')">🔊</button></td></tr>
+          <tr><td class="py">p</td><td>«пх» с выдохом</td><td>péngyou <span class="hz">朋友</span> друг <button class="audio-btn" onclick="playAudio('朋友')">🔊</button></td></tr>
+          <tr><td class="py">m</td><td>«м»</td><td>māma <span class="hz">妈妈</span> мама <button class="audio-btn" onclick="playAudio('妈妈')">🔊</button></td></tr>
+          <tr><td class="py">f</td><td>«ф»</td><td>fēijī <span class="hz">飞机</span> самолёт <button class="audio-btn" onclick="playAudio('飞机')">🔊</button></td></tr>
+          <tr><td class="py">d</td><td>«д»</td><td>dà <span class="hz">大</span> большой <button class="audio-btn" onclick="playAudio('大')">🔊</button></td></tr>
+          <tr><td class="py">t</td><td>«тх» с выдохом</td><td>tā <span class="hz">他</span> он <button class="audio-btn" onclick="playAudio('他')">🔊</button></td></tr>
+          <tr><td class="py">n</td><td>«н»</td><td>nǐ <span class="hz">你</span> ты <button class="audio-btn" onclick="playAudio('你')">🔊</button></td></tr>
+          <tr><td class="py">l</td><td>«л»</td><td>lǎo <span class="hz">老</span> старый <button class="audio-btn" onclick="playAudio('老')">🔊</button></td></tr>
+          <tr><td class="py">g</td><td>«г»</td><td>gēge <span class="hz">哥哥</span> ст. брат <button class="audio-btn" onclick="playAudio('哥哥')">🔊</button></td></tr>
+          <tr><td class="py">k</td><td>«кх» с выдохом</td><td>kàn <span class="hz">看</span> смотреть <button class="audio-btn" onclick="playAudio('看')">🔊</button></td></tr>
+          <tr><td class="py">h</td><td>«х»</td><td>hǎo <span class="hz">好</span> хорошо <button class="audio-btn" onclick="playAudio('好')">🔊</button></td></tr>
+          <tr><td class="py">j</td><td>мягкое «дз»</td><td>jiā <span class="hz">家</span> дом <button class="audio-btn" onclick="playAudio('家')">🔊</button></td></tr>
+          <tr><td class="py">q</td><td>мягкое «ц» с выдохом</td><td>qù <span class="hz">去</span> идти <button class="audio-btn" onclick="playAudio('去')">🔊</button></td></tr>
+          <tr><td class="py">x</td><td>мягкое «с»</td><td>xiè <span class="hz">谢</span> спасибо <button class="audio-btn" onclick="playAudio('谢')">🔊</button></td></tr>
+          <tr><td class="py">zh</td><td>твёрдое «дж»</td><td>zhōng <span class="hz">中</span> середина <button class="audio-btn" onclick="playAudio('中')">🔊</button></td></tr>
+          <tr><td class="py">ch</td><td>твёрдое «ч» с выдохом</td><td>chī <span class="hz">吃</span> есть <button class="audio-btn" onclick="playAudio('吃')">🔊</button></td></tr>
+          <tr><td class="py">sh</td><td>твёрдое «ш»</td><td>shū <span class="hz">书</span> книга <button class="audio-btn" onclick="playAudio('书')">🔊</button></td></tr>
+          <tr><td class="py">r</td><td>между «ж» и «р»</td><td>rén <span class="hz">人</span> человек <button class="audio-btn" onclick="playAudio('人')">🔊</button></td></tr>
+          <tr><td class="py">z</td><td>«цз»</td><td>zài <span class="hz">再</span> снова <button class="audio-btn" onclick="playAudio('再')">🔊</button></td></tr>
+          <tr><td class="py">c</td><td>«цх» с выдохом</td><td>cài <span class="hz">菜</span> блюдо <button class="audio-btn" onclick="playAudio('菜')">🔊</button></td></tr>
+          <tr><td class="py">s</td><td>«с»</td><td>sān <span class="hz">三</span> три <button class="audio-btn" onclick="playAudio('三')">🔊</button></td></tr>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>🎵 Фина́ли</h2>
+        <h3>Простые (6)</h3>
+        <table>
+          <tr><td class="py">a</td><td>bā <span class="hz">八</span> <button class="audio-btn" onclick="playAudio('八')">🔊</button></td>
+              <td class="py">o</td><td>wǒ <span class="hz">我</span> <button class="audio-btn" onclick="playAudio('我')">🔊</button></td>
+              <td class="py">e</td><td>hē <span class="hz">喝</span> <button class="audio-btn" onclick="playAudio('喝')">🔊</button></td></tr>
+          <tr><td class="py">i</td><td>nǐ <span class="hz">你</span> <button class="audio-btn" onclick="playAudio('你')">🔊</button></td>
+              <td class="py">u</td><td>bù <span class="hz">不</span> <button class="audio-btn" onclick="playAudio('不')">🔊</button></td>
+              <td class="py">ü</td><td>nǚ <span class="hz">女</span> <button class="audio-btn" onclick="playAudio('女')">🔊</button></td></tr>
+        </table>
+
+        <h3>Дифтонги и носовые</h3>
+        <table>
+          <tr><td class="py">ai</td><td>lái <span class="hz">来</span> <button class="audio-btn" onclick="playAudio('来')">🔊</button></td>
+              <td class="py">ei</td><td>bēi <span class="hz">杯</span> <button class="audio-btn" onclick="playAudio('杯')">🔊</button></td>
+              <td class="py">ao</td><td>hǎo <span class="hz">好</span> <button class="audio-btn" onclick="playAudio('好')">🔊</button></td></tr>
+          <tr><td class="py">ou</td><td>dōu <span class="hz">都</span> <button class="audio-btn" onclick="playAudio('都')">🔊</button></td>
+              <td class="py">ia</td><td>jiā <span class="hz">家</span> <button class="audio-btn" onclick="playAudio('家')">🔊</button></td>
+              <td class="py">ie</td><td>xiè <span class="hz">谢</span> <button class="audio-btn" onclick="playAudio('谢')">🔊</button></td></tr>
+          <tr><td class="py">iu</td><td>liù <span class="hz">六</span> <button class="audio-btn" onclick="playAudio('六')">🔊</button></td>
+              <td class="py">ua</td><td>huā <span class="hz">花</span> <button class="audio-btn" onclick="playAudio('花')">🔊</button></td>
+              <td class="py">uo</td><td>guó <span class="hz">国</span> <button class="audio-btn" onclick="playAudio('国')">🔊</button></td></tr>
+          <tr><td class="py">ui</td><td>guì <span class="hz">贵</span> <button class="audio-btn" onclick="playAudio('贵')">🔊</button></td>
+              <td class="py">üe</td><td>xué <span class="hz">学</span> <button class="audio-btn" onclick="playAudio('学')">🔊</button></td>
+              <td class="py">an</td><td>sān <span class="hz">三</span> <button class="audio-btn" onclick="playAudio('三')">🔊</button></td></tr>
+          <tr><td class="py">en</td><td>rén <span class="hz">人</span> <button class="audio-btn" onclick="playAudio('人')">🔊</button></td>
+              <td class="py">in</td><td>xīn <span class="hz">心</span> <button class="audio-btn" onclick="playAudio('心')">🔊</button></td>
+              <td class="py">ang</td><td>máng <span class="hz">忙</span> <button class="audio-btn" onclick="playAudio('忙')">🔊</button></td></tr>
+          <tr><td class="py">eng</td><td>lěng <span class="hz">冷</span> <button class="audio-btn" onclick="playAudio('冷')">🔊</button></td>
+              <td class="py">ing</td><td>míng <span class="hz">明</span> <button class="audio-btn" onclick="playAudio('明')">🔊</button></td>
+              <td class="py">ong</td><td>dōng <span class="hz">东</span> <button class="audio-btn" onclick="playAudio('东')">🔊</button></td></tr>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>📝 Правила чтения</h2>
+        <table>
+          <tr><th>Правило</th><th>Примеры</th></tr>
+          <tr><td>Нет инициали + i → yi</td><td class="py">i → yi, yī 一</td></tr>
+          <tr><td>Нет инициали + i- → y-</td><td class="py">ia → ya, ie → ye, iao → yao, iou → you</td></tr>
+          <tr><td>Нет инициали + u → wu</td><td class="py">u → wu, wǔ 五</td></tr>
+          <tr><td>Нет инициали + u- → w-</td><td class="py">ua → wa, uo → wo, uai → wai, uei → wei</td></tr>
+          <tr><td>Нет инициали + ü → yu</td><td class="py">ü → yu, üe → yue, üan → yuan</td></tr>
+          <tr><td>После j/q/x: ü → u (пишется)</td><td class="py">jü → ju, qü → qu, xü → xu</td></tr>
+          <tr><td>iou → iu, uei → ui, uen → un</td><td class="py">jiu, gui, lun</td></tr>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>🎶 Тоны</h2>
+        <div class="tone-grid">
+          <div class="tone-box">
+            <div class="label">1-й тон ˉ</div>
+            <span class="py">mā</span>
+            <div class="ru">妈 — мама</div>
+            <button class="audio-btn" onclick="playAudio('妈')">🔊</button>
+          </div>
+          <div class="tone-box">
+            <div class="label">2-й тон ˊ</div>
+            <span class="py">má</span>
+            <div class="ru">麻 — лён</div>
+            <button class="audio-btn" onclick="playAudio('麻')">🔊</button>
+          </div>
+          <div class="tone-box">
+            <div class="label">3-й тон ˇ</div>
+            <span class="py">mǎ</span>
+            <div class="ru">马 — лошадь</div>
+            <button class="audio-btn" onclick="playAudio('马')">🔊</button>
+          </div>
+          <div class="tone-box">
+            <div class="label">4-й тон ˋ</div>
+            <span class="py">mà</span>
+            <div class="ru">骂 — ругать</div>
+            <button class="audio-btn" onclick="playAudio('骂')">🔊</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🔄 Изменение тонов</h2>
+        <div class="cmp-block">
+          <div class="cmp-wrong">
+            <div class="cmp-label">❌ 3 + 3</div>
+            <div class="cmp-py">nǐ hǎo</div>
+          </div>
+          <div class="cmp-right">
+            <div class="cmp-label">✅</div>
+            <div class="cmp-py">ní hǎo <button class="audio-btn" onclick="playAudio('你好')">🔊</button></div>
+          </div>
+        </div>
+        <div class="cmp-block">
+          <div class="cmp-wrong">
+            <div class="cmp-label">❌ 不 + 4-й</div>
+            <div class="cmp-py">bù shì</div>
+          </div>
+          <div class="cmp-right">
+            <div class="cmp-label">✅</div>
+            <div class="cmp-py">bú shì <button class="audio-btn" onclick="playAudio('不是')">🔊</button></div>
+          </div>
+        </div>
+        <div class="cmp-block">
+          <div class="cmp-wrong">
+            <div class="cmp-label">❌ 一 + 4-й</div>
+            <div class="cmp-py">yī ge</div>
+          </div>
+          <div class="cmp-right">
+            <div class="cmp-label">✅</div>
+            <div class="cmp-py">yí ge <button class="audio-btn" onclick="playAudio('一个')">🔊</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ ИГРЫ ============ -->
+    <div class="page" id="page-games">
+      <div class="section">
+        <h2>🎮 Игры на отработку звуков</h2>
+        <p>Три игры для тренировки слуха и произношения.</p>
+      </div>
+
+      <div class="game-tabs">
+        <button class="game-tab active" onclick="switchGame('tone')">🎵 Угадай тон</button>
+        <button class="game-tab" onclick="switchGame('sound')">👂 Угадай звук</button>
+        <button class="game-tab" onclick="switchGame('initial')">🔤 Инициаль или финаль</button>
+      </div>
+
+      <div class="game-area" id="gameArea">
+        <!-- Игра откроется здесь -->
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="dragon-line">🐉 🀄 🏮 🀄 🐉</div>
+    汉语 · 拼音 · 学习愉快
+  </div>
+</div>
+
+<audio id="player" preload="auto"></audio>
+
+<script>
+// ============================================
+// НАВИГАЦИЯ
+// ============================================
+function goHome() {
+  document.getElementById('app').classList.remove('active');
+  document.getElementById('titleScreen').style.display = 'flex';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function enterAppTo(tabName) {
+  document.getElementById('titleScreen').style.display = 'none';
+  document.getElementById('app').classList.add('active');
+  showTab(tabName);
+}
+
+function showTab(name) {
+  var pages = document.querySelectorAll('.page');
+  for (var i = 0; i < pages.length; i++) pages[i].classList.remove('active');
+  var target = document.getElementById('page-' + name);
+  if (target) target.classList.add('active');
+
+  var tabs = document.querySelectorAll('.tab-btn');
+  for (var j = 0; j < tabs.length; j++) tabs[j].classList.remove('active');
+
+  var tabMap = {
+    'home': 0, 'basics': 1, 'initials': 2, 'finals': 3,
+    'rules': 4, 'tones': 5, 'changes': 6, 'hieroglyphs': 7,
+    'grammar': 8, 'all': 9, 'games': 10
+  };
+  if (tabMap[name] !== undefined && tabs[tabMap[name]]) {
+    tabs[tabMap[name]].classList.add('active');
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (name === 'games') {
+    var area = document.getElementById('gameArea');
+    if (!area.innerHTML.trim()) startToneGame();
+  }
+}
+
+// ============================================
+// ОЗВУЧКА
+// ============================================
+var audioPlayer = document.getElementById('player');
+var lastPlayed = 0;
+
+function playAudio(zh) {
+  var now = Date.now();
+  if (now - lastPlayed < 250) return;
+  lastPlayed = now;
+
+  try {
+    audioPlayer.pause();
+    audioPlayer.src = 'https://fanyi.baidu.com/gettts?lan=zh&text=' +
+      encodeURIComponent(zh) + '&spd=2&source=web';
+    audioPlayer.load();
+    var pr = audioPlayer.play();
+    if (pr && pr.catch) {
+      pr.catch(function() {
+        audioPlayer.src = 'https://translate.google.com/translate_tts?ie=UTF-8&q=' +
+          encodeURIComponent(zh) + '&tl=zh-CN&client=tw-ob&ttsspeed=0.5';
+        audioPlayer.load();
+        audioPlayer.play().catch(function() {
+          if (window.speechSynthesis) {
+            window.speechSynthesis.cancel();
+            var u = new SpeechSynthesisUtterance(zh);
+            u.lang = 'zh-CN';
+            u.rate = 0.7;
+            window.speechSynthesis.speak(u);
+          }
+        });
+      });
+    }
+  } catch (e) { console.log(e); }
+}
+
+function stripTone(pinyin) {
+  var map = {
+    'ā':'a','á':'a','ǎ':'a','à':'a',
+    'ē':'e','é':'e','ě':'e','è':'e',
+    'ī':'i','í':'i','ǐ':'i','ì':'i',
+    'ō':'o','ó':'o','ǒ':'o','ò':'o',
+    'ū':'u','ú':'u','ǔ':'u','ù':'u',
+    'ǖ':'ü','ǘ':'ü','ǚ':'ü','ǜ':'ü'
+  };
+  return pinyin.replace(/[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ]/g, function(m) { return map[m]; });
+}
+
+// ============================================
+// ИГРЫ
+// ============================================
+var currentGame = null;
+
+var toneData = [
+  { char: '妈', pinyin: 'mā', tone: 1 },
+  { char: '麻', pinyin: 'má', tone: 2 },
+  { char: '马', pinyin: 'mǎ', tone: 3 },
+  { char: '骂', pinyin: 'mà', tone: 4 },
+  { char: '八', pinyin: 'bā', tone: 1 },
+  { char: '拔', pinyin: 'bá', tone: 2 },
+  { char: '把', pinyin: 'bǎ', tone: 3 },
+  { char: '爸', pinyin: 'bà', tone: 4 },
+  { char: '诗', pinyin: 'shī', tone: 1 },
+  { char: '十', pinyin: 'shí', tone: 2 },
+  { char: '史', pinyin: 'shǐ', tone: 3 },
+  { char: '是', pinyin: 'shì', tone: 4 },
+  { char: '清', pinyin: 'qīng', tone: 1 },
+  { char: '情', pinyin: 'qíng', tone: 2 },
+  { char: '请', pinyin: 'qǐng', tone: 3 },
+  { char: '庆', pinyin: 'qìng', tone: 4 }
+];
+
+var soundData = [
+  { char: '妈', pinyin: 'mā' },
+  { char: '八', pinyin: 'bā' },
+  { char: '你', pinyin: 'nǐ' },
+  { char: '大', pinyin: 'dà' },
+  { char: '他', pinyin: 'tā' },
+  { char: '好', pinyin: 'hǎo' },
+  { char: '去', pinyin: 'qù' },
+  { char: '谢', pinyin: 'xiè' },
+  { char: '家', pinyin: 'jiā' },
+  { char: '吃', pinyin: 'chī' },
+  { char: '书', pinyin: 'shū' },
+  { char: '人', pinyin: 'rén' },
+  { char: '四', pinyin: 'sì' },
+  { char: '知', pinyin: 'zhī' },
+  { char: '是', pinyin: 'shì' },
+  { char: '女', pinyin: 'nǚ' }
+];
+
+function switchGame(game) {
+  currentGame = game;
+  var tabs = document.querySelectorAll('.game-tab');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+  if (event && event.target) event.target.classList.add('active');
+
+  if (game === 'tone') startToneGame();
+  else if (game === 'sound') startSoundGame();
+  else if (game === 'initial') startInitialGame();
+}
+
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+// ИГРА 1
+var toneQuestions = [], toneIndex = 0, toneScore = 0;
+
+function startToneGame() {
+  toneQuestions = shuffle(toneData).slice(0, 10);
+  toneIndex = 0;
+  toneScore = 0;
+  showToneQuestion();
+}
+
+function showToneQuestion() {
+  if (toneIndex >= toneQuestions.length) { endGame(toneScore, toneQuestions.length); return; }
+  var q = toneQuestions[toneIndex];
+  var pinyinNoTone = stripTone(q.pinyin);
+
+  document.getElementById('gameArea').innerHTML =
+    '<div class="score-line"><span>Вопрос ' + (toneIndex + 1) + ' из ' + toneQuestions.length + '</span><span>Очки: ' + toneScore + '</span></div>' +
+    '<div class="big-py">' + pinyinNoTone + '</div>' +
+    '<button class="listen-big" onclick="playAudio(\'' + q.char + '\')">🔊 Слушать</button>' +
+    '<p style="text-align:center;color:#6A5040;font-size:0.9em;font-weight:600;">🐉 Послушай и выбери тон</p>' +
+    '<div class="choices">' +
+      '<div class="choice" onclick="answerTone(1, ' + q.tone + ')">1-й тон ˉ</div>' +
+      '<div class="choice" onclick="answerTone(2, ' + q.tone + ')">2-й тон ˊ</div>' +
+      '<div class="choice" onclick="answerTone(3, ' + q.tone + ')">3-й тон ˇ</div>' +
+      '<div class="choice" onclick="answerTone(4, ' + q.tone + ')">4-й тон ˋ</div>' +
+    '</div>';
+  setTimeout(function() { playAudio(q.char); }, 400);
+}
+
+function answerTone(selected, correct) {
+  var choices = document.querySelectorAll('#gameArea .choice');
+  for (var i = 0; i < choices.length; i++) {
+    choices[i].style.pointerEvents = 'none';
+    if ((i + 1) === correct) choices[i].classList.add('correct');
+    if ((i + 1) === selected && selected !== correct) choices[i].classList.add('wrong');
+  }
+  if (selected === correct) toneScore++;
+  setTimeout(function() { toneIndex++; showToneQuestion(); }, 1100);
+}
+
+// ИГРА 2
+var soundQuestions = [], soundIndex = 0, soundScore = 0;
+
+function startSoundGame() {
+  soundQuestions = shuffle(soundData).slice(0, 10);
+  soundIndex = 0;
+  soundScore = 0;
+  showSoundQuestion();
+}
+
+function showSoundQuestion() {
+  if (soundIndex >= soundQuestions.length) { endGame(soundScore, soundQuestions.length); return; }
+  var q = soundQuestions[soundIndex];
+  var others = shuffle(soundData.filter(function(x) { return x.pinyin !== q.pinyin; })).slice(0, 3);
+  var options = shuffle([q].concat(others));
+
+  var html = '<div class="score-line"><span>Вопрос ' + (soundIndex + 1) + ' из ' + soundQuestions.length + '</span><span>Очки: ' + soundScore + '</span></div>' +
+    '<button class="listen-big" onclick="playAudio(\'' + q.char + '\')">🔊 Слушать</button>' +
+    '<p style="text-align:center;color:#6A5040;font-size:0.9em;font-weight:600;">🐉 Послушай и выбери слог</p>' +
+    '<div class="choices">';
+  for (var i = 0; i < options.length; i++) {
+    html += '<div class="choice" onclick="answerSound(\'' + options[i].pinyin + '\', \'' + q.pinyin + '\')">' + options[i].pinyin + '</div>';
+  }
+  html += '</div>';
+  document.getElementById('gameArea').innerHTML = html;
+  setTimeout(function() { playAudio(q.char); }, 400);
+}
+
+function answerSound(selected, correct) {
+  var choices = document.querySelectorAll('#gameArea .choice');
+  for (var i = 0; i < choices.length; i++) {
+    choices[i].style.pointerEvents = 'none';
+    var txt = choices[i].textContent;
+    if (txt === correct) choices[i].classList.add('correct');
+    if (txt === selected && selected !== correct) choices[i].classList.add('wrong');
+  }
+  if (selected === correct) soundScore++;
+  setTimeout(function() { soundIndex++; showSoundQuestion(); }, 1100);
+}
+
+// ИГРА 3
+var initialScore = 0, initialTotal = 0;
+var initialLetters = ['b','p','m','f','d','t','n','l','g','k','h','j','q','x','zh','ch','sh','r','z','c','s'];
+var finalLetters = ['a','o','e','i','u','ü','ai','ei','ao','ou','ia','ie','iu','ua','uo','ui','üe','an','en','in','ang','eng','ing','ong'];
+
+function startInitialGame() {
+  initialScore = 0;
+  initialTotal = 0;
+  nextInitialQuestion();
+}
+
+function nextInitialQuestion() {
+  if (initialTotal >= 10) { endGame(initialScore, 10); return; }
+  var isInitial = Math.random() < 0.5;
+  var letter, correctAnswer;
+  if (isInitial) {
+    letter = initialLetters[Math.floor(Math.random() * initialLetters.length)];
+    correctAnswer = 'initial';
+  } else {
+    letter = finalLetters[Math.floor(Math.random() * finalLetters.length)];
+    correctAnswer = 'final';
+  }
+
+  document.getElementById('gameArea').innerHTML =
+    '<div class="score-line"><span>Вопрос ' + (initialTotal + 1) + ' из 10</span><span>Очки: ' + initialScore + '</span></div>' +
+    '<div class="big-py">' + letter + '</div>' +
+    '<p style="text-align:center;color:#6A5040;font-size:0.9em;font-weight:600;">🐉 Что это — инициаль или финаль?</p>' +
+    '<div class="choices">' +
+      '<div class="choice" onclick="answerInitial(\'initial\', \'' + correctAnswer + '\')">声母 · Инициаль</div>' +
+      '<div class="choice" onclick="answerInitial(\'final\', \'' + correctAnswer + '\')">韵母 · Финаль</div>' +
+    '</div>';
+}
+
+function answerInitial(selected, correct) {
+  var choices = document.querySelectorAll('#gameArea .choice');
+  for (var i = 0; i < choices.length; i++) {
+    choices[i].style.pointerEvents = 'none';
+    var txt = choices[i].textContent;
+    var isCorrect = (correct === 'initial' && txt.indexOf('Инициаль') !== -1) ||
+                    (correct === 'final' && txt.indexOf('Финаль') !== -1);
+    if (isCorrect) choices[i].classList.add('correct');
+    if (txt.indexOf(selected === 'initial' ? 'Инициаль' : 'Финаль') !== -1 && selected !== correct) {
+      choices[i].classList.add('wrong');
+    }
+  }
+  if (selected === correct) initialScore++;
+  initialTotal++;
+  setTimeout(function() { nextInitialQuestion(); }, 900);
+}
+
+function endGame(score, total) {
+  var percent = score / total;
+  var emoji = '🐉';
+  if (percent >= 0.9) emoji = '🐲🏮';
+  else if (percent >= 0.7) emoji = '🐉✨';
+  else if (percent >= 0.5) emoji = '🐉';
+
+  var msg = '';
+  if (percent >= 0.9) msg = '太棒了! Отлично!';
+  else if (percent >= 0.7) msg = '很好! Хорошо!';
+  else if (percent >= 0.5) msg = '不错! Неплохо!';
+  else msg = '再试一次! Попробуй ещё!';
+
+  document.getElementById('gameArea').innerHTML =
+    '<div style="text-align:center;padding:30px 20px;">' +
+      '<div style="font-size:3em;margin:10px 0;">' + emoji + '</div>' +
+      '<div class="result-msg">' + msg + '</div>' +
+      '<div class="big-py">' + score + ' / ' + total + '</div>' +
+      '<button class="next-btn" onclick="restartGame()">🔄 再来一次</button>' +
+    '</div>';
+}
+
+function restartGame() {
+  if (currentGame === 'tone') startToneGame();
+  else if (currentGame === 'sound') startSoundGame();
+  else if (currentGame === 'initial') startInitialGame();
+}
+</script>
+
+</body>
+</html>
