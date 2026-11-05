@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 3: Приветствия и Знакомство</title>
+<script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Ma+Shan+Zheng&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(rgba(255, 248, 240, 0.85), rgba(255, 248, 240, 0.85)), 
+                url('https://i.pinimg.com/736x/88/f4/58/88f4587caebfdcaec6d1fe9943bee0b6.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #4a2c3a;
+    min-height: 100vh;
+    padding: 20px 15px 60px;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 1.8em;
+    color: #c2185b;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(255,255,255,0.9), -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+    font-weight: 800;
+  }
+
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .tab-btn {
+    background: #fff;
+    border: 3px solid #ffb6c1;
+    border-radius: 25px;
+    padding: 10px 18px;
+    font-size: 0.9em;
+    font-weight: 700;
+    color: #c2185b;
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: 0 4px 0 #ffb6c1;
+  }
+  .tab-btn:hover { transform: translateY(-2px); }
+  .tab-btn:active { transform: translateY(2px); box-shadow: none; }
+  .tab-btn.active {
+    background: #c2185b;
+    color: #fff;
+    border-color: #c2185b;
+    box-shadow: 0 4px 0 #7a0c36;
+  }
+
+  .tab-content { display: none; animation: fadeIn 0.3s; }
+  .tab-content.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  .card-container {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 25px rgba(194, 24, 91, 0.15);
+    border: 3px solid #ffe4e1;
+    text-align: center;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* --- КАРТОЧКИ --- */
+  .flashcard {
+    perspective: 1000px;
+    width: 100%;
+    max-width: 320px;
+    height: 220px;
+    margin: 0 auto 20px;
+    cursor: pointer;
+  }
+  .flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+  }
+  .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+  .flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  }
+  .flashcard-front {
+    background: #ffebf0;
+    border: 4px solid #f8bbd0;
+    font-size: 4em;
+    color: #c2185b;
+  }
+  .flashcard-back {
+    background: #e3f2fd;
+    border: 4px solid #90caf9;
+    transform: rotateY(180deg);
+    color: #1565c0;
+  }
+  .flashcard-back .py { font-size: 1.8em; font-weight: 800; font-family: 'Arial', sans-serif; margin-bottom: 10px; }
+  .flashcard-back .ru { font-size: 1.4em; font-weight: 700; color: #0d47a1; }
+  .audio-btn {
+    background: #ffb300; border: none; border-radius: 50%; width: 45px; height: 45px; font-size: 1.2em;
+    cursor: pointer; box-shadow: 0 3px 0 #ff8f00; margin-top: 15px;
+  }
+  .audio-btn:active { transform: scale(0.95); box-shadow: none; }
+
+  /* --- НАЙДИ ПАРУ --- */
+  .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 600px; margin: 0 auto; }
+  .match-item {
+    background: #fff; border: 3px solid #ffd1dc; border-radius: 15px; padding: 15px 10px;
+    font-size: 1.2em; font-weight: 700; cursor: pointer; transition: 0.2s;
+    display: flex; justify-content: center; align-items: center; text-align: center;
+    box-shadow: 0 4px 0 #ffd1dc; min-height: 70px;
+  }
+  .match-item.hz { font-size: 1.8em; font-family: 'Ma Shan Zheng', serif; color: #c2185b; }
+  .match-item.ru { color: #1565c0; font-size: 1em; }
+  .match-item.selected { background: #fff59d; border-color: #fbc02d; box-shadow: 0 4px 0 #fbc02d; transform: scale(1.05); }
+  .match-item.matched { background: #c8e6c9; border-color: #81c784; color: #2e7d32; opacity: 0.6; cursor: default; box-shadow: 0 4px 0 #81c784; }
+  .match-item.wrong { background: #ffcdd2; border-color: #e57373; animation: shake 0.4s; }
+  @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+  /* --- ВИКТОРИНА --- */
+  .quiz-question { font-size: 1.5em; font-weight: 800; color: #4a2c3a; margin-bottom: 20px; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-width: 500px; margin: 0 auto; }
+  .quiz-opt {
+    background: #fff; border: 3px solid #b39ddb; border-radius: 15px; padding: 15px;
+    font-size: 1.8em; font-family: 'Ma Shan Zheng', serif; color: #512da8; cursor: pointer;
+    box-shadow: 0 4px 0 #b39ddb; transition: 0.2s;
+  }
+  .quiz-opt:hover { background: #ede7f6; }
+  .quiz-opt.correct { background: #c8e6c9; border-color: #4caf50; color: #2e7d32; box-shadow: 0 4px 0 #4caf50; }
+  .quiz-opt.wrong { background: #ffcdd2; border-color: #ef5350; color: #b71c1c; box-shadow: 0 4px 0 #ef5350; }
+  .feedback { font-size: 1.2em; font-weight: 800; min-height: 30px; margin-top: 20px; }
+
+  /* --- СОБЕРИ ФРАЗУ --- */
+  .sentence-area {
+    min-height: 80px; background: #f3e5f5; border: 3px dashed #ce93d8; border-radius: 15px;
+    margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px; padding: 15px; justify-content: center; align-items: center;
+  }
+  .tile {
+    background: #fff; border: 2px solid #ce93d8; border-radius: 10px; padding: 10px 15px;
+    font-size: 1.5em; font-family: 'Ma Shan Zheng', serif; color: #6a1b9a; cursor: pointer;
+    box-shadow: 0 3px 0 #ce93d8; transition: 0.2s;
+  }
+  .tile:active { transform: translateY(3px); box-shadow: none; }
+  
+  /* --- ПОРЯДОК ЧЕРТ --- */
+  .stroke-selector { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 20px; }
+  .stroke-char-btn {
+    background: #fff; border: 2px solid #f8bbd0; border-radius: 10px; padding: 10px;
+    font-size: 1.5em; font-family: 'Ma Shan Zheng', serif; cursor: pointer; transition: 0.2s;
+    color: #c2185b; box-shadow: 0 3px 0 #f8bbd0;
+  }
+  .stroke-char-btn.active { background: #c2185b; color: #fff; box-shadow: 0 3px 0 #7a0c36; }
+  
+  #character-target {
+    width: 250px;
+    height: 250px;
+    margin: 0 auto;
+    border: 3px dashed #90caf9;
+    border-radius: 15px;
+    background: #f9f9f9;
+    position: relative;
+  }
+  #writer-status { margin-top: 15px; color: #e65100; font-weight: 700; min-height: 25px; }
+
+  .btn-action {
+    background: #c2185b; color: #fff; border: none; border-radius: 20px; padding: 12px 25px;
+    font-size: 1em; font-weight: 700; cursor: pointer; margin-top: 15px; box-shadow: 0 4px 0 #7a0c36;
+  }
+  .btn-action:active { transform: translateY(4px); box-shadow: none; }
+
+  .watermark { position: fixed; bottom: 10px; right: 15px; font-size: 0.75em; color: #c2185b; pointer-events: none; font-weight: 800; text-shadow: 1px 1px 2px #fff; }
+</style>
+</head>
+<body>
+
+<h1>🐉 你好！Урок 3</h1>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('tab-flash14', this)">📇 Стр. 14</button>
+  <button class="tab-btn" onclick="switchTab('tab-flash18', this)">📇 Стр. 18</button>
+  <button class="tab-btn" onclick="switchTab('tab-match', this)">🔗 Найди пару</button>
+  <button class="tab-btn" onclick="switchTab('tab-quiz', this)">🎯 Викторина</button>
+  <button class="tab-btn" onclick="switchTab('tab-sentence', this)">🧩 Собери фразу</button>
+  <button class="tab-btn" onclick="switchTab('tab-strokes', this)">🖌️ Порядок черт</button>
+</div>
+
+<!-- КАРТОЧКИ СТР 14 -->
+<div id="tab-flash14" class="tab-content active">
+  <div class="card-container">
+    <p style="color:#888; font-weight:700; margin-bottom:15px;">Слова со страницы 14 (Приветствия)</p>
+    
+    <div class="flashcard" id="flashcard14" onclick="flipCard(14)">
+      <div class="flashcard-inner">
+        <div class="flashcard-front" id="fc14-front">你好</div>
+        <div class="flashcard-back">
+          <div class="py" id="fc14-py">nǐ hǎo</div>
+          <div class="ru" id="fc14-ru">Привет!</div>
+          <button class="audio-btn" onclick="event.stopPropagation(); playAudio(document.getElementById('fc14-front').innerText)">🔊</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; max-width:320px; margin:0 auto;">
+      <button class="btn-action" onclick="prevCard(14)" style="background:#9e9e9e; box-shadow: 0 4px 0 #616161;">⬅️ Назад</button>
+      <span style="font-weight:800; font-size:1.2em; color:#c2185b; padding-top:15px;" id="fc14-counter">1 / 9</span>
+      <button class="btn-action" onclick="nextCard(14)">Вперед ➡️</button>
+    </div>
+  </div>
+</div>
+
+<!-- КАРТОЧКИ СТР 18 -->
+<div id="tab-flash18" class="tab-content">
+  <div class="card-container">
+    <p style="color:#888; font-weight:700; margin-bottom:15px;">Слова со страницы 18 (Знакомство)</p>
+    
+    <div class="flashcard" id="flashcard18" onclick="flipCard(18)">
+      <div class="flashcard-inner">
+        <div class="flashcard-front" id="fc18-front">叫</div>
+        <div class="flashcard-back">
+          <div class="py" id="fc18-py">jiào</div>
+          <div class="ru" id="fc18-ru">звать</div>
+          <button class="audio-btn" onclick="event.stopPropagation(); playAudio(document.getElementById('fc18-front').innerText)">🔊</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; max-width:320px; margin:0 auto;">
+      <button class="btn-action" onclick="prevCard(18)" style="background:#9e9e9e; box-shadow: 0 4px 0 #616161;">⬅️ Назад</button>
+      <span style="font-weight:800; font-size:1.2em; color:#c2185b; padding-top:15px;" id="fc18-counter">1 / 8</span>
+      <button class="btn-action" onclick="nextCard(18)">Вперед ➡️</button>
+    </div>
+  </div>
+</div>
+
+<!-- ИГРА: НАЙДИ ПАРУ -->
+<div id="tab-match" class="tab-content">
+  <div class="card-container">
+    <p style="color:#888; font-weight:700; margin-bottom:15px;">Соедини иероглиф с переводом (слова из обоих текстов)</p>
+    <div class="match-grid" id="match-grid"></div>
+    <button class="btn-action" onclick="initMatchGame()" style="margin-top:25px; background:#4caf50; box-shadow: 0 4px 0 #2e7d32;">🔄 Начать заново</button>
+  </div>
+</div>
+
+<!-- ИГРА: ВИКТОРИНА -->
+<div id="tab-quiz" class="tab-content">
+  <div class="card-container">
+    <div class="quiz-question" id="quiz-question">Выбери правильный перевод:</div>
+    <div class="quiz-options" id="quiz-options"></div>
+    <div class="feedback" id="quiz-feedback"></div>
+    <button class="btn-action" onclick="nextQuiz()" style="margin-top:20px;">Следующий вопрос ➡️</button>
+  </div>
+</div>
+
+<!-- ИГРА: СОБЕРИ ФРАЗУ -->
+<div id="tab-sentence" class="tab-content">
+  <div class="card-container">
+    <p style="color:#888; font-weight:700; margin-bottom:10px;">Собери предложение по-китайски:</p>
+    <div class="quiz-question" id="sent-target" style="font-size:1.2em; color:#1565c0; margin-bottom:15px;">Как тебя зовут?</div>
+    
+    <div class="sentence-area" id="sent-answer-area"></div>
+    <div class="sentence-area" id="sent-pool-area" style="background:none; border:none;"></div>
+    
+    <div class="feedback" id="sent-feedback"></div>
+    <button class="btn-action" onclick="nextSentence()" style="margin-top:20px; background:#ff9800; box-shadow: 0 4px 0 #e65100;">Следующее предложение ➡️</button>
+  </div>
+</div>
+
+<!-- ИГРА: ПОРЯДОК ЧЕРТ -->
+<div id="tab-strokes" class="tab-content">
+  <div class="card-container">
+    <p style="color:#888; font-weight:700; margin-bottom:15px;">Выбери иероглиф, посмотри анимацию и потренируйся писать!</p>
+    
+    <div class="stroke-selector" id="stroke-selector"></div>
+
+    <div id="character-target"></div>
+    <div id="writer-status"></div>
+
+    <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+      <button class="btn-action" style="background:#29b6f6; box-shadow: 0 4px 0 #0288d1;" onclick="animateChar()">▶️ Анимация</button>
+      <button class="btn-action" style="background:#4caf50; box-shadow: 0 4px 0 #2e7d32;" onclick="quizChar()">✏️ Написать самому</button>
+    </div>
+  </div>
+</div>
+
+<div class="watermark">Smirnova Elena Alekseevna</div>
+<audio id="player" preload="auto"></audio>
+
+<script>
+// ============================================
+// БАЗА ДАННЫХ (Разделена по страницам)
+// ============================================
+const vocabP14 = [
+  { hz: '您', py: 'nín', ru: 'Вы (вежл.)' },
+  { hz: '好', py: 'hǎo', ru: 'хорошо' },
+  { hz: '您好', py: 'nín hǎo', ru: 'Здравствуйте' },
+  { hz: '你', py: 'nǐ', ru: 'ты' },
+  { hz: '再', py: 'zài', ru: 'снова' },
+  { hz: '见', py: 'jiàn', ru: 'видеть' },
+  { hz: '再见', py: 'zài jiàn', ru: 'До свидания' },
+  { hz: '你好！', py: 'nǐ hǎo!', ru: 'Привет!' },
+  { hz: '您好！', py: 'nín hǎo!', ru: 'Здравствуйте!' }
+];
+
+const vocabP18 = [
+  { hz: '叫', py: 'jiào', ru: 'звать' },
+  { hz: '什么', py: 'shén me', ru: 'что' },
+  { hz: '名字', py: 'míng zi', ru: 'имя' },
+  { hz: '我', py: 'wǒ', ru: 'я' },
+  { hz: '小', py: 'xiǎo', ru: 'маленький' },
+  { hz: '月', py: 'yuè', ru: 'луна' },
+  { hz: '大', py: 'dà', ru: 'большой' },
+  { hz: '生', py: 'shēng', ru: 'рождаться' }
+];
+
+const vocabAll = [...vocabP14, ...vocabP18];
+
+// Фразы для игры (Ксюша = 克秀莎, Лена = 叶莲娜)
+const phrases = [
+  { hz: '你好！', py: 'nǐ hǎo!', ru: 'Привет!' },
+  { hz: '您好！', py: 'nín hǎo!', ru: 'Здравствуйте!' },
+  { hz: '再见！', py: 'zài jiàn!', ru: 'До свидания!' },
+  { hz: '你叫什么名字？', py: 'nǐ jiào shén me míng zi?', ru: 'Как тебя зовут?' },
+  { hz: '我叫小月。', py: 'wǒ jiào xiǎo yuè.', ru: 'Меня зовут Сяо Юэ.' },
+  { hz: '我叫大生。', py: 'wǒ jiào dà shēng.', ru: 'Меня зовут Да Шэн.' },
+  { hz: '我叫克秀莎。', py: 'wǒ jiào Kèxiùshā.', ru: 'Меня зовут Ксюша.' },
+  { hz: '我叫叶莲娜。', py: 'wǒ jiào Yèliánnà.', ru: 'Меня зовут Лена.' },
+  { hz: '你叫克秀莎。', py: 'nǐ jiào Kèxiùshā.', ru: 'Тебя зовут Ксюша.' },
+  { hz: '你叫叶莲娜。', py: 'nǐ jiào Yèliánnà.', ru: 'Тебя зовут Лена.' }
+];
+
+// ============================================
+// ОЗВУЧКА
+// ============================================
+var audioPlayer = document.getElementById('player');
+function playAudio(text) {
+  if (!text) return;
+  try {
+    audioPlayer.pause();
+    audioPlayer.src = 'https://fanyi.baidu.com/gettts?lan=zh&text=' + encodeURIComponent(text) + '&spd=2&source=web';
+    audioPlayer.load();
+    audioPlayer.play().catch(e => console.log("Audio error", e));
+  } catch (err) { console.log(err); }
+}
+
+// ============================================
+// НАВИГАЦИЯ
+// ============================================
+function switchTab(tabId, btn) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ============================================
+// КАРТОЧКИ (Две независимые колоды)
+// ============================================
+let cardIndices = { 14: 0, 18: 0 };
+let decks = { 14: vocabP14, 18: vocabP18 };
+
+function renderCard(deckId) {
+  const card = decks[deckId][cardIndices[deckId]];
+  const fc = document.getElementById('flashcard' + deckId);
+  fc.classList.remove('flipped');
+  
+  setTimeout(() => {
+    document.getElementById('fc' + deckId + '-front').innerText = card.hz;
+    document.getElementById('fc' + deckId + '-py').innerText = card.py;
+    document.getElementById('fc' + deckId + '-ru').innerText = card.ru;
+  }, 150); 
+  
+  document.getElementById('fc' + deckId + '-counter').innerText = (cardIndices[deckId] + 1) + ' / ' + decks[deckId].length;
+}
+
+function flipCard(deckId) {
+  document.getElementById('flashcard' + deckId).classList.toggle('flipped');
+}
+
+function nextCard(deckId) {
+  cardIndices[deckId] = (cardIndices[deckId] + 1) % decks[deckId].length;
+  renderCard(deckId);
+}
+
+function prevCard(deckId) {
+  cardIndices[deckId] = (cardIndices[deckId] - 1 + decks[deckId].length) % decks[deckId].length;
+  renderCard(deckId);
+}
+
+// ============================================
+// ИГРА: НАЙДИ ПАРУ
+// ============================================
+let matchSelectedLeft = null;
+let matchCount = 0;
+
+function initMatchGame() {
+  matchCount = 0;
+  matchSelectedLeft = null;
+  const subset = [...vocabAll].sort(() => 0.5 - Math.random()).slice(0, 6);
+  const leftItems = [...subset].sort(() => 0.5 - Math.random());
+  const rightItems = [...subset].sort(() => 0.5 - Math.random());
+  
+  const grid = document.getElementById('match-grid');
+  grid.innerHTML = '';
+  
+  const leftCol = document.createElement('div');
+  leftCol.style.display = 'flex'; leftCol.style.flexDirection = 'column'; leftCol.style.gap = '12px';
+  const rightCol = document.createElement('div');
+  rightCol.style.display = 'flex'; rightCol.style.flexDirection = 'column'; rightCol.style.gap = '12px';
+  
+  leftItems.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'match-item hz';
+    el.innerText = item.hz;
+    el.dataset.id = item.hz;
+    el.onclick = () => selectMatch(el, 'left');
+    leftCol.appendChild(el);
+  });
+  
+  rightItems.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'match-item ru';
+    el.innerText = item.ru;
+    el.dataset.id = item.hz;
+    el.onclick = () => selectMatch(el, 'right');
+    rightCol.appendChild(el);
+  });
+  
+  grid.appendChild(leftCol);
+  grid.appendChild(rightCol);
+}
+
+function selectMatch(el, side) {
+  if (el.classList.contains('matched')) return;
+  if (side === 'left') {
+    document.querySelectorAll('.match-item.hz').forEach(i => i.classList.remove('selected'));
+    el.classList.add('selected');
+    matchSelectedLeft = el;
+  } else {
+    if (!matchSelectedLeft) {
+      el.classList.add('wrong'); setTimeout(() => el.classList.remove('wrong'), 500); return;
+    }
+    if (matchSelectedLeft.dataset.id === el.dataset.id) {
+      matchSelectedLeft.classList.remove('selected');
+      matchSelectedLeft.classList.add('matched');
+      el.classList.add('matched');
+      playAudio(matchSelectedLeft.innerText);
+      matchSelectedLeft = null;
+      matchCount++;
+      if (matchCount === 6) setTimeout(() => alert('🎉 Отлично! Все пары найдены!'), 300);
+    } else {
+      el.classList.add('wrong'); setTimeout(() => el.classList.remove('wrong'), 500);
+    }
+  }
+}
+
+// ============================================
+// ИГРА: ВИКТОРИНА
+// ============================================
+let currentQuizWord = null;
+
+function nextQuiz() {
+  const feedback = document.getElementById('quiz-feedback');
+  feedback.innerText = '';
+  const pool = [...vocabAll, ...phrases];
+  currentQuizWord = pool[Math.floor(Math.random() * pool.length)];
+  
+  let options = [currentQuizWord];
+  while (options.length < 4) {
+    let randItem = pool[Math.floor(Math.random() * pool.length)];
+    if (!options.find(o => o.hz === randItem.hz)) options.push(randItem);
+  }
+  options.sort(() => 0.5 - Math.random());
+  
+  document.getElementById('quiz-question').innerText = `Как сказать: "${currentQuizWord.ru}"?`;
+  
+  const cont = document.getElementById('quiz-options');
+  cont.innerHTML = '';
+  options.forEach(opt => {
+    const btn = document.createElement('div');
+    btn.className = 'quiz-opt';
+    btn.innerText = opt.hz;
+    btn.onclick = () => checkQuizAnswer(btn, opt.hz === currentQuizWord.hz);
+    cont.appendChild(btn);
+  });
+}
+
+function checkQuizAnswer(btn, isCorrect) {
+  const feedback = document.getElementById('quiz-feedback');
+  document.querySelectorAll('.quiz-opt').forEach(b => b.onclick = null);
+  
+  if (isCorrect) {
+    btn.classList.add('correct');
+    feedback.innerText = '✅ Правильно! Молодец!'; feedback.style.color = '#2e7d32';
+    playAudio(currentQuizWord.hz);
+  } else {
+    btn.classList.add('wrong');
+    feedback.innerText = `❌ Ой! Правильно: ${currentQuizWord.hz} (${currentQuizWord.py})`; feedback.style.color = '#b71c1c';
+    document.querySelectorAll('.quiz-opt').forEach(b => { if (b.innerText === currentQuizWord.hz) b.classList.add('correct'); });
+  }
+}
+
+// ============================================
+// ИГРА: СОБЕРИ ФРАЗУ
+// ============================================
+let sentencePool = [];
+let currentSentence = null;
+let currentSentenceTokens = [];
+let answerTokens = [];
+
+function initSentencePool() {
+  sentencePool = [...phrases].sort(() => 0.5 - Math.random());
+}
+
+function nextSentence() {
+  if (sentencePool.length === 0) initSentencePool();
+  currentSentence = sentencePool.pop();
+  
+  document.getElementById('sent-target').innerText = `Как сказать: "${currentSentence.ru}"?`;
+  
+  const chars = currentSentence.hz.replace(/[！？。]/g, '').split(''); 
+  const punct = currentSentence.hz.replace(/[^！？。]/g, '');
+  if(punct) chars.push(punct);
+
+  currentSentenceTokens = chars;
+  answerTokens = [];
+  renderSentenceGame();
+}
+
+function renderSentenceGame() {
+  const answerArea = document.getElementById('sent-answer-area');
+  const poolArea = document.getElementById('sent-pool-area');
+  answerArea.innerHTML = '';
+  poolArea.innerHTML = '';
+  
+  answerTokens.forEach((token, index) => {
+    const el = document.createElement('div');
+    el.className = 'tile';
+    el.innerText = token;
+    el.onclick = () => { answerTokens.splice(index, 1); renderSentenceGame(); };
+    answerArea.appendChild(el);
+  });
+  
+  let availableTokens = [];
+  let tempAnswer = [...answerTokens];
+  currentSentenceTokens.forEach((token, i) => {
+    let idxInAnswer = tempAnswer.indexOf(token);
+    if (idxInAnswer !== -1) tempAnswer.splice(idxInAnswer, 1);
+    else availableTokens.push({ token, id: i });
+  });
+  
+  availableTokens.sort(() => 0.5 - Math.random());
+  availableTokens.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'tile';
+    el.innerText = item.token;
+    el.onclick = () => { answerTokens.push(item.token); renderSentenceGame(); };
+    poolArea.appendChild(el);
+  });
+  
+  if (answerTokens.length === currentSentenceTokens.length) {
+    if (answerTokens.join('') === currentSentenceTokens.join('')) {
+      const feedback = document.getElementById('sent-feedback');
+      feedback.innerText = '🎉 Отлично! Предложение собрано верно!'; feedback.style.color = '#2e7d32';
+      playAudio(currentSentence.hz);
+    } else {
+      const feedback = document.getElementById('sent-feedback');
+      feedback.innerText = '🤔 Почти получилось, но порядок неверный.'; feedback.style.color = '#e65100';
+    }
+  } else {
+    document.getElementById('sent-feedback').innerText = '';
+  }
+}
+
+// ============================================
+// ИГРА: ПОРЯДОК ЧЕРТ (HanziWriter)
+// ============================================
+// ВСЕ УНИКАЛЬНЫЕ ИЕРОГЛИФЫ ИЗ УРОКА 3
+const strokeChars = ['您', '好', '你', '再', '见', '叫', '什', '么', '名', '字', '我', '小', '月', '大', '生'];
+let currentStrokeChar = '你';
+let writer = null;
+
+function initStrokeTab() {
+  const selector = document.getElementById('stroke-selector');
+  selector.innerHTML = '';
+  
+  strokeChars.forEach(char => {
+    const btn = document.createElement('button');
+    btn.className = 'stroke-char-btn' + (char === currentStrokeChar ? ' active' : '');
+    btn.innerText = char;
+    btn.onclick = () => selectStrokeChar(char);
+    selector.appendChild(btn);
+  });
+  
+  createWriter();
+}
+
+function selectStrokeChar(char) {
+  currentStrokeChar = char;
+  document.querySelectorAll('.stroke-char-btn').forEach(btn => {
+    if (btn.innerText === char) btn.classList.add('active');
+    else btn.classList.remove('active');
+  });
+  createWriter();
+}
+
+function createWriter() {
+  const target = document.getElementById('character-target');
+  const status = document.getElementById('writer-status');
+  
+  if (!window.HanziWriter) {
+    status.innerText = "⚠️ Библиотека анимации не загрузилась. Проверьте интернет.";
+    return;
+  }
+  
+  status.innerText = "";
+  target.innerHTML = ''; // Очищаем контейнер
+  
+  writer = HanziWriter.create('character-target', currentStrokeChar, {
+    width: 250,
+    height: 250,
+    padding: 5,
+    showCharacter: true, 
+    showOutline: true,
+    strokeAnimationSpeed: 1.5,
+    delayBetweenStrokes: 200,
+    strokeColor: '#c2185b',
+    outlineColor: '#f8bbd0',
+    drawingColor: '#1565c0'
+  });
+}
+
+function animateChar() {
+  if (writer) {
+    writer.showCharacter();
+    setTimeout(() => writer.animateCharacter(), 100);
+  }
+}
+
+function quizChar() {
+  if (writer) {
+    writer.hideCharacter();
+    document.getElementById('writer-status').innerText = "";
+    writer.quiz({
+      onMistake: function(strokeData) {
+        document.getElementById('writer-status').innerText = "Ой, не туда! Попробуй еще раз.";
+        document.getElementById('writer-status').style.color = "#e65100";
+      },
+      onComplete: function(summary) {
+        document.getElementById('writer-status').innerText = "🎉 Молодец! Иероглиф написан верно!";
+        document.getElementById('writer-status').style.color = "#2e7d32";
+        playAudio(currentStrokeChar);
+        setTimeout(() => writer.showCharacter(), 1000);
+      }
+    });
+  }
+}
+
+// ============================================
+// ЗАПУСК
+// ============================================
+window.onload = () => {
+  renderCard(14);
+  renderCard(18);
+  initMatchGame();
+  nextQuiz();
+  initSentencePool();
+  nextSentence();
+  
+  // Инициализация HanziWriter с задержкой
+  setTimeout(initStrokeTab, 500); 
+};
+</script>
+</body>
+</html>
