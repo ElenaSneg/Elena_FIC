@@ -125,7 +125,7 @@
   }
   .audio-btn:active { transform: scale(0.95); box-shadow: none; }
 
-  /* --- НАЙДИ ПАРУ --- */
+  /* --- НАЙДИ ПАРУ (Иероглиф-Перевод) --- */
   .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 600px; margin: 0 auto; }
   .match-item {
     background: #fff; border: 3px solid #ffd1dc; border-radius: 15px; padding: 15px 10px;
@@ -139,6 +139,73 @@
   .match-item.matched { background: #c8e6c9; border-color: #81c784; color: #2e7d32; opacity: 0.6; cursor: default; box-shadow: 0 4px 0 #81c784; }
   .match-item.wrong { background: #ffcdd2; border-color: #e57373; animation: shake 0.4s; }
   @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+  /* --- НАЙДИ ПАРУ (Пиньинь-Иероглиф) --- */
+  .pinyin-match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 600px; margin: 0 auto; }
+  .pinyin-item {
+    background: #fff; border: 3px solid #a5d6a7; border-radius: 15px; padding: 15px 10px;
+    font-size: 1.4em; font-weight: 700; cursor: pointer; transition: 0.2s;
+    display: flex; justify-content: center; align-items: center; text-align: center;
+    box-shadow: 0 4px 0 #a5d6a7; min-height: 70px; color: #2e7d32;
+  }
+  .pinyin-item.hz { font-size: 2.2em; font-family: 'Ma Shan Zheng', serif; color: #c2185b; border-color: #f8bbd0; box-shadow: 0 4px 0 #f8bbd0;}
+  .pinyin-item.selected { background: #fff59d; border-color: #fbc02d; box-shadow: 0 4px 0 #fbc02d; transform: scale(1.05); }
+  .pinyin-item.matched { background: #e0f7fa; border-color: #80deea; color: #006064; opacity: 0.6; cursor: default; box-shadow: 0 4px 0 #80deea; }
+
+  /* --- МЕМОРИ --- */
+  .memory-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .mem-card {
+    aspect-ratio: 1 / 1;
+    perspective: 1000px;
+    cursor: pointer;
+  }
+  .mem-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.5s;
+    transform-style: preserve-3d;
+  }
+  .mem-card.flipped .mem-card-inner, .mem-card.matched .mem-card-inner {
+    transform: rotateY(180deg);
+  }
+  .mem-front, .mem-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    font-weight: 800;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  .mem-front {
+    background: #fff;
+    border: 3px solid #ffb6c1;
+    font-size: 2em;
+    color: #ffb6c1;
+  }
+  .mem-back {
+    background: #ffebf0;
+    border: 3px solid #f8bbd0;
+    color: #c2185b;
+    transform: rotateY(180deg);
+  }
+  .mem-back .mem-hz { font-size: 2em; font-family: 'Ma Shan Zheng', serif; }
+  .mem-back .mem-py { font-size: 1em; color: #1565c0; margin-top: 5px; }
+  .mem-back .mem-num { font-size: 1.5em; font-weight: 800; color: #c2185b; }
+  .mem-card.matched .mem-back { background: #c8e6c9; border-color: #81c784; color: #2e7d32; }
 
   /* --- ВИКТОРИНА --- */
   .quiz-question { font-size: 1.5em; font-weight: 800; color: #4a2c3a; margin-bottom: 20px; }
@@ -175,12 +242,8 @@
   .stroke-char-btn.active { background: #c2185b; color: #fff; box-shadow: 0 3px 0 #7a0c36; }
   
   #character-target {
-    width: 250px;
-    height: 250px;
-    margin: 0 auto;
-    border: 3px dashed #90caf9;
-    border-radius: 15px;
-    background: #f9f9f9;
+    width: 250px; height: 250px; margin: 0 auto;
+    border: 3px dashed #90caf9; border-radius: 15px; background: #f9f9f9;
     position: relative;
   }
   #writer-status { margin-top: 15px; color: #e65100; font-weight: 700; min-height: 25px; }
@@ -201,7 +264,9 @@
 <div class="tabs">
   <button class="tab-btn active" onclick="switchTab('tab-flash14', this)">📇 Стр. 14</button>
   <button class="tab-btn" onclick="switchTab('tab-flash18', this)">📇 Стр. 18</button>
-  <button class="tab-btn" onclick="switchTab('tab-match', this)">🔗 Найди пару</button>
+  <button class="tab-btn" onclick="switchTab('tab-match', this)">🔗 Найди пару (RU)</button>
+  <button class="tab-btn" onclick="switchTab('tab-pinyin-match', this)">🔤 Пиньинь-Иероглиф</button>
+  <button class="tab-btn" onclick="switchTab('tab-memory', this)">🃏 Мемори</button>
   <button class="tab-btn" onclick="switchTab('tab-quiz', this)">🎯 Викторина</button>
   <button class="tab-btn" onclick="switchTab('tab-sentence', this)">🧩 Собери фразу</button>
   <button class="tab-btn" onclick="switchTab('tab-strokes', this)">🖌️ Порядок черт</button>
@@ -255,12 +320,30 @@
   </div>
 </div>
 
-<!-- ИГРА: НАЙДИ ПАРУ -->
+<!-- ИГРА: НАЙДИ ПАРУ (Иероглиф - Перевод) -->
 <div id="tab-match" class="tab-content">
   <div class="card-container">
-    <p style="color:#888; font-weight:700; margin-bottom:15px;">Соедини иероглиф с переводом (слова из обоих текстов)</p>
+    <p style="color:#888; font-weight:700; margin-bottom:15px;">Соедини иероглиф с переводом</p>
     <div class="match-grid" id="match-grid"></div>
     <button class="btn-action" onclick="initMatchGame()" style="margin-top:25px; background:#4caf50; box-shadow: 0 4px 0 #2e7d32;">🔄 Начать заново</button>
+  </div>
+</div>
+
+<!-- ИГРА: НАЙДИ ПАРУ (Пиньинь - Иероглиф) -->
+<div id="tab-pinyin-match" class="tab-content">
+  <div class="card-container">
+    <p style="color:#888; font-weight:700; margin-bottom:15px;">Соедини пиньинь с правильным иероглифом</p>
+    <div class="pinyin-match-grid" id="pinyin-match-grid"></div>
+    <button class="btn-action" onclick="initPinyinMatch()" style="margin-top:25px; background:#00897b; box-shadow: 0 4px 0 #004d40;">🔄 Начать заново</button>
+  </div>
+</div>
+
+<!-- ИГРА: МЕМОРИ -->
+<div id="tab-memory" class="tab-content">
+  <div class="card-container">
+    <p style="color:#888; font-weight:700; margin-bottom:15px;">Найди пары (слова и числа)</p>
+    <div class="memory-grid" id="memory-grid"></div>
+    <button class="btn-action" onclick="initMemoryGame()" style="margin-top:25px; background:#8e24aa; box-shadow: 0 4px 0 #4a148c;">🔄 Начать заново</button>
   </div>
 </div>
 
@@ -310,7 +393,7 @@
 
 <script>
 // ============================================
-// БАЗА ДАННЫХ (Разделена по страницам)
+// БАЗА ДАННЫХ
 // ============================================
 const vocabP14 = [
   { hz: '您', py: 'nín', ru: 'Вы (вежл.)' },
@@ -337,7 +420,6 @@ const vocabP18 = [
 
 const vocabAll = [...vocabP14, ...vocabP18];
 
-// Фразы для игры (Ксюша = 克秀莎, Лена = 叶莲娜)
 const phrases = [
   { hz: '你好！', py: 'nǐ hǎo!', ru: 'Привет!' },
   { hz: '您好！', py: 'nín hǎo!', ru: 'Здравствуйте!' },
@@ -376,7 +458,27 @@ function switchTab(tabId, btn) {
 }
 
 // ============================================
-// КАРТОЧКИ (Две независимые колоды)
+// ГЕНЕРАТОР ЧИСЕЛ (1-99)
+// ============================================
+const digitsHz = ['零','一','二','三','四','五','六','七','八','九'];
+const digitsPy = ['líng','yī','èr','sān','sì','wǔ','liù','qī','bā','jiǔ'];
+function getChineseNumber(n) {
+  if (n === 0) return { hz: '零', py: 'líng' };
+  if (n < 10) return { hz: digitsHz[n], py: digitsPy[n] };
+  if (n < 20) return n === 10 ? {hz: '十', py: 'shí'} : { hz: '十' + digitsHz[n%10], py: 'shí ' + digitsPy[n%10] };
+  let tens = Math.floor(n / 10);
+  let units = n % 10;
+  let hz = digitsHz[tens] + '十';
+  let py = digitsPy[tens] + ' shí';
+  if (units > 0) {
+    hz += digitsHz[units];
+    py += ' ' + digitsPy[units];
+  }
+  return { hz, py };
+}
+
+// ============================================
+// КАРТОЧКИ
 // ============================================
 let cardIndices = { 14: 0, 18: 0 };
 let decks = { 14: vocabP14, 18: vocabP18 };
@@ -385,32 +487,19 @@ function renderCard(deckId) {
   const card = decks[deckId][cardIndices[deckId]];
   const fc = document.getElementById('flashcard' + deckId);
   fc.classList.remove('flipped');
-  
   setTimeout(() => {
     document.getElementById('fc' + deckId + '-front').innerText = card.hz;
     document.getElementById('fc' + deckId + '-py').innerText = card.py;
     document.getElementById('fc' + deckId + '-ru').innerText = card.ru;
   }, 150); 
-  
   document.getElementById('fc' + deckId + '-counter').innerText = (cardIndices[deckId] + 1) + ' / ' + decks[deckId].length;
 }
-
-function flipCard(deckId) {
-  document.getElementById('flashcard' + deckId).classList.toggle('flipped');
-}
-
-function nextCard(deckId) {
-  cardIndices[deckId] = (cardIndices[deckId] + 1) % decks[deckId].length;
-  renderCard(deckId);
-}
-
-function prevCard(deckId) {
-  cardIndices[deckId] = (cardIndices[deckId] - 1 + decks[deckId].length) % decks[deckId].length;
-  renderCard(deckId);
-}
+function flipCard(deckId) { document.getElementById('flashcard' + deckId).classList.toggle('flipped'); }
+function nextCard(deckId) { cardIndices[deckId] = (cardIndices[deckId] + 1) % decks[deckId].length; renderCard(deckId); }
+function prevCard(deckId) { cardIndices[deckId] = (cardIndices[deckId] - 1 + decks[deckId].length) % decks[deckId].length; renderCard(deckId); }
 
 // ============================================
-// ИГРА: НАЙДИ ПАРУ
+// ИГРА: НАЙДИ ПАРУ (Иероглиф - Русский)
 // ============================================
 let matchSelectedLeft = null;
 let matchCount = 0;
@@ -424,7 +513,6 @@ function initMatchGame() {
   
   const grid = document.getElementById('match-grid');
   grid.innerHTML = '';
-  
   const leftCol = document.createElement('div');
   leftCol.style.display = 'flex'; leftCol.style.flexDirection = 'column'; leftCol.style.gap = '12px';
   const rightCol = document.createElement('div');
@@ -447,31 +535,185 @@ function initMatchGame() {
     el.onclick = () => selectMatch(el, 'right');
     rightCol.appendChild(el);
   });
-  
-  grid.appendChild(leftCol);
-  grid.appendChild(rightCol);
+  grid.appendChild(leftCol); grid.appendChild(rightCol);
 }
 
 function selectMatch(el, side) {
   if (el.classList.contains('matched')) return;
   if (side === 'left') {
     document.querySelectorAll('.match-item.hz').forEach(i => i.classList.remove('selected'));
-    el.classList.add('selected');
-    matchSelectedLeft = el;
+    el.classList.add('selected'); matchSelectedLeft = el;
   } else {
-    if (!matchSelectedLeft) {
-      el.classList.add('wrong'); setTimeout(() => el.classList.remove('wrong'), 500); return;
-    }
+    if (!matchSelectedLeft) { el.classList.add('wrong'); setTimeout(() => el.classList.remove('wrong'), 500); return; }
     if (matchSelectedLeft.dataset.id === el.dataset.id) {
       matchSelectedLeft.classList.remove('selected');
-      matchSelectedLeft.classList.add('matched');
-      el.classList.add('matched');
+      matchSelectedLeft.classList.add('matched'); el.classList.add('matched');
       playAudio(matchSelectedLeft.innerText);
-      matchSelectedLeft = null;
-      matchCount++;
+      matchSelectedLeft = null; matchCount++;
       if (matchCount === 6) setTimeout(() => alert('🎉 Отлично! Все пары найдены!'), 300);
+    } else { el.classList.add('wrong'); setTimeout(() => el.classList.remove('wrong'), 500); }
+  }
+}
+
+// ============================================
+// ИГРА: НАЙДИ ПАРУ (Пиньинь - Иероглиф)
+// ============================================
+let pyMatchSelectedLeft = null;
+let pyMatchCount = 0;
+
+function initPinyinMatch() {
+  pyMatchCount = 0;
+  pyMatchSelectedLeft = null;
+  // Берем 6 случайных слов
+  const subset = [...vocabAll].sort(() => 0.5 - Math.random()).slice(0, 6);
+  const leftItems = [...subset].sort(() => 0.5 - Math.random());
+  const rightItems = [...subset].sort(() => 0.5 - Math.random());
+  
+  const grid = document.getElementById('pinyin-match-grid');
+  grid.innerHTML = '';
+  const leftCol = document.createElement('div');
+  leftCol.style.display = 'flex'; leftCol.style.flexDirection = 'column'; leftCol.style.gap = '12px';
+  const rightCol = document.createElement('div');
+  rightCol.style.display = 'flex'; rightCol.style.flexDirection = 'column'; rightCol.style.gap = '12px';
+  
+  leftItems.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'pinyin-item'; // Пиньинь
+    el.innerText = item.py;
+    el.dataset.id = item.hz;
+    el.onclick = () => selectPyMatch(el, 'left');
+    leftCol.appendChild(el);
+  });
+  
+  rightItems.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'pinyin-item hz'; // Иероглиф
+    el.innerText = item.hz;
+    el.dataset.id = item.hz;
+    el.onclick = () => selectPyMatch(el, 'right');
+    rightCol.appendChild(el);
+  });
+  grid.appendChild(leftCol); grid.appendChild(rightCol);
+}
+
+function selectPyMatch(el, side) {
+  if (el.classList.contains('matched')) return;
+  if (side === 'left') {
+    document.querySelectorAll('.pinyin-item:not(.hz)').forEach(i => i.classList.remove('selected'));
+    el.classList.add('selected'); pyMatchSelectedLeft = el;
+  } else {
+    if (!pyMatchSelectedLeft) { return; }
+    if (pyMatchSelectedLeft.dataset.id === el.dataset.id) {
+      pyMatchSelectedLeft.classList.remove('selected');
+      pyMatchSelectedLeft.classList.add('matched'); el.classList.add('matched');
+      playAudio(el.innerText); // Озвучиваем иероглиф
+      pyMatchSelectedLeft = null; pyMatchCount++;
+      if (pyMatchCount === 6) setTimeout(() => alert('🎉 Отлично! Все пары найдены!'), 300);
+    } else { 
+      el.style.animation = 'shake 0.4s'; 
+      setTimeout(() => el.style.animation = '', 400); 
+    }
+  }
+}
+
+// ============================================
+// ИГРА: МЕМОРИ
+// ============================================
+let memoryFlipped = [];
+let memoryMatched = 0;
+let memoryLock = false;
+
+function initMemoryGame() {
+  memoryFlipped = [];
+  memoryMatched = 0;
+  memoryLock = false;
+  
+  let pairs = [];
+  
+  // Добавляем 4 случайных слова
+  const randomVocab = [...vocabAll].sort(() => 0.5 - Math.random()).slice(0, 4);
+  randomVocab.forEach(v => {
+    pairs.push({ type: 'vocab', front: v.hz, back: v.ru, py: v.py, id: v.hz });
+  });
+
+  // Добавляем 4 случайных числа от 10 до 99
+  for(let i=0; i<4; i++) {
+    let num = Math.floor(Math.random() * 89) + 10; // 10-99
+    let chNum = getChineseNumber(num);
+    pairs.push({ type: 'number', front: chNum.hz, back: num.toString(), py: chNum.py, id: chNum.hz });
+  }
+
+  // Создаем колоду карт (каждая пара = 2 карты)
+  let cards = [];
+  pairs.forEach(p => {
+    // Карта 1 (Лицевая: Иероглиф или Цифра)
+    cards.push({ id: p.id, type: p.type, display: p.front, matchValue: p.id, audio: p.front });
+    // Карта 2 (Лицевая: Перевод или Цифра-пиньинь)
+    if (p.type === 'vocab') {
+      cards.push({ id: p.id, type: p.type, display: p.back, matchValue: p.id, audio: p.front }); // Перевод
     } else {
-      el.classList.add('wrong'); setTimeout(() => el.classList.remove('wrong'), 500);
+      // Для чисел на обратной стороне пишем арабскую цифру
+      cards.push({ id: p.id, type: p.type, display: p.back, matchValue: p.id, audio: p.front }); 
+    }
+  });
+
+  // Перемешиваем
+  cards.sort(() => 0.5 - Math.random());
+
+  const grid = document.getElementById('memory-grid');
+  grid.innerHTML = '';
+
+  cards.forEach((card, index) => {
+    const el = document.createElement('div');
+    el.className = 'mem-card';
+    el.dataset.matchValue = card.matchValue;
+    
+    el.innerHTML = `
+      <div class="mem-card-inner">
+        <div class="mem-front">❓</div>
+        <div class="mem-back">
+          <div class="${card.type === 'vocab' && card.display.length > 1 ? 'mem-py' : (card.type === 'number' && /^\d+$/.test(card.display) ? 'mem-num' : 'mem-hz')}">${card.display}</div>
+        </div>
+      </div>
+    `;
+    
+    el.onclick = () => flipMemoryCard(el, card);
+    grid.appendChild(el);
+  });
+}
+
+function flipMemoryCard(el, card) {
+  if (memoryLock || el.classList.contains('flipped') || el.classList.contains('matched')) return;
+  
+  el.classList.add('flipped');
+  memoryFlipped.push({ el, card });
+  playAudio(card.audio); // Озвучиваем при клике
+
+  if (memoryFlipped.length === 2) {
+    memoryLock = true;
+    const [card1, card2] = memoryFlipped;
+
+    if (card1.card.matchValue === card2.card.matchValue) {
+      // Совпало
+      setTimeout(() => {
+        card1.el.classList.add('matched');
+        card2.el.classList.add('matched');
+        memoryFlipped = [];
+        memoryLock = false;
+        memoryMatched++;
+        
+        if (memoryMatched === 8) {
+          setTimeout(() => alert('🎉 Поздравляю! Мемори пройдено!'), 300);
+        }
+      }, 500);
+    } else {
+      // Не совпало
+      setTimeout(() => {
+        card1.el.classList.remove('flipped');
+        card2.el.classList.remove('flipped');
+        memoryFlipped = [];
+        memoryLock = false;
+      }, 1000);
     }
   }
 }
@@ -480,7 +722,6 @@ function selectMatch(el, side) {
 // ИГРА: ВИКТОРИНА
 // ============================================
 let currentQuizWord = null;
-
 function nextQuiz() {
   const feedback = document.getElementById('quiz-feedback');
   feedback.innerText = '';
@@ -506,18 +747,13 @@ function nextQuiz() {
     cont.appendChild(btn);
   });
 }
-
 function checkQuizAnswer(btn, isCorrect) {
   const feedback = document.getElementById('quiz-feedback');
   document.querySelectorAll('.quiz-opt').forEach(b => b.onclick = null);
-  
   if (isCorrect) {
-    btn.classList.add('correct');
-    feedback.innerText = '✅ Правильно! Молодец!'; feedback.style.color = '#2e7d32';
-    playAudio(currentQuizWord.hz);
+    btn.classList.add('correct'); feedback.innerText = '✅ Правильно! Молодец!'; feedback.style.color = '#2e7d32'; playAudio(currentQuizWord.hz);
   } else {
-    btn.classList.add('wrong');
-    feedback.innerText = `❌ Ой! Правильно: ${currentQuizWord.hz} (${currentQuizWord.py})`; feedback.style.color = '#b71c1c';
+    btn.classList.add('wrong'); feedback.innerText = `❌ Ой! Правильно: ${currentQuizWord.hz} (${currentQuizWord.py})`; feedback.style.color = '#b71c1c';
     document.querySelectorAll('.quiz-opt').forEach(b => { if (b.innerText === currentQuizWord.hz) b.classList.add('correct'); });
   }
 }
@@ -530,35 +766,27 @@ let currentSentence = null;
 let currentSentenceTokens = [];
 let answerTokens = [];
 
-function initSentencePool() {
-  sentencePool = [...phrases].sort(() => 0.5 - Math.random());
-}
+function initSentencePool() { sentencePool = [...phrases].sort(() => 0.5 - Math.random()); }
 
 function nextSentence() {
   if (sentencePool.length === 0) initSentencePool();
   currentSentence = sentencePool.pop();
-  
   document.getElementById('sent-target').innerText = `Как сказать: "${currentSentence.ru}"?`;
-  
   const chars = currentSentence.hz.replace(/[！？。]/g, '').split(''); 
   const punct = currentSentence.hz.replace(/[^！？。]/g, '');
   if(punct) chars.push(punct);
-
-  currentSentenceTokens = chars;
-  answerTokens = [];
+  currentSentenceTokens = chars; answerTokens = [];
   renderSentenceGame();
 }
 
 function renderSentenceGame() {
   const answerArea = document.getElementById('sent-answer-area');
   const poolArea = document.getElementById('sent-pool-area');
-  answerArea.innerHTML = '';
-  poolArea.innerHTML = '';
+  answerArea.innerHTML = ''; poolArea.innerHTML = '';
   
   answerTokens.forEach((token, index) => {
     const el = document.createElement('div');
-    el.className = 'tile';
-    el.innerText = token;
+    el.className = 'tile'; el.innerText = token;
     el.onclick = () => { answerTokens.splice(index, 1); renderSentenceGame(); };
     answerArea.appendChild(el);
   });
@@ -574,8 +802,7 @@ function renderSentenceGame() {
   availableTokens.sort(() => 0.5 - Math.random());
   availableTokens.forEach(item => {
     const el = document.createElement('div');
-    el.className = 'tile';
-    el.innerText = item.token;
+    el.className = 'tile'; el.innerText = item.token;
     el.onclick = () => { answerTokens.push(item.token); renderSentenceGame(); };
     poolArea.appendChild(el);
   });
@@ -589,15 +816,12 @@ function renderSentenceGame() {
       const feedback = document.getElementById('sent-feedback');
       feedback.innerText = '🤔 Почти получилось, но порядок неверный.'; feedback.style.color = '#e65100';
     }
-  } else {
-    document.getElementById('sent-feedback').innerText = '';
-  }
+  } else { document.getElementById('sent-feedback').innerText = ''; }
 }
 
 // ============================================
-// ИГРА: ПОРЯДОК ЧЕРТ (HanziWriter)
+// ИГРА: ПОРЯДОК ЧЕРТ
 // ============================================
-// ВСЕ УНИКАЛЬНЫЕ ИЕРОГЛИФЫ ИЗ УРОКА 3
 const strokeChars = ['您', '好', '你', '再', '见', '叫', '什', '么', '名', '字', '我', '小', '月', '大', '生'];
 let currentStrokeChar = '你';
 let writer = null;
@@ -605,7 +829,6 @@ let writer = null;
 function initStrokeTab() {
   const selector = document.getElementById('stroke-selector');
   selector.innerHTML = '';
-  
   strokeChars.forEach(char => {
     const btn = document.createElement('button');
     btn.className = 'stroke-char-btn' + (char === currentStrokeChar ? ' active' : '');
@@ -613,62 +836,36 @@ function initStrokeTab() {
     btn.onclick = () => selectStrokeChar(char);
     selector.appendChild(btn);
   });
-  
   createWriter();
 }
-
 function selectStrokeChar(char) {
   currentStrokeChar = char;
   document.querySelectorAll('.stroke-char-btn').forEach(btn => {
-    if (btn.innerText === char) btn.classList.add('active');
-    else btn.classList.remove('active');
+    if (btn.innerText === char) btn.classList.add('active'); else btn.classList.remove('active');
   });
   createWriter();
 }
-
 function createWriter() {
   const target = document.getElementById('character-target');
   const status = document.getElementById('writer-status');
-  
-  if (!window.HanziWriter) {
-    status.innerText = "⚠️ Библиотека анимации не загрузилась. Проверьте интернет.";
-    return;
-  }
-  
-  status.innerText = "";
-  target.innerHTML = ''; // Очищаем контейнер
-  
+  if (!window.HanziWriter) { status.innerText = "⚠️ Библиотека анимации не загрузилась."; return; }
+  status.innerText = ""; target.innerHTML = ''; 
   writer = HanziWriter.create('character-target', currentStrokeChar, {
-    width: 250,
-    height: 250,
-    padding: 5,
-    showCharacter: true, 
-    showOutline: true,
-    strokeAnimationSpeed: 1.5,
-    delayBetweenStrokes: 200,
-    strokeColor: '#c2185b',
-    outlineColor: '#f8bbd0',
-    drawingColor: '#1565c0'
+    width: 250, height: 250, padding: 5, showCharacter: true, showOutline: true,
+    strokeAnimationSpeed: 1.5, delayBetweenStrokes: 200,
+    strokeColor: '#c2185b', outlineColor: '#f8bbd0', drawingColor: '#1565c0'
   });
 }
-
-function animateChar() {
-  if (writer) {
-    writer.showCharacter();
-    setTimeout(() => writer.animateCharacter(), 100);
-  }
-}
-
+function animateChar() { if (writer) { writer.showCharacter(); setTimeout(() => writer.animateCharacter(), 100); } }
 function quizChar() {
   if (writer) {
-    writer.hideCharacter();
-    document.getElementById('writer-status').innerText = "";
+    writer.hideCharacter(); document.getElementById('writer-status').innerText = "";
     writer.quiz({
-      onMistake: function(strokeData) {
+      onMistake: function() {
         document.getElementById('writer-status').innerText = "Ой, не туда! Попробуй еще раз.";
         document.getElementById('writer-status').style.color = "#e65100";
       },
-      onComplete: function(summary) {
+      onComplete: function() {
         document.getElementById('writer-status').innerText = "🎉 Молодец! Иероглиф написан верно!";
         document.getElementById('writer-status').style.color = "#2e7d32";
         playAudio(currentStrokeChar);
@@ -682,14 +879,9 @@ function quizChar() {
 // ЗАПУСК
 // ============================================
 window.onload = () => {
-  renderCard(14);
-  renderCard(18);
-  initMatchGame();
-  nextQuiz();
-  initSentencePool();
-  nextSentence();
-  
-  // Инициализация HanziWriter с задержкой
+  renderCard(14); renderCard(18);
+  initMatchGame(); initPinyinMatch(); initMemoryGame();
+  nextQuiz(); initSentencePool(); nextSentence();
   setTimeout(initStrokeTab, 500); 
 };
 </script>
