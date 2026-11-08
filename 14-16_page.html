@@ -203,8 +203,8 @@
     transform: rotateY(180deg);
   }
   .mem-back .mem-hz { font-size: 2em; font-family: 'Ma Shan Zheng', serif; }
-  .mem-back .mem-py { font-size: 1em; color: #1565c0; margin-top: 5px; }
-  .mem-back .mem-num { font-size: 1.5em; font-weight: 800; color: #c2185b; }
+  .mem-back .mem-py { font-size: 1em; color: #1565c0; margin-top: 5px; font-weight: 700; }
+  .mem-back .mem-num { font-size: 1.8em; font-weight: 800; color: #c2185b; }
   .mem-card.matched .mem-back { background: #c8e6c9; border-color: #81c784; color: #2e7d32; }
 
   /* --- ВИКТОРИНА --- */
@@ -266,7 +266,8 @@
   <button class="tab-btn" onclick="switchTab('tab-flash18', this)">📇 Стр. 18</button>
   <button class="tab-btn" onclick="switchTab('tab-match', this)">🔗 Найди пару (RU)</button>
   <button class="tab-btn" onclick="switchTab('tab-pinyin-match', this)">🔤 Пиньинь-Иероглиф</button>
-  <button class="tab-btn" onclick="switchTab('tab-memory', this)">🃏 Мемори</button>
+  <button class="tab-btn" onclick="switchTab('tab-memory-words', this)">🃏 Мемори (Слова)</button>
+  <button class="tab-btn" onclick="switchTab('tab-memory-numbers', this)">🔢 Мемори (Числа)</button>
   <button class="tab-btn" onclick="switchTab('tab-quiz', this)">🎯 Викторина</button>
   <button class="tab-btn" onclick="switchTab('tab-sentence', this)">🧩 Собери фразу</button>
   <button class="tab-btn" onclick="switchTab('tab-strokes', this)">🖌️ Порядок черт</button>
@@ -338,12 +339,21 @@
   </div>
 </div>
 
-<!-- ИГРА: МЕМОРИ -->
-<div id="tab-memory" class="tab-content">
+<!-- ИГРА: МЕМОРИ (СЛОВА) -->
+<div id="tab-memory-words" class="tab-content">
   <div class="card-container">
-    <p style="color:#888; font-weight:700; margin-bottom:15px;">Найди пары (слова и числа)</p>
-    <div class="memory-grid" id="memory-grid"></div>
-    <button class="btn-action" onclick="initMemoryGame()" style="margin-top:25px; background:#8e24aa; box-shadow: 0 4px 0 #4a148c;">🔄 Начать заново</button>
+    <p style="color:#888; font-weight:700; margin-bottom:15px;">Найди пары (Иероглиф — Перевод)</p>
+    <div class="memory-grid" id="memory-grid-words"></div>
+    <button class="btn-action" onclick="initMemoryWords()" style="margin-top:25px; background:#8e24aa; box-shadow: 0 4px 0 #4a148c;">🔄 Начать заново</button>
+  </div>
+</div>
+
+<!-- ИГРА: МЕМОРИ (ЧИСЛА) -->
+<div id="tab-memory-numbers" class="tab-content">
+  <div class="card-container">
+    <p style="color:#888; font-weight:700; margin-bottom:15px;">Найди пары (Китайское число — Цифра)</p>
+    <div class="memory-grid" id="memory-grid-numbers"></div>
+    <button class="btn-action" onclick="initMemoryNumbers()" style="margin-top:25px; background:#d81b60; box-shadow: 0 4px 0 #880e4f;">🔄 Начать заново</button>
   </div>
 </div>
 
@@ -564,7 +574,6 @@ let pyMatchCount = 0;
 function initPinyinMatch() {
   pyMatchCount = 0;
   pyMatchSelectedLeft = null;
-  // Берем 6 случайных слов
   const subset = [...vocabAll].sort(() => 0.5 - Math.random()).slice(0, 6);
   const leftItems = [...subset].sort(() => 0.5 - Math.random());
   const rightItems = [...subset].sort(() => 0.5 - Math.random());
@@ -578,7 +587,7 @@ function initPinyinMatch() {
   
   leftItems.forEach(item => {
     const el = document.createElement('div');
-    el.className = 'pinyin-item'; // Пиньинь
+    el.className = 'pinyin-item';
     el.innerText = item.py;
     el.dataset.id = item.hz;
     el.onclick = () => selectPyMatch(el, 'left');
@@ -587,7 +596,7 @@ function initPinyinMatch() {
   
   rightItems.forEach(item => {
     const el = document.createElement('div');
-    el.className = 'pinyin-item hz'; // Иероглиф
+    el.className = 'pinyin-item hz';
     el.innerText = item.hz;
     el.dataset.id = item.hz;
     el.onclick = () => selectPyMatch(el, 'right');
@@ -606,7 +615,7 @@ function selectPyMatch(el, side) {
     if (pyMatchSelectedLeft.dataset.id === el.dataset.id) {
       pyMatchSelectedLeft.classList.remove('selected');
       pyMatchSelectedLeft.classList.add('matched'); el.classList.add('matched');
-      playAudio(el.innerText); // Озвучиваем иероглиф
+      playAudio(el.innerText);
       pyMatchSelectedLeft = null; pyMatchCount++;
       if (pyMatchCount === 6) setTimeout(() => alert('🎉 Отлично! Все пары найдены!'), 300);
     } else { 
@@ -623,91 +632,85 @@ let memoryFlipped = [];
 let memoryMatched = 0;
 let memoryLock = false;
 
-function initMemoryGame() {
+function resetMemoryState() {
   memoryFlipped = [];
   memoryMatched = 0;
   memoryLock = false;
-  
+}
+
+function initMemoryWords() {
+  resetMemoryState();
   let pairs = [];
-  
-  // Добавляем 4 случайных слова
-  const randomVocab = [...vocabAll].sort(() => 0.5 - Math.random()).slice(0, 4);
+  // Выбираем 8 случайных слов
+  const randomVocab = [...vocabAll].sort(() => 0.5 - Math.random()).slice(0, 8);
   randomVocab.forEach(v => {
-    pairs.push({ type: 'vocab', front: v.hz, back: v.ru, py: v.py, id: v.hz });
+    pairs.push({ id: v.hz, display: v.hz, audio: v.hz, type: 'hz' });
+    pairs.push({ id: v.hz, display: v.ru, audio: v.hz, type: 'ru' });
   });
+  renderMemoryGrid(pairs, 'memory-grid-words');
+}
 
-  // Добавляем 4 случайных числа от 10 до 99
-  for(let i=0; i<4; i++) {
-    let num = Math.floor(Math.random() * 89) + 10; // 10-99
-    let chNum = getChineseNumber(num);
-    pairs.push({ type: 'number', front: chNum.hz, back: num.toString(), py: chNum.py, id: chNum.hz });
-  }
-
-  // Создаем колоду карт (каждая пара = 2 карты)
-  let cards = [];
-  pairs.forEach(p => {
-    // Карта 1 (Лицевая: Иероглиф или Цифра)
-    cards.push({ id: p.id, type: p.type, display: p.front, matchValue: p.id, audio: p.front });
-    // Карта 2 (Лицевая: Перевод или Цифра-пиньинь)
-    if (p.type === 'vocab') {
-      cards.push({ id: p.id, type: p.type, display: p.back, matchValue: p.id, audio: p.front }); // Перевод
-    } else {
-      // Для чисел на обратной стороне пишем арабскую цифру
-      cards.push({ id: p.id, type: p.type, display: p.back, matchValue: p.id, audio: p.front }); 
+function initMemoryNumbers() {
+  resetMemoryState();
+  let pairs = [];
+  let usedNums = new Set();
+  // Выбираем 8 случайных чисел от 10 до 99
+  while (usedNums.size < 8) {
+    let num = Math.floor(Math.random() * 90) + 10;
+    if (!usedNums.has(num)) {
+      usedNums.add(num);
+      let chNum = getChineseNumber(num);
+      pairs.push({ id: chNum.hz, display: chNum.hz, audio: chNum.hz, type: 'hz' });
+      pairs.push({ id: chNum.hz, display: num.toString(), audio: chNum.hz, type: 'num' });
     }
-  });
+  }
+  renderMemoryGrid(pairs, 'memory-grid-numbers');
+}
 
-  // Перемешиваем
-  cards.sort(() => 0.5 - Math.random());
-
-  const grid = document.getElementById('memory-grid');
+function renderMemoryGrid(pairs, containerId) {
+  pairs.sort(() => 0.5 - Math.random());
+  const grid = document.getElementById(containerId);
   grid.innerHTML = '';
-
-  cards.forEach((card, index) => {
+  pairs.forEach(card => {
     const el = document.createElement('div');
     el.className = 'mem-card';
-    el.dataset.matchValue = card.matchValue;
-    
+    el.dataset.matchValue = card.id;
     el.innerHTML = `
       <div class="mem-card-inner">
         <div class="mem-front">❓</div>
         <div class="mem-back">
-          <div class="${card.type === 'vocab' && card.display.length > 1 ? 'mem-py' : (card.type === 'number' && /^\d+$/.test(card.display) ? 'mem-num' : 'mem-hz')}">${card.display}</div>
+          <div class="${card.type === 'ru' ? 'mem-py' : (card.type === 'num' ? 'mem-num' : 'mem-hz')}">${card.display}</div>
         </div>
       </div>
     `;
-    
-    el.onclick = () => flipMemoryCard(el, card);
+    el.onclick = () => flipMemoryCard(el, card, containerId);
     grid.appendChild(el);
   });
 }
 
-function flipMemoryCard(el, card) {
+function flipMemoryCard(el, card, containerId) {
   if (memoryLock || el.classList.contains('flipped') || el.classList.contains('matched')) return;
   
   el.classList.add('flipped');
   memoryFlipped.push({ el, card });
-  playAudio(card.audio); // Озвучиваем при клике
+  playAudio(card.audio);
 
   if (memoryFlipped.length === 2) {
     memoryLock = true;
     const [card1, card2] = memoryFlipped;
 
-    if (card1.card.matchValue === card2.card.matchValue) {
-      // Совпало
+    if (card1.card.id === card2.card.id) {
       setTimeout(() => {
         card1.el.classList.add('matched');
         card2.el.classList.add('matched');
         memoryFlipped = [];
         memoryLock = false;
         memoryMatched++;
-        
         if (memoryMatched === 8) {
           setTimeout(() => alert('🎉 Поздравляю! Мемори пройдено!'), 300);
         }
       }, 500);
     } else {
-      // Не совпало
       setTimeout(() => {
         card1.el.classList.remove('flipped');
         card2.el.classList.remove('flipped');
@@ -880,8 +883,16 @@ function quizChar() {
 // ============================================
 window.onload = () => {
   renderCard(14); renderCard(18);
-  initMatchGame(); initPinyinMatch(); initMemoryGame();
-  nextQuiz(); initSentencePool(); nextSentence();
+  initMatchGame(); 
+  initPinyinMatch(); 
+  
+  // Инициализируем обе игры Мемори
+  initMemoryWords(); 
+  initMemoryNumbers();
+  
+  nextQuiz(); 
+  initSentencePool(); 
+  nextSentence();
   setTimeout(initStrokeTab, 500); 
 };
 </script>
