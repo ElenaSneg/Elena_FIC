@@ -142,18 +142,37 @@
     padding: 20px;
     border: 2px solid white;
   }
-  .game-tabs { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+  
+  /* Категории игр */
+  .game-category-tabs {
+    display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;
+  }
+  .game-category-tab {
+    background: white; border: 2px solid var(--pink-main);
+    color: var(--pink-dark); padding: 12px 25px; border-radius: 25px;
+    font-family: inherit; font-weight: 900; font-size: 1.1em; cursor: pointer;
+    transition: 0.2s; box-shadow: 0 2px 6px rgba(216,27,96,0.05);
+  }
+  .game-category-tab.active {
+    background: var(--pink-main); color: white;
+  }
+
+  .game-tabs-group { display: none; }
+  .game-tabs-group.active { display: block; }
+
+  .game-tabs { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; border-top: 2px dashed rgba(216,27,96,0.2); padding-top: 20px; }
   .game-tab {
     background: white; border: 2px solid var(--pink-main);
     color: var(--pink-dark); padding: 8px 15px; border-radius: 20px;
     font-family: inherit; font-weight: bold; font-size: 0.9em; cursor: pointer;
     transition: 0.2s;
   }
-  .game-tab.active { background: var(--pink-main); color: white; }
+  .game-tab.active { background: var(--pink-dark); color: white; }
+  
   .game-content { display: none; }
   .game-content.active { display: block; }
 
-  /* --- Игра 1: Лабиринт --- */
+  /* --- Лабиринты --- */
   .maze-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -176,6 +195,7 @@
   }
   .maze-item.hz { font-family: 'KaiTi', 'STKaiti', serif; color: var(--pink-dark); }
   .maze-item.num { color: var(--text-dark); }
+  .maze-item.py { font-family: 'Courier New', monospace; font-size: 1.2em; color: #8e24aa; padding: 10px 5px; }
   .maze-item.selected { background: #ffd54f; border-color: #ffb300; transform: scale(1.05); }
   .maze-item.matched { background: #c8e6c9; border-color: #81c784; color: #2e7d32; opacity: 0.6; cursor: default; }
   .maze-item.wrong { background: #ffcdd2; border-color: #e57373; animation: shake 0.3s; }
@@ -185,11 +205,10 @@
     75% { transform: translateX(5px); }
   }
 
-  /* --- Игра 2, 3, 4: Викторины --- */
+  /* --- Викторины --- */
   .quiz-box { text-align: center; }
   .quiz-word { font-size: 4em; font-family: 'Caveat', cursive; color: var(--pink-dark); margin-bottom: 10px; }
   
-  /* Стили для контейнера с эмодзи */
   .quiz-emojis { 
     font-size: 2.5em; 
     line-height: 1.4;
@@ -267,6 +286,7 @@
     .quiz-opt { font-size: 1.4em; padding: 10px 20px; }
     .maze-item { font-size: 1.5em; padding: 10px; }
     .quiz-emojis { font-size: 2em; }
+    .game-category-tab { padding: 10px 15px; font-size: 0.9em; }
   }
 </style>
 </head>
@@ -280,7 +300,6 @@
     <img src="https://i.pinimg.com/736x/72/0c/80/720c80bbf14b74884c7125bb034a7676.jpg" alt="Pink Doodle" class="header-img">
     
     <div class="video-links">
-      <!-- Полные ссылки для надежности -->
       <a href="https://www.youtube.com/watch?v=NcLNmRgCpAE" target="_blank" rel="noopener noreferrer" class="video-btn">▶️ Видео-урок 1</a>
       <a href="https://www.youtube.com/watch?v=b2J4-u_iXMU" target="_blank" rel="noopener noreferrer" class="video-btn">▶️ Видео-урок 2</a>
     </div>
@@ -290,31 +309,58 @@
   <div class="tabs">
     <button class="tab-btn active" onclick="showTab('games', this)">🎮 Игры</button>
     <button class="tab-btn" onclick="showTab('nums1-10', this)">📖 Цифры 1–10</button>
-    <button class="tab-btn" onclick="showTab('nums20-99', this)">🎋 Числа 20–99</button>
+    <button class="tab-btn" onclick="showTab('nums20-99', this)">🎋 Числа 11–99</button>
   </div>
 
   <!-- ========== ВКЛАДКА 1: ИГРЫ ========== -->
   <div id="games" class="tab-content active">
     <div class="games-section">
-      <div class="game-tabs">
-        <button class="game-tab active" onclick="switchGame('maze', this)">🌿 Лабиринт</button>
-        <button class="game-tab" onclick="switchGame('quiz', this)">🎯 Викторина</button>
-        <button class="game-tab" onclick="switchGame('hard', this)">🔥 Сложная</button>
-        <button class="game-tab" onclick="switchGame('count', this)">🐼 Посчитай</button>
+      
+      <!-- Категории игр -->
+      <div class="game-category-tabs">
+        <button class="game-category-tab active" onclick="showGameCategory('small', this)">🔢 Простые (1-10)</button>
+        <button class="game-category-tab" onclick="showGameCategory('big', this)">🚀 Сложные (11-99)</button>
       </div>
 
-      <!-- Игра 1: Лабиринт -->
+      <!-- ГРУППА 1: ПРОСТЫЕ ЦИФРЫ -->
+      <div id="game-tabs-small" class="game-tabs-group active">
+        <div class="game-tabs">
+          <button class="game-tab active" onclick="switchGame('maze', this)">🌿 Лабиринт (Цифра)</button>
+          <button class="game-tab" onclick="switchGame('maze-pinyin-small', this)">🏮 Лабиринт пиньинь</button>
+          <button class="game-tab" onclick="switchGame('quiz', this)">🎯 Викторина</button>
+          <button class="game-tab" onclick="switchGame('hard', this)">🔥 Аудио</button>
+          <button class="game-tab" onclick="switchGame('count', this)">🐼 Посчитай</button>
+        </div>
+      </div>
+
+      <!-- ГРУППА 2: СЛОЖНЫЕ ЦИФРЫ -->
+      <div id="game-tabs-big" class="game-tabs-group">
+        <div class="game-tabs">
+          <button class="game-tab active" onclick="switchGame('maze-pinyin-big', this)">🏮 Лабиринт пиньинь</button>
+          <button class="game-tab" onclick="switchGame('big-quiz', this)">🚀 Викторина</button>
+          <button class="game-tab" onclick="switchGame('big-audio', this)">🎧 Аудио</button>
+        </div>
+      </div>
+
+      <!-- Игра 1: Лабиринт (Цифра) -->
       <div id="game-maze" class="game-content active">
         <p style="text-align: center; margin-bottom: 15px;">Соедини китайскую цифру слева с её значением справа.</p>
-        <div class="maze-container" id="maze-container">
-          <!-- Генерируется через JS -->
-        </div>
+        <div class="maze-container" id="maze-container"></div>
         <div style="text-align:center; margin-top: 20px;">
           <button class="action-btn" onclick="initMaze()">🔄 Новый лабиринт</button>
         </div>
       </div>
 
-      <!-- Игра 2: Обычная викторина -->
+      <!-- Игра 2: Лабиринт (Иероглиф-Пиньинь 1-10) -->
+      <div id="game-maze-pinyin-small" class="game-content">
+        <p style="text-align: center; margin-bottom: 15px;">Соедини иероглиф (1-10) с его пиньинем.</p>
+        <div class="maze-container" id="maze-pinyin-small-container"></div>
+        <div style="text-align:center; margin-top: 20px;">
+          <button class="action-btn" onclick="initMazePinyinSmall()">🔄 Новый лабиринт</button>
+        </div>
+      </div>
+
+      <!-- Игра 3: Обычная викторина -->
       <div id="game-quiz" class="game-content">
         <div class="quiz-box">
           <p style="margin-bottom: 10px;">Выбери правильный иероглиф для этой цифры:</p>
@@ -325,7 +371,7 @@
         </div>
       </div>
 
-      <!-- Игра 3: Сложная викторина (без арабских цифр) -->
+      <!-- Игра 4: Сложная викторина (Аудио 1-10) -->
       <div id="game-hard" class="game-content">
         <div class="quiz-box">
           <p style="margin-bottom: 10px;">Послушай цифру и выбери правильный иероглиф:</p>
@@ -336,7 +382,7 @@
         </div>
       </div>
 
-      <!-- Игра 4: Посчитай предметы -->
+      <!-- Игра 5: Посчитай предметы -->
       <div id="game-count" class="game-content">
         <div class="quiz-box">
           <p style="margin-bottom: 10px;">Сколько здесь предметов?</p>
@@ -344,6 +390,37 @@
           <div class="quiz-options" id="count-options"></div>
           <div id="count-feedback" style="margin-top: 15px; font-weight: bold; font-size: 1.2em; height: 25px;"></div>
           <button class="action-btn" onclick="nextCountQuiz()">Дальше ➡️</button>
+        </div>
+      </div>
+
+      <!-- Игра 6: Лабиринт (Иероглиф-Пиньинь 11-99) -->
+      <div id="game-maze-pinyin-big" class="game-content">
+        <p style="text-align: center; margin-bottom: 15px;">Соедини иероглиф (11-99) с его пиньинем.</p>
+        <div class="maze-container" id="maze-pinyin-big-container"></div>
+        <div style="text-align:center; margin-top: 20px;">
+          <button class="action-btn" onclick="initMazePinyinBig()">🔄 Новый лабиринт</button>
+        </div>
+      </div>
+
+      <!-- Игра 7: 11-99 Викторина -->
+      <div id="game-big-quiz" class="game-content">
+        <div class="quiz-box">
+          <p style="margin-bottom: 10px;">Выбери правильный иероглиф для этой цифры:</p>
+          <div class="quiz-word" id="big-quiz-word" style="font-family: 'Nunito', sans-serif;">11</div>
+          <div class="quiz-options" id="big-quiz-options"></div>
+          <div id="big-quiz-feedback" style="margin-top: 15px; font-weight: bold; font-size: 1.2em; height: 25px;"></div>
+          <button class="action-btn" onclick="nextBigQuiz()">Следующая цифра ➡️</button>
+        </div>
+      </div>
+
+      <!-- Игра 8: 11-99 Аудио -->
+      <div id="game-big-audio" class="game-content">
+        <div class="quiz-box">
+          <p style="margin-bottom: 10px;">Послушай число и выбери правильный иероглиф:</p>
+          <button class="audio-btn" style="width: 80px; height: 80px; font-size: 30px; margin-bottom: 10px;" onclick="playAudio(currentBigAudioChar)">🔊</button>
+          <div class="quiz-options" id="big-audio-options"></div>
+          <div id="big-audio-feedback" style="margin-top: 15px; font-weight: bold; font-size: 1.2em; height: 25px;"></div>
+          <button class="action-btn" onclick="nextBigAudio()">Следующая цифра ➡️</button>
         </div>
       </div>
 
@@ -355,9 +432,16 @@
     <div id="numbers-container"></div>
   </div>
 
-  <!-- ========== ВКЛАДКА 3: ЧИСЛА 20-99 ========== -->
+  <!-- ========== ВКЛАДКА 3: ЧИСЛА 11-99 ========== -->
   <div id="nums20-99" class="tab-content">
     <div class="rule">
+      <strong>Как образуются числа 11–19:</strong><br>
+      Формула: <strong>十 (shí) + цифра единиц</strong><br><br>
+      • 11 = <strong>十一</strong> (shí yī)<br>
+      • 15 = <strong>十五</strong> (shí wǔ)<br>
+      • 19 = <strong>十九</strong> (shí jiǔ)<br><br>
+      <em>💡 Важно: перед 十 для чисел 11–19 НЕ пишется 一 (yī). Мы не говорим «один десять».</em><br><br>
+
       <strong>Как образуются числа 20–99:</strong><br>
       Формула: <strong>цифра десятков + 十 + цифра единиц</strong><br><br>
       • <strong>Круглые десятки</strong> (20, 30, 40, 50…) — просто <strong>二十, 三十, 四十, 五十</strong><br>
@@ -417,6 +501,40 @@ var bigNumbers = [
 ];
 
 // ================================================
+// ГЕНЕРАТОР ЧИСЕЛ 11-99
+// ================================================
+function generateBigNumber(num) {
+  var tens = Math.floor(num / 10);
+  var ones = num % 10;
+  var char = '';
+  var pinyin = '';
+
+  var tensChars = ['', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+  var tensPinyin = ['', 'yī', 'èr', 'sān', 'sì', 'wǔ', 'liù', 'qī', 'bā', 'jiǔ'];
+  var onesChars = ['', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+  var onesPinyin = ['', 'yī', 'èr', 'sān', 'sì', 'wǔ', 'liù', 'qī', 'bā', 'jiǔ'];
+
+  if (tens === 1) {
+    char += '十';
+    pinyin += 'shí ';
+  } else {
+    char += tensChars[tens] + '十';
+    pinyin += tensPinyin[tens] + ' shí ';
+  }
+
+  if (ones > 0) {
+    char += onesChars[ones];
+    pinyin += onesPinyin[ones];
+  }
+
+  return { arabic: num, char: char.trim(), pinyin: pinyin.trim() };
+}
+
+function getRandomBigNumber() {
+  return Math.floor(Math.random() * 89) + 11; // 11 to 99
+}
+
+// ================================================
 // ОЗВУЧКА
 // ================================================
 var audioPlayer = document.getElementById('player');
@@ -460,6 +578,22 @@ function showTab(tabId, btn) {
   document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
   document.getElementById(tabId).classList.add('active');
   btn.classList.add('active');
+}
+
+function showGameCategory(category, btn) {
+  // Переключение верхних вкладок категорий
+  document.querySelectorAll('.game-category-tab').forEach(el => el.classList.remove('active'));
+  btn.classList.add('active');
+
+  // Показ нужной группы игр
+  document.querySelectorAll('.game-tabs-group').forEach(el => el.classList.remove('active'));
+  document.getElementById('game-tabs-' + category).classList.add('active');
+
+  // Автоматический переход на первую игру в выбранной категории
+  var firstGameTab = document.querySelector('#game-tabs-' + category + ' .game-tab');
+  if (firstGameTab) {
+    firstGameTab.click();
+  }
 }
 
 function switchGame(game, btn) {
@@ -541,7 +675,7 @@ function buildBigNumbers() {
 }
 
 // ================================================
-// ИГРА 1: ЛАБИРИНТ
+// ИГРА 1: ЛАБИРИНТ (ЦИФРА)
 // ================================================
 var mazeSelectedLeft = null;
 var mazeMatchCount = 0;
@@ -551,7 +685,6 @@ function initMaze() {
   mazeSelectedLeft = null;
   
   var subset = shuffle(numbers).slice(0, 5);
-  
   var leftItems = shuffle(subset);
   var rightItems = shuffle(subset);
   
@@ -619,7 +752,170 @@ function selectMazeRight(el) {
 }
 
 // ================================================
-// ИГРА 2: ОБЫЧНАЯ ВИКТОРИНА
+// ИГРА 2: ЛАБИРИНТ (ИЕРОГЛИФ-ПИНЬИНЬ 1-10)
+// ================================================
+var mazePinyinSmallSelectedLeft = null;
+var mazePinyinSmallMatchCount = 0;
+
+function initMazePinyinSmall() {
+  mazePinyinSmallMatchCount = 0;
+  mazePinyinSmallSelectedLeft = null;
+
+  var subset = shuffle(numbers).slice(0, 5);
+  var leftItems = shuffle(subset);
+  var rightItems = shuffle(subset);
+  
+  var container = document.getElementById('maze-pinyin-small-container');
+  container.innerHTML = '';
+  
+  var leftCol = document.createElement('div');
+  leftCol.className = 'maze-col';
+  leftCol.id = 'maze-pinyin-small-left';
+  
+  var rightCol = document.createElement('div');
+  rightCol.className = 'maze-col';
+  rightCol.id = 'maze-pinyin-small-right';
+  
+  leftItems.forEach(item => {
+    var el = document.createElement('div');
+    el.className = 'maze-item hz';
+    el.textContent = item.char;
+    el.setAttribute('data-id', item.pinyin);
+    el.onclick = () => selectMazePinyinSmallLeft(el);
+    leftCol.appendChild(el);
+  });
+  
+  rightItems.forEach(item => {
+    var el = document.createElement('div');
+    el.className = 'maze-item py';
+    el.textContent = item.pinyin;
+    el.setAttribute('data-id', item.pinyin);
+    el.onclick = () => selectMazePinyinSmallRight(el);
+    rightCol.appendChild(el);
+  });
+  
+  container.appendChild(leftCol);
+  container.appendChild(rightCol);
+}
+
+function selectMazePinyinSmallLeft(el) {
+  if (el.classList.contains('matched')) return;
+  document.querySelectorAll('#maze-pinyin-small-left .maze-item').forEach(i => i.classList.remove('selected'));
+  el.classList.add('selected');
+  mazePinyinSmallSelectedLeft = el;
+  playAudio(el.textContent);
+}
+
+function selectMazePinyinSmallRight(el) {
+  if (el.classList.contains('matched') || !mazePinyinSmallSelectedLeft) return;
+  
+  var id1 = mazePinyinSmallSelectedLeft.getAttribute('data-id');
+  var id2 = el.getAttribute('data-id');
+  
+  if (id1 === id2) {
+    mazePinyinSmallSelectedLeft.classList.remove('selected');
+    mazePinyinSmallSelectedLeft.classList.add('matched');
+    el.classList.add('matched');
+    mazePinyinSmallSelectedLeft = null;
+    mazePinyinSmallMatchCount++;
+    if(mazePinyinSmallMatchCount === 5) {
+      setTimeout(() => alert('🎉 Отлично! Все пары найдены!'), 300);
+    }
+  } else {
+    el.classList.add('wrong');
+    var temp = el;
+    setTimeout(() => temp.classList.remove('wrong'), 500);
+  }
+}
+
+// ================================================
+// ИГРА 3: ЛАБИРИНТ (ИЕРОГЛИФ-ПИНЬИНЬ 11-99)
+// ================================================
+var mazePinyinBigSelectedLeft = null;
+var mazePinyinBigMatchCount = 0;
+
+function initMazePinyinBig() {
+  mazePinyinBigMatchCount = 0;
+  mazePinyinBigSelectedLeft = null;
+
+  var bigNumbersPool = [];
+  var usedNums = new Set();
+  while (bigNumbersPool.length < 5) {
+    var num = getRandomBigNumber();
+    if (!usedNums.has(num)) {
+      usedNums.add(num);
+      bigNumbersPool.push(generateBigNumber(num));
+    }
+  }
+
+  var leftItems = shuffle(bigNumbersPool);
+  var rightItems = shuffle(bigNumbersPool);
+  
+  var container = document.getElementById('maze-pinyin-big-container');
+  container.innerHTML = '';
+  
+  var leftCol = document.createElement('div');
+  leftCol.className = 'maze-col';
+  leftCol.id = 'maze-pinyin-big-left';
+  
+  var rightCol = document.createElement('div');
+  rightCol.className = 'maze-col';
+  rightCol.id = 'maze-pinyin-big-right';
+  
+  leftItems.forEach(item => {
+    var el = document.createElement('div');
+    el.className = 'maze-item hz';
+    el.textContent = item.char;
+    el.setAttribute('data-id', item.pinyin);
+    el.onclick = () => selectMazePinyinBigLeft(el);
+    leftCol.appendChild(el);
+  });
+  
+  rightItems.forEach(item => {
+    var el = document.createElement('div');
+    el.className = 'maze-item py';
+    el.textContent = item.pinyin;
+    el.setAttribute('data-id', item.pinyin);
+    el.onclick = () => selectMazePinyinBigRight(el);
+    rightCol.appendChild(el);
+  });
+  
+  container.appendChild(leftCol);
+  container.appendChild(rightCol);
+}
+
+function selectMazePinyinBigLeft(el) {
+  if (el.classList.contains('matched')) return;
+  document.querySelectorAll('#maze-pinyin-big-left .maze-item').forEach(i => i.classList.remove('selected'));
+  el.classList.add('selected');
+  mazePinyinBigSelectedLeft = el;
+  playAudio(el.textContent);
+}
+
+function selectMazePinyinBigRight(el) {
+  if (el.classList.contains('matched') || !mazePinyinBigSelectedLeft) return;
+  
+  var id1 = mazePinyinBigSelectedLeft.getAttribute('data-id');
+  var id2 = el.getAttribute('data-id');
+  
+  if (id1 === id2) {
+    mazePinyinBigSelectedLeft.classList.remove('selected');
+    mazePinyinBigSelectedLeft.classList.add('matched');
+    el.classList.add('matched');
+    mazePinyinBigSelectedLeft = null;
+    mazePinyinBigMatchCount++;
+    if(mazePinyinBigMatchCount === 5) {
+      setTimeout(() => alert('🎉 Отлично! Все пары найдены!'), 300);
+    }
+  } else {
+    el.classList.add('wrong');
+    var temp = el;
+    setTimeout(() => temp.classList.remove('wrong'), 500);
+  }
+}
+
+// ================================================
+// ИГРА 4: ОБЫЧНАЯ ВИКТОРИНА
 // ================================================
 var quizQueue = [];
 var currentQuizWord = null;
@@ -670,7 +966,7 @@ function checkQuizAnswer(el, isCorrect) {
 }
 
 // ================================================
-// ИГРА 3: СЛОЖНАЯ ВИКТОРИНА
+// ИГРА 5: СЛОЖНАЯ ВИКТОРИНА (1-10)
 // ================================================
 var hardQueue = [];
 var currentHardChar = '';
@@ -721,7 +1017,7 @@ function checkHardAnswer(el, isCorrect) {
 }
 
 // ================================================
-// ИГРА 4: ПОСЧИТАЙ ПРЕДМЕТЫ (1-10)
+// ИГРА 6: ПОСЧИТАЙ ПРЕДМЕТЫ (1-10)
 // ================================================
 var countQueue = [];
 
@@ -729,7 +1025,6 @@ function nextCountQuiz() {
   if (countQueue.length === 0) {
     countQueue = shuffle(numbers);
   }
-  // Берем цифру от 1 до 10
   var q = countQueue.pop();
   var displayNum = q.arabic; 
   var target = numbers.find(n => n.arabic === displayNum);
@@ -737,17 +1032,14 @@ function nextCountQuiz() {
   document.getElementById('count-feedback').textContent = '';
   
   var emojis = '';
-  // Массив разных эмодзи для разнообразия
   var emojiTypes = ['🐼', '🍎', '⭐', '🐱', '🌸', '🍓', '🐶', '🚗', '🎈', '🍦'];
   var emojiType = emojiTypes[Math.floor(Math.random() * emojiTypes.length)];
   
-  // Генерируем нужное количество
   for (var i = 0; i < displayNum; i++) {
     emojis += '<span>' + emojiType + '</span>';
   }
   document.getElementById('count-emojis').innerHTML = emojis;
   
-  // Генерируем 4 варианта ответа (1 правильный + 3 случайных)
   var options = [target];
   var pool = numbers.filter(n => n.arabic !== target.arabic);
   var wrongs = shuffle(pool).slice(0, 3);
@@ -784,14 +1076,128 @@ function checkCountAnswer(el, isCorrect, correctChar) {
 }
 
 // ================================================
+// ИГРА 7: 11-99 ВИКТОРИНА
+// ================================================
+var currentBigQuizTarget = null;
+
+function nextBigQuiz() {
+  var targetNum = getRandomBigNumber();
+  currentBigQuizTarget = generateBigNumber(targetNum);
+
+  document.getElementById('big-quiz-word').textContent = targetNum;
+  document.getElementById('big-quiz-feedback').textContent = '';
+  
+  var options = [currentBigQuizTarget];
+  var usedNums = [targetNum];
+
+  while (options.length < 4) {
+    var rnd = getRandomBigNumber();
+    if (!usedNums.includes(rnd)) {
+      usedNums.push(rnd);
+      options.push(generateBigNumber(rnd));
+    }
+  }
+  
+  options = shuffle(options);
+  
+  var cont = document.getElementById('big-quiz-options');
+  cont.innerHTML = '';
+  options.forEach(o => {
+    var btn = document.createElement('div');
+    btn.className = 'quiz-opt';
+    btn.textContent = o.char;
+    btn.onclick = () => checkBigQuizAnswer(btn, o.arabic === targetNum);
+    cont.appendChild(btn);
+  });
+}
+
+function checkBigQuizAnswer(el, isCorrect) {
+  document.querySelectorAll('#big-quiz-options .quiz-opt').forEach(b => b.onclick = null);
+  
+  if (isCorrect) {
+    el.classList.add('correct');
+    document.getElementById('big-quiz-feedback').textContent = '✅ Правильно!';
+    document.getElementById('big-quiz-feedback').style.color = '#2e7d32';
+    playAudio(currentBigQuizTarget.char);
+  } else {
+    el.classList.add('wrong');
+    document.getElementById('big-quiz-feedback').textContent = '❌ Ошибка. Это ' + currentBigQuizTarget.char;
+    document.getElementById('big-quiz-feedback').style.color = '#c62828';
+    document.querySelectorAll('#big-quiz-options .quiz-opt').forEach(opt => {
+      if (opt.textContent === currentBigQuizTarget.char) opt.classList.add('correct');
+    });
+  }
+}
+
+// ================================================
+// ИГРА 8: 11-99 АУДИО
+// ================================================
+var currentBigAudioTarget = null;
+var currentBigAudioChar = '';
+
+function nextBigAudio() {
+  var targetNum = getRandomBigNumber();
+  currentBigAudioTarget = generateBigNumber(targetNum);
+  currentBigAudioChar = currentBigAudioTarget.char;
+
+  document.getElementById('big-audio-feedback').textContent = '';
+  
+  setTimeout(() => playAudio(currentBigAudioChar), 300);
+  
+  var options = [currentBigAudioTarget];
+  var usedNums = [targetNum];
+
+  while (options.length < 4) {
+    var rnd = getRandomBigNumber();
+    if (!usedNums.includes(rnd)) {
+      usedNums.push(rnd);
+      options.push(generateBigNumber(rnd));
+    }
+  }
+  
+  options = shuffle(options);
+  
+  var cont = document.getElementById('big-audio-options');
+  cont.innerHTML = '';
+  options.forEach(o => {
+    var btn = document.createElement('div');
+    btn.className = 'quiz-opt';
+    btn.textContent = o.char;
+    btn.onclick = () => checkBigAudioAnswer(btn, o.arabic === targetNum);
+    cont.appendChild(btn);
+  });
+}
+
+function checkBigAudioAnswer(el, isCorrect) {
+  document.querySelectorAll('#big-audio-options .quiz-opt').forEach(b => b.onclick = null);
+  
+  if (isCorrect) {
+    el.classList.add('correct');
+    document.getElementById('big-audio-feedback').textContent = '✅ Верно!';
+    document.getElementById('big-audio-feedback').style.color = '#2e7d32';
+  } else {
+    el.classList.add('wrong');
+    document.getElementById('big-audio-feedback').textContent = '❌ Ошибка. Это ' + currentBigAudioChar;
+    document.getElementById('big-audio-feedback').style.color = '#c62828';
+    document.querySelectorAll('#big-audio-options .quiz-opt').forEach(opt => {
+      if (opt.textContent === currentBigAudioChar) opt.classList.add('correct');
+    });
+  }
+}
+
+// ================================================
 // СТАРТ
 // ================================================
 buildNumbers();
 buildBigNumbers();
 initMaze();
+initMazePinyinSmall();
+initMazePinyinBig();
 nextQuiz();
 nextHardQuiz();
 nextCountQuiz();
+nextBigQuiz();
+nextBigAudio();
 </script>
 
 </body>
